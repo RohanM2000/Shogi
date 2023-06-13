@@ -1,0 +1,25 @@
+{
+  "name": "shogi",
+  "version": "1.0.0",
+  "description": "This README would normally document whatever steps are necessary to get the application up and running.",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "build": "npm install --prefix frontend && npm run build --prefix frontend"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RohanM2000/Shogi.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RohanM2000/Shogi/issues"
+  },
+  "homepage": "https://github.com/RohanM2000/Shogi#readme",
+  "engines": {
+    "node": "16.x"
+  }
+}
