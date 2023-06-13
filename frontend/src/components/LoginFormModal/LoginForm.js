@@ -3,19 +3,19 @@ import { loginUser } from "../../store/session";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
 import "./LoginFormPage.css";
-const LoginFormPage = () => {
+const LoginForm = () => {
     const [credential, setCredential] = useState("");
     const [password, setPassword] = useState("");
     const sessionUser = useSelector(state => state.session.user);
     const [errors, setErrors] = useState([]);
     const dispatch = useDispatch();
 
-    if (sessionUser) return <Redirect to="/" />;
+    // if (sessionUser) return <Redirect to="/" />;
 
     function handleSubmit(e) {
         e.preventDefault();
         setErrors([]);
-        return dispatch(loginUser(credential, password)).catch(async (res) => {
+        return dispatch(loginUser({credential, password})).catch(async (res) => {
         let data;
         try {
           data = await res.clone().json();
@@ -42,4 +42,4 @@ const LoginFormPage = () => {
     );
 };
 
-export default LoginFormPage;
+export default LoginForm;
