@@ -1,14 +1,15 @@
 import { createStore, applyMiddleware, combineReducers, compose } from "redux";
+import sessionReducer from "./session";
 
 const rootReducer = combineReducers({
-
+    session: sessionReducer
 });
 
 const thunk = store => next => action => {
     if (typeof action === 'function') {
-        action(store.dispatch, store.getState);
+        return action(store.dispatch, store.getState);
     } else {
-        next(action);
+        return next(action);
     }
 };
 
