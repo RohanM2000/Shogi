@@ -52,7 +52,7 @@ const LoginForm = () => {
                 </strong>
                 <input type={(seePassword) ? "text" : "password"} value={password} onChange={(e)=> setPassword(e.target.value)} required placeholder="Password"/>
                 <strong onClick={handleToggle} className="eye">
-                {(seePassword) ? <i class="fa-solid fa-eye-slash"></i> : <i class="fa-solid fa-eye"></i>}
+                {(seePassword) ? <i class="fa-solid fa-eye-slash" id="slash"></i> : <i class="fa-solid fa-eye"></i>}
                 </strong>
               </div>
             </div>
