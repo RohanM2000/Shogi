@@ -9,8 +9,12 @@ const LoginForm = () => {
     const sessionUser = useSelector(state => state.session.user);
     const [errors, setErrors] = useState([]);
     const dispatch = useDispatch();
+    const [seePassword, setSeePassword] = useState(false);
 
     // if (sessionUser) return <Redirect to="/" />;
+    function handleToggle(e) {
+      setSeePassword(state => !state);
+    };
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -32,11 +36,26 @@ const LoginForm = () => {
     }
     return (
         <form onSubmit={handleSubmit}>
-            <ul>
-                {errors.map(error => <li key={error}>{error}</li>)}
-            </ul>
-            <input type="text" value={credential} onChange={(e)=> setCredential(e.target.value)} required/>
-            <input type="password" value={password} onChange={(e)=> setPassword(e.target.value)} required/>
+            <div className="input-area">
+              {errors.length > 0 && <ul>
+                  {errors.map(error => <li key={error}>{error}</li>)}
+              </ul>}
+              <div className="input-field">
+                <strong>
+                  <i class="fa-solid fa-user"></i>
+                </strong>
+                <input type="text" className="credential-field" value={credential} onChange={(e)=> setCredential(e.target.value)} required placeholder="Username or Email"/>
+              </div>
+              <div className="input-field">
+                <strong>
+                  <i class="fa-solid fa-lock"></i>
+                </strong>
+                <input type={(seePassword) ? "text" : "password"} value={password} onChange={(e)=> setPassword(e.target.value)} required placeholder="Password"/>
+                <strong onClick={handleToggle} className="eye">
+                {(seePassword) ? <i class="fa-solid fa-eye-slash"></i> : <i class="fa-solid fa-eye"></i>}
+                </strong>
+              </div>
+            </div>
             <button>Log In</button>
         </form>
     );
