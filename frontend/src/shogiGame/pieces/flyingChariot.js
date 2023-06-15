@@ -1,5 +1,5 @@
 import validPosition from "../validPosition";
-export default class Lance {
+export default class FlyingChariot {
     constructor(color, position, board) {
         this.color = color;
         this.position = position;
@@ -22,39 +22,39 @@ export default class Lance {
                     }
                 }
             });
-        } else {
-            if (this.color === "white") {
-                this.dirs().forEach((dir)=> {
-                    const length = this.grow(dir);
-                    for (let i = 1; i <= length; i++) {
-                        const newPos = [this.position[0] + dir[0] * i, this.position[1] + dir[1] * i];
-                        if (validPosition(newPos) && this.color !== this.board.grid[newPos[0]][newPos[1]].color) {
-                            newPositions.push(newPos);
-                        }
-                    }
-                })
-            } else {
-                const blackDirs = [];
-                const dirs = this.dirs();
-                dirs.forEach((dir)=>blackDirs.push([-dir[0], -dir[1]]));
-                blackDirs.forEach((dir)=> {
-                    const length = this.grow(dir);
-                    for (let i = 1; i <= length; i++) {
-                        const newPos = [this.position[0] + dir[0] * i, this.position[1] + dir[1] * i];
-                        if (validPosition(newPos) && this.color !== this.board.grid[newPos[0]][newPos[1]].color) {
-                            newPositions.push(newPos);
-                        }
-                    }
-                })
-            }
         }
+        if (this.color === "white") {
+            this.dirs().forEach((dir)=> {
+                const length = this.grow(dir);
+                for (let i = 1; i <= length; i++) {
+                    const newPos = [this.position[0] + dir[0] * i, this.position[1] + dir[1] * i];
+                    if (validPosition(newPos) && this.color !== this.board.grid[newPos[0]][newPos[1]].color) {
+                        newPositions.push(newPos);
+                    }
+                }
+            })
+        } else {
+            const blackDirs = [];
+            const dirs = this.dirs();
+            dirs.forEach((dir)=>blackDirs.push([-dir[0], -dir[1]]));
+            blackDirs.forEach((dir)=> {
+                const length = this.grow(dir);
+                for (let i = 1; i <= length; i++) {
+                    const newPos = [this.position[0] + dir[0] * i, this.position[1] + dir[1] * i];
+                    if (validPosition(newPos) && this.color !== this.board.grid[newPos[0]][newPos[1]].color) {
+                        newPositions.push(newPos);
+                    }
+                }
+            })
+        }
+        
         return newPositions;
     }
     steps() {
-        return [[1, 0], [1, -1], [1, 1], [0, 1], [0, -1], [-1, 0]];
+        return [[1,1],[1,-1],[-1,1],[-1,-1]];
     }
     dirs() {
-        return [[1,0]];
+        return [[1,0], [0,1], [0,-1], [-1,0]];
     }
     grow(dir, curLen = 0) {
         const newPos = [this.position[0] + (curLen + 1) * dir[0], this.position[1] + (curLen + 1) * dir[1]];

@@ -11,12 +11,12 @@ export default class GoldGeneral {
         this.steps().forEach((step)=> {
             if (this.color === "white") {
                 const newPos = [this.position[0] + step[0], this.position[1] + step[1]];
-                if (validPosition(newPos)) {
+                if (validPosition(newPos) && this.color !== this.board.grid[newPos[0]][newPos[1]].color) {
                     newPositions.push(newPos);
                 }
             } else {
                 const newPos = [this.position[0] - step[0], this.position[1] - step[1]];
-                if (validPosition(newPos)) {
+                if (validPosition(newPos) && this.color !== this.board.grid[newPos[0]][newPos[1]].color) {
                     newPositions.push(newPos);
                 }
             }

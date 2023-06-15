@@ -8,9 +8,9 @@ import configureStore from "./store";
 import csrfFetch from './store/csrf';
 import * as sessionActions from "./store/session";
 import ModalProvider from './context/Modal';
-
+import Board from './shogiGame/board';
 const store = configureStore();
-
+const board = new Board();
 if (process.env.NODE_ENV !== "production") {
   window.store = store;
   window.csrfFetch = csrfFetch;

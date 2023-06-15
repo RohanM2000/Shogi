@@ -16,8 +16,7 @@ export default function Room() {
     const users = useSelector(state => state.users);
     const [inputVal, setInputVal] = useState("");
     useEffect(()=>{
-        dispatch(fetchUsers());
-        dispatch(fetchRoom(roomId));
+        dispatch(fetchUsers()).then(()=>dispatch(fetchRoom(roomId)));
         const subscription = consumer.subscriptions.create(
           { channel: 'RoomsChannel', id: roomId },
           {
