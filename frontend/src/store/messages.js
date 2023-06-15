@@ -4,7 +4,7 @@ const RECEIVE_MESSAGES = 'messages/RECEIVE_MESSAGES';
 const RECEIVE_MESSAGE = 'messages/RECEIVE_MESSAGE';
 
 
-const receiveMessage = (message) => {
+export const receiveMessage = (message) => {
     return {
         type: RECEIVE_MESSAGE,
         message

@@ -4,8 +4,7 @@ end
 
 json.messages do
     json.array! @room.messages do |message|
-        json.author message.author.username
-        json.extract! message, :room_id, :body, :created_at, :id
+        json.extract! message, :room_id, :body, :created_at, :id, :author_id
     end
 end
 
