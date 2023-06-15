@@ -42,17 +42,17 @@ const LoginForm = () => {
               </ul>}
               <div className="input-field">
                 <strong>
-                  <i class="fa-solid fa-user"></i>
+                  <i className="fa-solid fa-user"></i>
                 </strong>
                 <input type="text" className="credential-field" value={credential} onChange={(e)=> setCredential(e.target.value)} required placeholder="Username or Email"/>
               </div>
               <div className="input-field">
                 <strong>
-                  <i class="fa-solid fa-lock"></i>
+                  <i className="fa-solid fa-lock"></i>
                 </strong>
                 <input type={(seePassword) ? "text" : "password"} value={password} onChange={(e)=> setPassword(e.target.value)} required placeholder="Password"/>
                 <strong onClick={handleToggle} className="eye">
-                {(seePassword) ? <i class="fa-solid fa-eye-slash" id="slash"></i> : <i class="fa-solid fa-eye"></i>}
+                {(seePassword) ? <i className="fa-solid fa-eye-slash" id="slash"></i> : <i className="fa-solid fa-eye"></i>}
                 </strong>
               </div>
             </div>

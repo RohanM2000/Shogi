@@ -1,6 +1,7 @@
 import { Switch, Route } from "react-router-dom";
 import SignupFormPage from "./components/SignupFormPage";
 import Navigation from "./components/Navigation";
+import Room from "./components/Room";
 function App() {
   return (
     <>
@@ -10,6 +11,9 @@ function App() {
         </Route>
         <Route path='/signup'>
           <SignupFormPage />
+        </Route>
+        <Route path='/rooms/:roomId'>
+          <Room />
         </Route>
       </Switch>
     </>
