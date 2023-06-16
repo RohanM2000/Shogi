@@ -1,10 +1,10 @@
 import validPosition from "../validPosition";
 export default class HonorableHorse {
-    constructor(color, position, board) {
+    constructor(color, position, board, promoted = false) {
         this.color = color;
         this.position = position;
         this.board = board;
-        this.promoted = false;
+        this.promoted = promoted;
     }
     moves() {
         const newPositions = [];
@@ -29,5 +29,8 @@ export default class HonorableHorse {
         } else {
             return [[2, -1], [2, 1]];
         }
+    }
+    dup(board) {
+        return new HonorableHorse(this.color, [this.position[0], this.position[1]], board, this.promoted);
     }
 }

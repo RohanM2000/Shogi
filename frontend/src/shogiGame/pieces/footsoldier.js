@@ -1,10 +1,10 @@
 import validPosition from "../validPosition";
 export default class Footsoldier {
-    constructor(color, position, board) {
+    constructor(color, position, board, promoted = false) {
         this.color = color;
         this.position = position;
         this.board = board;
-        this.promoted = false;
+        this.promoted = promoted;
     }
     moves() {
         const newPositions = [];
@@ -29,5 +29,8 @@ export default class Footsoldier {
         } else {
             return [[1, 0]];
         }
+    }
+    dup(board) {
+        return new Footsoldier(this.color, [this.position[0], this.position[1]], board, this.promoted);
     }
 }

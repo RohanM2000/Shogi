@@ -68,13 +68,12 @@ export default class Board {
         this.grid[0][4] = new JewelledGeneral("white", [0,4], this);
         this.grid[8][4] = new JewelledGeneral("black", [8,4], this);
 
-        this.grid[7][4] = new FlyingChariot("white", [7,4], this);
 
         // console.log(this.grid);
         // console.log(this.allMoves("white"));
         // console.log(this.allMoves("black"));
-        console.log(this.allMoves("white"));
-        console.log(this.inCheck("black"));
+        // console.log(this.allMoves("white"));
+        // console.log(this.inCheck("black"));
         // console.log(this.inCheck("white"));
         this.playerFirst = "";
         this.playerSecond = "";
@@ -83,6 +82,7 @@ export default class Board {
     makeMove(pos1, pos2) {
         this.grid[pos2[0]][pos2[1]] = this.grid[pos1[0]][pos1[1]];
         this.grid[pos1[0]][[pos1[1]]] = nullPiece;
+        this.grid[pos2[0]][pos2[1]].position = [pos2[0], pos2[1]];
     }
 
     inCheck(color) {
@@ -94,24 +94,26 @@ export default class Board {
                 }
             }
         }
-        console.log(color, kingPos);
+        // console.log(color, kingPos);
+        let hit = false;
         if (color === "white") {
             const oppMoves = this.allMoves("black");
             oppMoves.forEach(tuple => {
                 if (tuple[1][0] === kingPos[0] && tuple[1][1] === kingPos[1]) {
-                    return true;
+                    hit = true;
                 }
             })
         } else {
             const oppMoves = this.allMoves("white");
             oppMoves.forEach(tuple => {
-                console.log(tuple[1][0], tuple[1][1], kingPos[0], kingPos[1]);
+                // console.log(tuple[1][0] === kingPos[0] && tuple[1][1] === kingPos[1]);
                 if (tuple[1][0] === kingPos[0] && tuple[1][1] === kingPos[1]) {
-                    return true;
+                    // console.log("been hit")
+                    hit = true;
                 }
             })
         }
-        return false;
+        return hit;
     }
 
     allMoves(color) {
