@@ -1,52 +1,60 @@
-import validPosition from "../validPosition";
-export default class Lance {
-    constructor(color, position, board, promoted = false) {
-        this.color = color;
-        this.position = position;
-        this.board = board;
-        this.promoted = promoted;
-    }
+// import validPosition from "../validPosition";
+import HybridPiece from "./hybridPiece";
+export default class Lance extends HybridPiece{
+    // constructor(color, position, board, promoted = false) {
+    //     this.color = color;
+    //     this.position = position;
+    //     this.board = board;
+    //     this.promoted = promoted;
+    // }
     moves() {
-        const newPositions = [];
+        // const newPositions = [];
+        // if (this.promoted) {
+        //     this.steps().forEach((step)=> {
+        //         if (this.color === "white") {
+        //             const newPos = [this.position[0] + step[0], this.position[1] + step[1]];
+        //             if (validPosition(newPos) && this.color !== this.board.grid[newPos[0]][newPos[1]].color) {
+        //                 newPositions.push(newPos);
+        //             }
+        //         } else {
+        //             const newPos = [this.position[0] - step[0], this.position[1] - step[1]];
+        //             if (validPosition(newPos) && this.color !== this.board.grid[newPos[0]][newPos[1]].color) {
+        //                 newPositions.push(newPos);
+        //             }
+        //         }
+        //     });
+        // } else {
+        //     if (this.color === "white") {
+        //         this.dirs().forEach((dir)=> {
+        //             const length = this.grow(dir);
+        //             for (let i = 1; i <= length; i++) {
+        //                 const newPos = [this.position[0] + dir[0] * i, this.position[1] + dir[1] * i];
+        //                 if (validPosition(newPos) && this.color !== this.board.grid[newPos[0]][newPos[1]].color) {
+        //                     newPositions.push(newPos);
+        //                 }
+        //             }
+        //         })
+        //     } else {
+        //         const blackDirs = [];
+        //         const dirs = this.dirs();
+        //         dirs.forEach((dir)=>blackDirs.push([-dir[0], -dir[1]]));
+        //         blackDirs.forEach((dir)=> {
+        //             const length = this.grow(dir);
+        //             for (let i = 1; i <= length; i++) {
+        //                 const newPos = [this.position[0] + dir[0] * i, this.position[1] + dir[1] * i];
+        //                 if (validPosition(newPos) && this.color !== this.board.grid[newPos[0]][newPos[1]].color) {
+        //                     newPositions.push(newPos);
+        //                 }
+        //             }
+        //         })
+        //     }
+        // }
+        // return newPositions;
+        let newPositions = [];
         if (this.promoted) {
-            this.steps().forEach((step)=> {
-                if (this.color === "white") {
-                    const newPos = [this.position[0] + step[0], this.position[1] + step[1]];
-                    if (validPosition(newPos) && this.color !== this.board.grid[newPos[0]][newPos[1]].color) {
-                        newPositions.push(newPos);
-                    }
-                } else {
-                    const newPos = [this.position[0] - step[0], this.position[1] - step[1]];
-                    if (validPosition(newPos) && this.color !== this.board.grid[newPos[0]][newPos[1]].color) {
-                        newPositions.push(newPos);
-                    }
-                }
-            });
+            newPositions = newPositions.concat(this.stepMoves());
         } else {
-            if (this.color === "white") {
-                this.dirs().forEach((dir)=> {
-                    const length = this.grow(dir);
-                    for (let i = 1; i <= length; i++) {
-                        const newPos = [this.position[0] + dir[0] * i, this.position[1] + dir[1] * i];
-                        if (validPosition(newPos) && this.color !== this.board.grid[newPos[0]][newPos[1]].color) {
-                            newPositions.push(newPos);
-                        }
-                    }
-                })
-            } else {
-                const blackDirs = [];
-                const dirs = this.dirs();
-                dirs.forEach((dir)=>blackDirs.push([-dir[0], -dir[1]]));
-                blackDirs.forEach((dir)=> {
-                    const length = this.grow(dir);
-                    for (let i = 1; i <= length; i++) {
-                        const newPos = [this.position[0] + dir[0] * i, this.position[1] + dir[1] * i];
-                        if (validPosition(newPos) && this.color !== this.board.grid[newPos[0]][newPos[1]].color) {
-                            newPositions.push(newPos);
-                        }
-                    }
-                })
-            }
+            newPositions = newPositions.concat(this.slideMoves());
         }
         return newPositions;
     }
@@ -56,15 +64,15 @@ export default class Lance {
     dirs() {
         return [[1,0]];
     }
-    grow(dir, curLen = 0) {
-        const newPos = [this.position[0] + (curLen + 1) * dir[0], this.position[1] + (curLen + 1) * dir[1]];
-        if (!validPosition(newPos)) return curLen;
-        if (this.board.grid[newPos[0]][newPos[1]].color === this.color) {
-            return curLen;
-        }
-        if (this.board.grid[newPos[0]][newPos[1]].color && this.board.grid[newPos[0]][newPos[1]].color !== this.color) return curLen + 1;
-        return this.grow(dir, curLen + 1);
-    }
+    // grow(dir, curLen = 0) {
+    //     const newPos = [this.position[0] + (curLen + 1) * dir[0], this.position[1] + (curLen + 1) * dir[1]];
+    //     if (!validPosition(newPos)) return curLen;
+    //     if (this.board.grid[newPos[0]][newPos[1]].color === this.color) {
+    //         return curLen;
+    //     }
+    //     if (this.board.grid[newPos[0]][newPos[1]].color && this.board.grid[newPos[0]][newPos[1]].color !== this.color) return curLen + 1;
+    //     return this.grow(dir, curLen + 1);
+    // }
     dup(board) {
         return new Lance(this.color, [this.position[0], this.position[1]], board, this.promoted);
     }

@@ -25,7 +25,7 @@ export default function Room() {
                 if (message.author_id !== currentUser.id){
                     dispatch(receiveMessage({
                         roomId: message.room_id,
-                        authorId: message.authorId,
+                        authorId: message.author_id,
                         body: message.body,
                         id: message.id,
                         createdAt: message.created_at

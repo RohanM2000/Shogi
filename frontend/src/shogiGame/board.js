@@ -69,6 +69,7 @@ export default class Board {
         this.grid[8][4] = new JewelledGeneral("black", [8,4], this);
 
 
+
         // console.log(this.grid);
         // console.log(this.allMoves("white"));
         // console.log(this.allMoves("black"));
@@ -79,10 +80,30 @@ export default class Board {
         this.playerSecond = "";
     }
 
-    makeMove(pos1, pos2) {
-        this.grid[pos2[0]][pos2[1]] = this.grid[pos1[0]][pos1[1]];
-        this.grid[pos1[0]][[pos1[1]]] = nullPiece;
-        this.grid[pos2[0]][pos2[1]].position = [pos2[0], pos2[1]];
+    makeMove(color, pos1, pos2, override = false) {
+        if (override) {
+            this.grid[pos2[0]][pos2[1]] = this.grid[pos1[0]][pos1[1]];
+            this.grid[pos1[0]][[pos1[1]]] = nullPiece;
+            this.grid[pos2[0]][pos2[1]].position = [pos2[0], pos2[1]];
+            return true;
+        } else {
+            const validMoves = this.validMoves(color);
+            let valid = false;
+            validMoves.forEach((move)=> {
+                if (move[0][0] === pos1[0] && move[0][1] === pos1[1] 
+                    && move[1][0] === pos2[0] && move[1][1] === pos2[1]) {
+                        valid = true;
+                    }
+            })
+            if (valid) {
+                this.grid[pos2[0]][pos2[1]] = this.grid[pos1[0]][pos1[1]];
+                this.grid[pos1[0]][[pos1[1]]] = nullPiece;
+                this.grid[pos2[0]][pos2[1]].position = [pos2[0], pos2[1]];
+                return true;
+            } else {
+                return false;
+            }
+        }
     }
 
     inCheck(color) {
@@ -127,5 +148,38 @@ export default class Board {
             }
         }
         return totalMoves;
+    }
+
+    dup() {
+        const dupedBoard = new Board();
+        for (let i = 0; i < 9; i++) {
+            for (let j = 0; j < 9; j++) {
+                if (this.grid[i][j].color){
+                    dupedBoard.grid[i][j] = this.grid[i][j].dup(dupedBoard);
+                } else {
+                    dupedBoard.grid[i][j] = nullPiece;
+                }
+            }
+        }
+        return dupedBoard;
+    }
+
+    validMoves(color) {
+        const originalMoves = this.allMoves(color);
+
+        const goodMoves = [];
+        originalMoves.forEach((move)=>{
+            const dupedBoard = this.dup();
+            dupedBoard.makeMove(color, move[0], move[1], true);
+            if (!dupedBoard.inCheck(color)) {
+                goodMoves.push(move);
+            }
+        });
+        return goodMoves;
+    }
+
+    isCheckmate(color) {
+        if (this.validMoves(color).length < 1) return true;
+        return false;
     }
 }

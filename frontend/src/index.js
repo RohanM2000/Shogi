@@ -11,6 +11,8 @@ import ModalProvider from './context/Modal';
 import Board from './shogiGame/board';
 const store = configureStore();
 const board = new Board();
+console.log(board.allMoves("white"));
+
 if (process.env.NODE_ENV !== "production") {
   window.store = store;
   window.csrfFetch = csrfFetch;
