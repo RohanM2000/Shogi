@@ -22,4 +22,9 @@
 
 .piece {
     position: absolute;
+    background: transparent;
+}
+
+.black {
+    rotate: 180deg;
 }

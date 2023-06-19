@@ -1,12 +1,47 @@
 import React from "react";
+import { useState, useRef } from "react";
 
-function Lance() {
+
+function Lance({startLeft, startTop, color}) {
+  const [top, setTop] = useState(0);
+  const [left, setLeft] = useState(0);
+  const prevPos = useRef({
+    top: 0,
+    left: 0
+  });
+  const isClicked = useRef(false);
+
+  const handleMouseDown = (e) => {
+    isClicked.current = true;
+    prevPos.top = e.clientY;
+    prevPos.left = e.clientX;
+  };
+
+  const handleMouseUp = (e) => {
+    isClicked.current = false;
+  };
+
+  const handleMouseLeave = (e) => {
+    isClicked.current = false;
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isClicked.current) return;
+    setTop(e.clientY - prevPos.top);
+    setLeft(e.clientX - prevPos.left);
+  }
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="42.172"
       height="50"
       version="1.1"
+      className={color === "black" ? "piece black" : "piece white"}
+      onMouseDown={handleMouseDown}
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseLeave}
+      onMouseMove={handleMouseMove}
+      style={{top: (startTop + top) + "px", left: (startLeft + left) + "px"}}
     >
       <g transform="translate(-690.982 -731.341)">
         <g transform="matrix(.46742 0 0 .46742 368.005 416.128)">

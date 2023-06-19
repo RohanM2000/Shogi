@@ -10,7 +10,7 @@ export default function GameBoard () {
     const { gameId } = useParams();
     const dispatch = useDispatch();
     const [move, setMove] = useState("");
-    const game = useSelector(state=> state.games[gameId])
+    const game = useSelector(state=> state.games[gameId]);
     useEffect(()=>{
         dispatch(fetchGame(gameId));
         const subscription = consumer.subscriptions.create({
@@ -18,9 +18,8 @@ export default function GameBoard () {
         }, {
             received(game) {
                 dispatch(receiveGame(game));
-                // console.log(game);
             }
-        })
+        });
 
         return () => subscription?.unsubscribe();
 
@@ -31,7 +30,7 @@ export default function GameBoard () {
         
         dispatch(updateGame({
             gameId, move
-        }))
+        }));
 
     }
     const tempArr = [];
@@ -47,11 +46,12 @@ export default function GameBoard () {
             <div className="game-board">
                 {tempArr.map((temp,idx)=> <div key={idx} dataid={idx} 
                 onMouseDown={(e=>console.log("mousedown on", e.target.getAttribute("dataid")))}
-                onMouseUp={(e=>console.log("mouseup on", e.target.getAttribute("dataid")))}
+                onMouseUp={(e=>{
+                    console.log("mouseup on", e.target.getAttribute("dataid"));
+                })}
                 />)}
-                <div className="piece">
-                    <Lance />
-                </div>
+                    <Lance startLeft={4} startTop={52} color="black"/>
+                    <Lance startLeft={418} startTop={52} color="white"/>
             </div>
         </>
     ) : null;
