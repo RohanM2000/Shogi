@@ -1,11 +1,11 @@
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchGame, receiveGame } from "../../store/games";
 import { updateGame } from "../../store/games";
 import consumer from "../../consumer";
 import "./GameBoard.css";
-// import {ReactComponent as Lance} from "./kyosha.svg";
+import Lance from "./gamePieces/kyosha";
 export default function GameBoard () {
     const { gameId } = useParams();
     const dispatch = useDispatch();
@@ -25,7 +25,6 @@ export default function GameBoard () {
         return () => subscription?.unsubscribe();
 
     },[gameId, dispatch]);
-
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -50,7 +49,9 @@ export default function GameBoard () {
                 onMouseDown={(e=>console.log("mousedown on", e.target.getAttribute("dataid")))}
                 onMouseUp={(e=>console.log("mouseup on", e.target.getAttribute("dataid")))}
                 />)}
-                {/* <Lance /> */}
+                <div className="piece">
+                    <Lance />
+                </div>
             </div>
         </>
     ) : null;
