@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchGame, receiveGame } from "../../store/games";
 import { updateGame } from "../../store/games";
 import consumer from "../../consumer";
+import "./GameBoard.css";
 export default function GameBoard () {
     const { gameId } = useParams();
     const dispatch = useDispatch();
@@ -33,13 +34,22 @@ export default function GameBoard () {
         }))
 
     }
-
+    const tempArr = [];
+    for (let i = 0; i < 81; i++) {
+        tempArr.push("");
+    }
     return game ? (
         <>
             <p>{game.body}</p>
             <form onSubmit={handleSubmit}>
                 <input value={move} onChange={(e)=>setMove(e.target.value)}/>
             </form>
+            <div className="game-board">
+                {tempArr.map((temp,idx)=> <div key={idx} dataid={idx} 
+                onMouseDown={(e=>console.log("mousedown on", e.target.getAttribute("dataid")))}
+                onMouseUp={(e=>console.log("mouseup on", e.target.getAttribute("dataid")))}
+                />)}
+            </div>
         </>
     ) : null;
 }
