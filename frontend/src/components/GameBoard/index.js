@@ -5,6 +5,7 @@ import { fetchGame, receiveGame } from "../../store/games";
 import { updateGame } from "../../store/games";
 import consumer from "../../consumer";
 import "./GameBoard.css";
+// import {ReactComponent as Lance} from "./kyosha.svg";
 export default function GameBoard () {
     const { gameId } = useParams();
     const dispatch = useDispatch();
@@ -49,6 +50,7 @@ export default function GameBoard () {
                 onMouseDown={(e=>console.log("mousedown on", e.target.getAttribute("dataid")))}
                 onMouseUp={(e=>console.log("mouseup on", e.target.getAttribute("dataid")))}
                 />)}
+                {/* <Lance /> */}
             </div>
         </>
     ) : null;

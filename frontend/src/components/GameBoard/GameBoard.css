@@ -5,6 +5,7 @@
     width: 468px;
     height: 468px;
     background-color: black;
+    position: relative;
 }
 
 .game-board div {
@@ -18,3 +19,4 @@
     border: none;
     outline: none;
 }
+

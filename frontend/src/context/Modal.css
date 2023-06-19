@@ -15,15 +15,15 @@
     bottom: 0;
     right: 0;
     left: 0;
-    background-color: rgba(0,0,0,0.7);
+    background-color: #312E2B;
 }
 
 #modal-content {
     position: absolute;
-    background-color: #312e2b;
+    background-color: #262421;
     border-radius: 10px;
     width: 450px;
-    height: 400px;
+    height: 600px;
 }
 
 #modal-content form {
@@ -38,6 +38,8 @@
 
 
 #modal-content form button {
+    position: absolute;
+    top: 300px;
     background-color: #7fa650;
     font-family: 'Heebo', sans-serif;
     color: white;
@@ -61,7 +63,7 @@
 }
 
 #modal-content form div div.input-field {
-    background-color: rgba(0,0,0,0.7);
+    background-color: #3C3A38;
     margin: 10px 0;
     width: 350px;
     height: 45px;
@@ -73,7 +75,7 @@
 }
 
 #modal-content form div div.input-field input{
-    background-color: rgba(0,0,0,0.7);
+    background-color: #3C3A38;
     border: none;
     color: white;
     width: 260px;
@@ -118,13 +120,73 @@
     background-color: orangered;
     color: white;
     font-size: 20px;
-    height: 45px;
+    /* height: 70px; */
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: flex-start;
     align-items: center;
     border-radius: 5px;
 }
 
+#modal-content form div.input-area ul li {
+    width: 350px;
+}
+
 #slash {
     transform: translateX(-2px);
+}
+
+div.or-separator {
+    display: flex;
+    width: 350px;
+    align-items: center;
+    justify-content: space-between;
+    position: absolute;
+    top: 370px;
+}
+div.or-separator span.or-value{
+    font-size: 25px;
+    font-weight: 100;
+    color: lightgray;
+}
+
+div.or-separator span.span-line {
+    width: 140px;
+    height: 1px;
+    border: 1px solid gray;
+    background-color: gray;
+}
+
+div.redirect-sign-method {
+    height: 60px;
+    color: rgb(193,193,192);
+    background-color: #211F1C;
+    width: 450px;
+    display: flex;
+    justify-content: center;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    align-items: center;
+}
+
+div.redirect-sign-method span.link-method {
+    color: rgb(80,171,212);
+    margin-left: 5px;
+}
+
+div.redirect-sign-method:hover {
+    color: rgb(193,193,192, 0.7);
+    cursor: pointer;
+}
+
+div.redirect-sign-method:hover span.link-method{
+    color: rgb(80,171,212, 0.7);
+}
+
+#modal-content form.signup-form button {
+    top: 400px;
+}
+
+form.signup-form div.or-separator {
+    top: 470px;
 }

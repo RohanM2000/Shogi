@@ -1,5 +1,5 @@
 import { Switch, Route } from "react-router-dom";
-import SignupFormPage from "./components/SignupFormPage";
+import SignupFormPage from "./components/SignupFormModal/SignupForm";
 import Navigation from "./components/Navigation";
 import Room from "./components/Room";
 import GameBoard from "./components/GameBoard";

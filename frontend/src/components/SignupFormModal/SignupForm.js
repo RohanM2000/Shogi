@@ -1,0 +1,103 @@
+import { useState } from "react";
+import { createUser } from "../../store/session";
+import { useDispatch, useSelector } from "react-redux";
+import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
+import { receiveModal } from "../../store/modals";
+import "./SignupFormPage.css";
+const SignupForm = () => {
+    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const sessionUser = useSelector(state => state.session.user);
+    const [errors, setErrors] = useState([]);
+    const dispatch = useDispatch();
+    const [seePassword, setSeePassword] = useState(false);
+    const [seeConfirm, setSeeConfirm] = useState(false);
+    if (sessionUser) return <Redirect to="/" />;
+
+    function handlePasswordToggle(e) {
+        setSeePassword(state => !state);
+    }
+
+    function handleConfirmToggle(e) {
+        setSeeConfirm(state => !state);
+    }
+
+    function handleSubmit(e) {
+        e.preventDefault();
+        setErrors([]);
+
+        if (password === confirmPassword){
+            return dispatch(createUser({email, username, password})).catch(async (res) => {
+                let data;
+                try {
+                    data = await res.clone().json();
+                } catch {
+                    data = await res.text();
+                }
+                if (data?.errors) setErrors(data.errors);
+                else if (data) setErrors([data]);
+                else setErrors([res.statusText]);
+            });
+        }
+        return setErrors(['Confirm password field must match password field']);
+        // dispatch(loginUser(credential, password));
+        // setCredential("");
+        // setPassword("");
+    }
+    return (
+        <form onSubmit={handleSubmit} className="signup-form">
+            <div className="input-area">
+                {errors.length > 0 && <ul>
+                    {errors.map(error => <li key={error}>{error}</li>)}
+                </ul>}
+                <div className="input-field">
+                    <strong>
+                        <i className="fa-solid fa-user"></i>
+                    </strong>
+                    <input type="text" className="credential-field" value={username} onChange={(e)=> setUsername(e.target.value)} required placeholder="Username"/>
+                </div>
+                <div className="input-field">
+                    <strong>
+                        <i className="fa-solid fa-envelope"></i>
+                    </strong>
+                    <input type="text" className="credential-field" value={email} onChange={(e)=> setEmail(e.target.value)} required placeholder="Email"/>
+                </div>
+                <div className="input-field">
+                    <strong>
+                        <i className="fa-solid fa-lock"></i>
+                    </strong>
+                        <input type={(seePassword) ? "text" : "password"} value={password} onChange={(e)=> setPassword(e.target.value)} required placeholder="Password"/>
+                    <strong onClick={handlePasswordToggle} className="eye">
+                        {(seePassword) ? <i className="fa-solid fa-eye-slash" id="slash"></i> : <i className="fa-solid fa-eye"></i>}
+                    </strong>
+                </div>
+                <div className="input-field">
+                    <strong>
+                        <i className="fa-solid fa-lock"></i>
+                    </strong>
+                        <input type={(seeConfirm) ? "text" : "password"} value={confirmPassword} onChange={(e)=> setConfirmPassword(e.target.value)} required placeholder="Confirm Password"/>
+                    <strong onClick={handleConfirmToggle} className="eye">
+                        {(seeConfirm) ? <i className="fa-solid fa-eye-slash" id="slash"></i> : <i className="fa-solid fa-eye"></i>}
+                    </strong>
+                </div>
+            </div>
+            <button>Sign Up</button>
+            <div className="or-separator">
+                <span className="span-line"/>
+                <span className="or-value">OR</span>
+                <span className="span-line"/>
+            </div>
+            <div className="redirect-sign-method" onClick={(e)=>{
+                e.preventDefault();
+                dispatch(receiveModal("login"));
+              }}>
+                <span>Already have an account?</span>
+                <span className="link-method">Log In</span>
+            </div>
+        </form>
+    );
+};
+
+export default SignupForm;

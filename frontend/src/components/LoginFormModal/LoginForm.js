@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { loginUser } from "../../store/session";
 import { useDispatch, useSelector } from "react-redux";
+import { receiveModal } from "../../store/modals";
 import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
 import "./LoginFormPage.css";
 const LoginForm = () => {
@@ -57,6 +58,18 @@ const LoginForm = () => {
               </div>
             </div>
             <button>Log In</button>
+            <div className="or-separator">
+              <span className="span-line"/>
+              <span className="or-value">OR</span>
+              <span className="span-line"/>
+            </div>
+            <div className="redirect-sign-method" onClick={(e)=>{
+                e.preventDefault();
+                dispatch(receiveModal("signup"));
+              }}>
+              <span>New? </span>
+              <span className="link-method">Sign up - and start playing shogi!</span>
+            </div>
         </form>
     );
 };

@@ -4,12 +4,14 @@ import  messagesReducer from "./messages";
 import roomsReducer from "./rooms";
 import usersReducer from "./users";
 import gamesReducer from "./games";
+import modalsReducer from "./modals";
 const rootReducer = combineReducers({
     session: sessionReducer,
     messages: messagesReducer,
     rooms: roomsReducer,
     users: usersReducer,
-    games: gamesReducer
+    games: gamesReducer,
+    modals: modalsReducer
 });
 
 const thunk = store => next => action => {
