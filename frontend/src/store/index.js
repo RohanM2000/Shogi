@@ -3,11 +3,13 @@ import sessionReducer from "./session";
 import  messagesReducer from "./messages";
 import roomsReducer from "./rooms";
 import usersReducer from "./users";
+import gamesReducer from "./games";
 const rootReducer = combineReducers({
     session: sessionReducer,
     messages: messagesReducer,
     rooms: roomsReducer,
-    users: usersReducer
+    users: usersReducer,
+    games: gamesReducer
 });
 
 const thunk = store => next => action => {

@@ -12,6 +12,7 @@ module ApplicationCable
         current_user
       else
         reject_unauthorized_connection
+        # nil
       end
     end
   end

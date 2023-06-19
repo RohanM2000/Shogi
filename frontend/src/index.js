@@ -11,7 +11,12 @@ import ModalProvider from './context/Modal';
 import Board from './shogiGame/board';
 const store = configureStore();
 const board = new Board();
-console.log(board.allMoves("white"));
+console.log(board.makeMove("white", [2,0], [3,0]).constructor.name === "Singleton");
+console.log(board.makeMove("white", [3,0], [4,0]).constructor.name === "Singleton");
+console.log(board.makeMove("white", [4,0], [5,0]).constructor.name === "Singleton");
+console.log(board.makeMove("white", [5,0], [6,0]).constructor.name === "Footsoldier");
+console.log(board.dropPiece("white", [7,0], "p"));
+
 
 if (process.env.NODE_ENV !== "production") {
   window.store = store;

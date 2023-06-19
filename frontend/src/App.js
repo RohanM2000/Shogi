@@ -2,6 +2,7 @@ import { Switch, Route } from "react-router-dom";
 import SignupFormPage from "./components/SignupFormPage";
 import Navigation from "./components/Navigation";
 import Room from "./components/Room";
+import GameBoard from "./components/GameBoard";
 function App() {
   return (
     <>
@@ -14,6 +15,9 @@ function App() {
         </Route>
         <Route path='/rooms/:roomId'>
           <Room />
+        </Route>
+        <Route path='/games/:gameId'>
+          <GameBoard />
         </Route>
       </Switch>
     </>

@@ -82,10 +82,11 @@ export default class Board {
 
     makeMove(color, pos1, pos2, override = false) {
         if (override) {
+            const cappedPiece = this.grid[pos2[0]][pos2[1]];
             this.grid[pos2[0]][pos2[1]] = this.grid[pos1[0]][pos1[1]];
             this.grid[pos1[0]][[pos1[1]]] = nullPiece;
             this.grid[pos2[0]][pos2[1]].position = [pos2[0], pos2[1]];
-            return true;
+            return cappedPiece;
         } else {
             const validMoves = this.validMoves(color);
             let valid = false;
@@ -96,10 +97,11 @@ export default class Board {
                     }
             })
             if (valid) {
+                const cappedPiece = this.grid[pos2[0]][pos2[1]];
                 this.grid[pos2[0]][pos2[1]] = this.grid[pos1[0]][pos1[1]];
                 this.grid[pos1[0]][[pos1[1]]] = nullPiece;
                 this.grid[pos2[0]][pos2[1]].position = [pos2[0], pos2[1]];
-                return true;
+                return cappedPiece;
             } else {
                 return false;
             }
@@ -178,8 +180,43 @@ export default class Board {
         return goodMoves;
     }
 
+    isOccupied(position) {
+        if (this.grid[position[0]][position[1]].color) return true;
+        return false;
+    }
+
+    dropPiece(color, position, type) {
+        const [x, y] = position;
+
+        switch(type) {
+            case "p":
+                this.grid[x][y] = new Footsoldier(color, position, this);
+                return true;
+            case "l":
+                this.grid[x][y] = new Lance(color, position, this);
+                return true;
+            case "s":
+                this.grid[x][y] = new SilverGeneral(color, position, this);
+                return true;
+            case "g":
+                this.grid[x][y] = new GoldGeneral(color, position, this);
+                return true;
+            case "r":
+                this.grid[x][y] = new FlyingChariot(color, position, this);
+                return true;
+            case "h":
+                this.grid[x][y] = new HonorableHorse(color, position, this);
+                return true;
+            case "b":
+                this.grid[x][y] = new Bishop(color, position, this);
+                return true;
+            default:
+                return false;
+        }
+    }
+
     isCheckmate(color) {
-        if (this.validMoves(color).length < 1) return true;
+        if (this.validMoves(color).length < 1 && this.inCheck(color)) return true;
         return false;
     }
 }

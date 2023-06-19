@@ -20,6 +20,9 @@ class User < ApplicationRecord
 
   before_validation :ensure_session_token
 
+  has_many :games_as_white, class_name: :Game, inverse_of: :white
+  has_many :games_as_black, class_name: :Game, inverse_of: :black
+
   def self.find_by_credentials(usernameEmail, password)
     if URI::MailTo::EMAIL_REGEXP.match(usernameEmail)
       user = User.find_by(email: usernameEmail)

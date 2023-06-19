@@ -10,9 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_14_195321) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_17_204145) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "games", force: :cascade do |t|
+    t.bigint "white_id", null: false
+    t.bigint "black_id", null: false
+    t.text "body"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["black_id"], name: "index_games_on_black_id"
+    t.index ["white_id"], name: "index_games_on_white_id"
+  end
 
   create_table "messages", force: :cascade do |t|
     t.bigint "author_id", null: false
@@ -44,6 +54,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_14_195321) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  add_foreign_key "games", "users", column: "black_id"
+  add_foreign_key "games", "users", column: "white_id"
   add_foreign_key "messages", "users", column: "author_id"
   add_foreign_key "rooms", "users", column: "owner_id"
 end
