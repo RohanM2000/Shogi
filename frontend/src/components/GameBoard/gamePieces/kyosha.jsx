@@ -2,7 +2,7 @@ import React from "react";
 import { useState, useRef } from "react";
 
 
-function Lance({startLeft, startTop, color}) {
+function Lance({startLeft, startTop, color, moveFunc}) {
   const [top, setTop] = useState(0);
   const [left, setLeft] = useState(0);
   const prevPos = useRef({
@@ -19,7 +19,8 @@ function Lance({startLeft, startTop, color}) {
 
   const handleMouseUp = (e) => {
     isClicked.current = false;
-    console.log((startTop + 25)/52 | 0, (startLeft + 25)/52 | 0, (startTop + top + 25)/52 | 0, (startLeft + left+ 25)/52 | 0);
+    // console.log((startTop + 25)/52 | 0, (startLeft + 25)/52 | 0, (startTop + top + 25)/52 | 0, (startLeft + left+ 25)/52 | 0);
+    moveFunc([9 - (startTop + 25)/52 | 0, (startLeft + 25)/52 | 0], [9 - (startTop + top + 25)/52 | 0, (startLeft + left+ 25)/52 | 0]);
   };
 
   const handleMouseLeave = (e) => {
