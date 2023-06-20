@@ -3,28 +3,35 @@ import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom/cjs/react-router-dom.min";
 import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
+import LogoutButton from "./LogoutButton";
 // import { logoutUser } from "../../store/session";
-import "./Navigation.css";
+import "./Navigation.scss";
 const Navigation = () => {
     const user = useSelector(state=> state.session.user);
     // const dispatch = useDispatch();
     let links;
 
     if (!user) {
-        links = (<>
+        links = (<div className="login-buttons">
+            <SignupFormModal />
             <LoginFormModal />
             {/* <NavLink exact to="/signup">Sign Up</NavLink> */}
-            <SignupFormModal />
-        </>)
+        </div>)
     } else {
         // links = <button onClick={()=>dispatch(logoutUser())}>Sign Out</button>
-        links = <ProfileButton />
+        // links = <ProfileButton />
+        links = null;
     }
     return (
-        <>
-            <NavLink exact to="/">Home</NavLink>
+        <div className="nav-bar">
+            <NavLink exact to="/">
+                <i className="fa-solid fa-chess-pawn"></i><strong className="bold-shogi">Shogi</strong><strong>.com</strong>
+                {user && <ul className="hidden-logout">
+                    <LogoutButton />
+                </ul>}
+            </NavLink>
             {links}
-        </>
+        </div>
     )
 };
 

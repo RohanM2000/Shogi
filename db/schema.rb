@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_17_204145) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_20_220620) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -35,11 +35,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_17_204145) do
   end
 
   create_table "rooms", force: :cascade do |t|
-    t.bigint "owner_id", null: false
-    t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["owner_id"], name: "index_rooms_on_owner_id"
+    t.bigint "game_id", null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -57,5 +55,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_17_204145) do
   add_foreign_key "games", "users", column: "black_id"
   add_foreign_key "games", "users", column: "white_id"
   add_foreign_key "messages", "users", column: "author_id"
-  add_foreign_key "rooms", "users", column: "owner_id"
+  add_foreign_key "rooms", "games"
 end

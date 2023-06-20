@@ -13,6 +13,7 @@ class Game < ApplicationRecord
     validates :white_id, :black_id, presence: true
     belongs_to :white, class_name: :User
     belongs_to :black, class_name: :User
+    has_one :room, dependent: :destroy
 
     def make_move(move) 
         body = self.body.to_s + " " + move.to_s

@@ -3,22 +3,22 @@ import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import { getMessages } from "../../store/messages";
-import { fetchRoom } from "../../store/rooms";
+import { fetchRoom, getRoom } from "../../store/rooms";
 import { createMessage, receiveMessage } from "../../store/messages";
 import { fetchUsers } from "../../store/users";
 import "./Room.css";
 export default function Room() {
     const dispatch = useDispatch();
-    const { roomId } = useParams();
-    const room = useSelector(state => state.rooms[roomId]);
-    const messages = useSelector(getMessages(roomId));
+    const { gameId } = useParams();
+    const room = useSelector(getRoom(gameId));
+    const messages = useSelector(getMessages(room));
     const currentUser = useSelector(state => state.session.user);
     const users = useSelector(state => state.users);
     const [inputVal, setInputVal] = useState("");
     useEffect(()=>{
-        dispatch(fetchUsers()).then(()=>dispatch(fetchRoom(roomId)));
+        dispatch(fetchUsers()).then(()=>dispatch(fetchRoom(gameId)));
         const subscription = consumer.subscriptions.create(
-          { channel: 'RoomsChannel', id: roomId },
+          { channel: 'RoomsChannel', id: gameId },
           {
               received: message => {
                 // console.log('Received message: ', message);
@@ -35,7 +35,7 @@ export default function Room() {
           }
         );
         return () => subscription?.unsubscribe();
-    },[dispatch, roomId]);
+    },[dispatch, gameId]);
     // ...
     // Effect to run when entering a room
     // useEffect(() => {
@@ -51,14 +51,14 @@ export default function Room() {
         dispatch(createMessage({
             body: inputVal,
             author_id: currentUser.id,
-            room_id: roomId
+            room_id: room.id
         }));
         setInputVal("");
     }
     let prevId = 0;
     return (
-        <>
-            {room ? <h1>{room.name}</h1> : <h1>loading room...</h1>}
+        <div className="chat-space">
+            {room ? <h1>ROOM {room.id}</h1> : <h1>loading room...</h1>}
             <br/>
             <ul className="message-list">
                 {messages.map((message)=>{
@@ -77,6 +77,6 @@ export default function Room() {
             <form onSubmit={handleSubmit} className="chat-form">
                 <input type="text" value={inputVal} onChange={(e)=>setInputVal(e.target.value)} placeholder="Send a message..."/>
             </form>
-        </>
+        </div>
     )
 }

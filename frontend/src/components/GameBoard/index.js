@@ -15,9 +15,9 @@ import KingBlack from "./gamePieces/gyokusho";
 import SilverGen from "./gamePieces/ginsho";
 import Pawn from "./gamePieces/fuhyo";
 import Game from "../../shogiGame/game";
+import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
 
-
-function mapPiece(gamePlayBoard, idx, handleMove) {
+function mapPiece(gamePlayBoard, idx, handleMove, totBoard) {
     const row = Math.floor(idx/9);
     const col = idx % 9;
     const piece = gamePlayBoard.board.grid[row][col];
@@ -27,21 +27,21 @@ function mapPiece(gamePlayBoard, idx, handleMove) {
 
     switch(name) {
         case "Footsoldier":
-            return <Pawn key={idx} startLeft={4 + 52 * col} startTop={417 - (1 + 52 * row)} color={piece.color} moveFunc={(pos1,pos2)=>handleMove(gamePlayBoard, piece.color, pos1, pos2)}/>
+            return <Pawn key={idx} startLeft={4 + 52 * col} startTop={417 - (1 + 52 * row)} color={piece.color} moveFunc={(pos1,pos2)=>handleMove(totBoard, piece.color, pos1, pos2)}/>
         case "Lance":
-            return <Lance key={idx} startLeft={4 + 52 * col} startTop={417 - (1 + 52 * row)} color={piece.color} moveFunc={(pos1,pos2)=>handleMove(gamePlayBoard, piece.color, pos1, pos2)}/>
+            return <Lance key={idx} startLeft={4 + 52 * col} startTop={417 - (1 + 52 * row)} color={piece.color} moveFunc={(pos1,pos2)=>handleMove(totBoard, piece.color, pos1, pos2)}/>
         case "SilverGeneral":
-            return <SilverGen key={idx} startLeft={4 + 52 * col} startTop={417 - (1 + 52 * row)} color={piece.color} moveFunc={(pos1,pos2)=>handleMove(gamePlayBoard, piece.color, pos1, pos2)}/>
+            return <SilverGen key={idx} startLeft={4 + 52 * col} startTop={417 - (1 + 52 * row)} color={piece.color} moveFunc={(pos1,pos2)=>handleMove(totBoard, piece.color, pos1, pos2)}/>
         case "GoldGeneral":
-            return <GoldGen key={idx} startLeft={4 + 52 * col} startTop={417 - (1 + 52 * row)} color={piece.color} moveFunc={(pos1,pos2)=>handleMove(gamePlayBoard, piece.color, pos1, pos2)}/>
+            return <GoldGen key={idx} startLeft={4 + 52 * col} startTop={417 - (1 + 52 * row)} color={piece.color} moveFunc={(pos1,pos2)=>handleMove(totBoard, piece.color, pos1, pos2)}/>
         case "HonorableHorse":
-            return <Knight key={idx} startLeft={4 + 52 * col} startTop={417 - (1 + 52 * row)} color={piece.color} moveFunc={(pos1,pos2)=>handleMove(gamePlayBoard, piece.color, pos1, pos2)}/>        
+            return <Knight key={idx} startLeft={4 + 52 * col} startTop={417 - (1 + 52 * row)} color={piece.color} moveFunc={(pos1,pos2)=>handleMove(totBoard, piece.color, pos1, pos2)}/>        
         case "FlyingChariot":
-            return <Rook key={idx} startLeft={4 + 52 * col} startTop={417 - (1 + 52 * row)} color={piece.color} moveFunc={(pos1,pos2)=>handleMove(gamePlayBoard, piece.color, pos1, pos2)}/>
+            return <Rook key={idx} startLeft={4 + 52 * col} startTop={417 - (1 + 52 * row)} color={piece.color} moveFunc={(pos1,pos2)=>handleMove(totBoard, piece.color, pos1, pos2)}/>
         case "Bishop":
-            return <Bishop key={idx} startLeft={4 + 52 * col} startTop={417 - (1 + 52 * row)} color={piece.color} moveFunc={(pos1,pos2)=>handleMove(gamePlayBoard, piece.color, pos1, pos2)}/>
+            return <Bishop key={idx} startLeft={4 + 52 * col} startTop={417 - (1 + 52 * row)} color={piece.color} moveFunc={(pos1,pos2)=>handleMove(totBoard, piece.color, pos1, pos2)}/>
         case "JewelledGeneral":
-            return <KingBlack key={idx} startLeft={4 + 52 * col} startTop={417 - (1 + 52 * row)} color={piece.color} moveFunc={(pos1,pos2)=>handleMove(gamePlayBoard, piece.color, pos1, pos2)}/>
+            return <KingBlack key={idx} startLeft={4 + 52 * col} startTop={417 - (1 + 52 * row)} color={piece.color} moveFunc={(pos1,pos2)=>handleMove(totBoard, piece.color, pos1, pos2)}/>
         default:
             return null;
     }
@@ -53,10 +53,15 @@ export default function GameBoard () {
     const [move, setMove] = useState("");
     const game = useSelector(state=> state.games[gameId]);
     const [moveCount, setMoveCount] = useState(0);
-    let curGame;
+    const user = useSelector(state=> state.session.user);
     const gameLength = useRef(0);
+
+    
+    let curGame;
+    let totalGame;
     if (game) {
         curGame = new Game(game.white_id, game.black_id);
+        totalGame = new Game(game.white_id, game.black_id);
         let moves = game.body.split(" ");
         // console.log(moves);
         // moves = moves.map(arr=>arr.split(".")[1]);
@@ -72,11 +77,19 @@ export default function GameBoard () {
                 // console.log("attemping to make move", curGame.board.makeMove(tempColor, ...moves[i]));
             }
         }
+        for (let i = 0; i < gameLength.current; i++) {
+            const tempColor = (i % 2 === 0) ? "white" : "black";
+            if (i < moves.length) {
+                totalGame.board.makeMove(tempColor, ...moves[i])
+                totalGame.swap();
+                // console.log("attemping to make move", curGame.board.makeMove(tempColor, ...moves[i]));
+            }
+        }
         // console.log(curGame.board);
     }
     // console.log(curGame);
     const handleKeyPress = (e) => {
-        e.preventDefault();
+        // e.preventDefault();
 
         if (e.key === "ArrowRight") {
             setMoveCount(state=>{
@@ -107,29 +120,23 @@ export default function GameBoard () {
         }
 
     },[gameId, dispatch]);
-
+    
     useEffect(()=>{
         if (game) {
             setMoveCount(game.body.split(" ").length);
         }
     },[game])
-
-    function handleSubmit(e) {
-        e.preventDefault();
-        
-        dispatch(updateGame({
-            gameId, move
-        }));
-    }
-
+      
     function parseMove(pos1, pos2) {
         return pos1[0] + "," + pos1[1] + "-" + pos2[0] + "," + pos2[1];
     }
 
     function handleMove(gamePlayBoard, color, pos1, pos2) {
+        if (color !== gamePlayBoard.currentPlayer) return false;
         const result = gamePlayBoard.board.makeMove(color, pos1, pos2);
         if (result) {
             console.log("the move resulted in a ", result, "being captured");
+            // gamePlayBoard.swap();
             dispatch(updateGame({
                 gameId,
                 move: parseMove(pos1, pos2)
@@ -143,26 +150,24 @@ export default function GameBoard () {
     for (let i = 0; i < 81; i++) {
         tempArr.push("");
     }
+    if (!user) {
+        return <Redirect to="/" />;
+    } 
     return game ? (
-        <>
-            <p>{game.body}</p>
-            <form onSubmit={handleSubmit}>
-                <input value={move} onChange={(e)=>setMove(e.target.value)}/>
-            </form>
+        <div className="game-area">
+            <div className="opposite player-tag">
+
+            </div>
             <div className="game-board">
                 {tempArr.map((temp,idx)=> <div key={idx} dataid={idx} 
                 onMouseDown={(e=>console.log("mousedown on", e.currentTarget.getAttribute("dataid")))}
                 onMouseUp={(e=>console.log("mouseup on", e.currentTarget.getAttribute("dataid")))}
                 ></div>)}
-                {/* <Lance startLeft={24} startTop={1} color="white" /> */}
-                {/* <Lance startLeft={4} startTop={1} color="black" /> */}
-                {/* {tempArr.map((temp,idx)=> {
-                    const row = Math.floor(idx/9);
-                    const col = idx % 9;
-                    if (idx % 2 == 0) return <Pawn key={idx} startLeft={4 + 52 * row} startTop={1 + 52 * col} color="black" moveFunc={(x,y)=> console.log(x,y)}/>
-                })} */}
-                {tempArr.map((temp,idx)=>mapPiece(curGame, idx, handleMove))}
+                {tempArr.map((temp,idx)=>mapPiece(curGame, idx, handleMove, totalGame))}
             </div>
-        </>
+            <div className="player-tag">
+                {}
+            </div>
+        </div>
     ) : null;
 }

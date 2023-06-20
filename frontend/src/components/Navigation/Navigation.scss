@@ -1,0 +1,124 @@
+.nav-bar {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    align-items: center;
+    width: 150px;
+    background-color: rgb(39,37,34);
+    height: 100vh;
+    z-index: 90;
+    a {
+        // margin: 20px 20px;
+        text-decoration: none;
+        position: relative;
+        display: block;
+        width: 150px;
+        height: 60px;
+        i{
+        color: green;
+        font-size: 40px;
+        position: absolute;
+        top: 8px;
+        left: 14px;
+        }
+        strong.bold-shogi {
+            font-size: 30px;
+            position: absolute;
+            left: 30px;
+            top: 15px;
+            font-weight: 600;
+        }
+        strong {
+            position: absolute;
+            left: 104px;
+            top: 26px;
+            color: white;
+        }
+    }   
+
+    a:hover {
+        background-color: rgb(18, 17, 16);
+
+        ul.hidden-logout {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+        }
+    }
+
+    div.login-buttons{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 150px;
+        button {
+            width: 130px;
+            height: 40px;
+            border-radius: 5px;
+            margin-top: 5px;
+            font-family: 'Heebo', sans-serif;
+            color: lightgrey;
+            background-color: #7fa650;
+            border: none;
+            outline: none;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        button:hover {
+            color: white;
+            background-color: #95bb4a;
+        }
+        button.signup-button-nav-bar {
+            background-color: rgb(56,54,52);
+
+        }
+        button.signup-button-nav-bar:hover {
+            background-color: rgb(93, 91, 89);
+            // background-color: blue;
+        }
+    }
+
+    ul.hidden-logout {
+        position: absolute;
+        display: none;
+        height: 400px;
+        width: 250px;
+        left: 150px;
+        background-color: rgb(44, 42, 39);
+        button {
+            background-color: rgb(44, 42, 39);
+            border: none;
+            outline: none;
+            width: 240px;
+            height: 40px;
+            display: block;
+            position: relative;
+            border-radius: 3px;
+
+            i {
+                position: absolute;
+                font-size: 25px;
+                left: 20px;
+                color: yellow;
+            }
+
+            strong {
+                position: absolute;
+                left: 55px;
+                top: 9px;
+                font-size: 20px;
+                font-weight: 500;
+                color: lightgray;
+            }
+        }
+        button:hover {
+            background-color: rgb(18, 17, 16);
+
+            strong {
+                color: white;
+            }
+        }
+    }
+
+}

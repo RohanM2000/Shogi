@@ -8,7 +8,7 @@ export default function SignupFormModal () {
   const dispatch = useDispatch();
   return (
     <>
-      <button onClick={()=>dispatch(receiveModal("signup"))}>Sign Up</button>
+      <button className="signup-button-nav-bar" onClick={()=>dispatch(receiveModal("signup"))}>Sign Up</button>
       {showModal && 
         <Modal onClose={()=>dispatch(removeModal())}>
           <SignupForm />

@@ -7,6 +7,7 @@
     left: 0;
     justify-content: center;
     align-items: center;
+    z-index: 100;
 }
 
 #modal-background {
@@ -16,6 +17,7 @@
     right: 0;
     left: 0;
     background-color: #312E2B;
+    z-index: 100;
 }
 
 #modal-content {
@@ -24,6 +26,7 @@
     border-radius: 10px;
     width: 450px;
     height: 600px;
+    z-index: 101;
 }
 
 #modal-content form {

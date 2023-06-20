@@ -39,11 +39,10 @@ ApplicationRecord.transaction do
       }) 
     end
 
-    puts "Creating rooms..."
-    Room.create!(
-      name: "first room",
-      owner_id: 1
-    )
+    # puts "Creating rooms..."
+    # Room.create!(
+    #   game_id: 1
+    # )
   
     puts "Done!"
   end

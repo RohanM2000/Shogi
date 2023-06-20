@@ -32,9 +32,11 @@ export const createMessage = (message) => {
     };
 };
 
-export const getMessages = (roomId) => (state) => {
+export const getMessages = (room) => (state) => {
+    if (!room) return [];
+    if (!room.id) return [];
     return Object.values(state.messages)
-                 .filter(message => message.roomId === parseInt(roomId))
+                 .filter(message => message.roomId === room.id)
                  .sort((messageA, messageB) => {
                     return Math.sign(new Date(messageA.createdAt).getTime() - new Date(messageB.createdAt).getTime());
                  });

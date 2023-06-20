@@ -1,8 +1,9 @@
 class Api::GamesController < ApplicationController
     def create
-        @game = Game.new(game_params)
+        @game = Game.new(game_params, body: "")
 
         if @game.save
+            @room.create(game_id: @game.id)
             render :show
         else
             render json: {errors: @game.errors.full_messages}, status: 422
@@ -27,6 +28,6 @@ class Api::GamesController < ApplicationController
     end
 
     def game_params
-        params.require(:game).permit(:black_id, :white_id, :body)
+        params.require(:game).permit(:black_id, :white_id)
     end
 end

@@ -24,10 +24,21 @@ export const createRoom = (room) => {
         return response;
     };
 };
-
-export const fetchRoom = (roomId) => {
+export const getRoom = (gameId) => {
+    return (state) => {
+        const possibleRooms = Object.values(state.rooms);
+        let temp = null;
+        for (let i = 0; i < possibleRooms.length; i++) {
+            if (possibleRooms[i].gameId === parseInt(gameId)) {
+                temp = possibleRooms[i];
+            }
+        }
+        return temp;
+    }
+}
+export const fetchRoom = (gameId) => {
     return async (dispatch) => {
-        const response = await csrfFetch(`/api/rooms/${roomId}`);
+        const response = await csrfFetch(`/api/rooms/${gameId}`);
         if (response.ok) {
             const room = await response.json();
             dispatch(receiveRoom(room.room));

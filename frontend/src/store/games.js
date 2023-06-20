@@ -69,7 +69,7 @@ export default function gamesReducer (prevState = {}, action) {
     let newState;
     switch(action.type) {
         case RECEIVE_GAME:
-            newState = {...prevState, [action.game.id]: action.game};
+            newState = {[action.game.id]: action.game};
             return newState;
         default:
             return prevState;

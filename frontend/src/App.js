@@ -1,26 +1,25 @@
 import { Switch, Route } from "react-router-dom";
-import SignupFormPage from "./components/SignupFormModal/SignupForm";
 import Navigation from "./components/Navigation";
 import Room from "./components/Room";
 import GameBoard from "./components/GameBoard";
+import SplashPage from "./components/SplashPage";
+import "./App.scss";
 function App() {
   return (
-    <>
+    <div className="app">
       <Navigation />
       <Switch>
-        <Route path="/login">
-        </Route>
-        <Route path='/signup'>
-          <SignupFormPage />
-        </Route>
-        <Route path='/rooms/:roomId'>
-          <Room />
-        </Route>
+        {/* <Route path='/rooms/:roomId'>
+        </Route> */}
         <Route path='/games/:gameId'>
           <GameBoard />
+          <Room />
+        </Route>
+        <Route path='/'>
+          <SplashPage />
         </Route>
       </Switch>
-    </>
+    </div>
   );
 }
 
