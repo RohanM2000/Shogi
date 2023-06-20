@@ -1,4 +1,4 @@
-.game-board {
+.game-board{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -8,8 +8,9 @@
     position: relative;
 }
 
-.game-board div {
+.game-board div{
     display: block;
+    position: relative;
     background-color: #779556;
     margin: 1px;
     width: 50px;
@@ -18,13 +19,19 @@
     padding: 0px;
     border: none;
     outline: none;
+    z-index: 2;
 }
 
-.piece {
+.piece{
     position: absolute;
     background: transparent;
+    z-index: 3;
 }
 
-.black {
+.black{
     rotate: 180deg;
+}
+
+.white{
+    z-index: 1;
 }

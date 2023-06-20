@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchGame, receiveGame } from "../../store/games";
 import { updateGame } from "../../store/games";
 import consumer from "../../consumer";
-import "./GameBoard.css";
+import "./GameBoard.scss";
 import Lance from "./gamePieces/kyosha";
 export default function GameBoard () {
     const { gameId } = useParams();
@@ -45,13 +45,16 @@ export default function GameBoard () {
             </form>
             <div className="game-board">
                 {tempArr.map((temp,idx)=> <div key={idx} dataid={idx} 
-                onMouseDown={(e=>console.log("mousedown on", e.target.getAttribute("dataid")))}
-                onMouseUp={(e=>{
-                    console.log("mouseup on", e.target.getAttribute("dataid"));
+                onMouseDown={(e=>console.log("mousedown on", e.currentTarget.getAttribute("dataid")))}
+                onMouseUp={(e=>console.log("mouseup on", e.currentTarget.getAttribute("dataid")))}
+                ></div>)}
+                {/* <Lance startLeft={24} startTop={1} color="white" /> */}
+                {/* <Lance startLeft={4} startTop={1} color="black" /> */}
+                {tempArr.map((temp,idx)=> {
+                    const row = Math.floor(idx/9);
+                    const col = idx % 9;
+                    return <Lance key={idx} startLeft={4 + 52 * row} startTop={1 + 52 * col} color="black" />
                 })}
-                />)}
-                    <Lance startLeft={4} startTop={52} color="black"/>
-                    <Lance startLeft={418} startTop={52} color="white"/>
             </div>
         </>
     ) : null;

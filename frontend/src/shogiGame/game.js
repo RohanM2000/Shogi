@@ -5,8 +5,8 @@ export default class Game {
         this.blackId = player2Id;
         this.currentPlayer = "white";
         this.board = new Board();
-    }
+    };
     swap() {
         this.currentPlayer = (this.currentPlayer === "white") ? "black" : "white";
-    }
-}
+    };
+};

@@ -19,6 +19,7 @@ function Lance({startLeft, startTop, color}) {
 
   const handleMouseUp = (e) => {
     isClicked.current = false;
+    console.log((startTop + 25)/52 | 0, (startLeft + 25)/52 | 0, (startTop + top + 25)/52 | 0, (startLeft + left+ 25)/52 | 0);
   };
 
   const handleMouseLeave = (e) => {
@@ -41,7 +42,7 @@ function Lance({startLeft, startTop, color}) {
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseLeave}
       onMouseMove={handleMouseMove}
-      style={{top: (startTop + top) + "px", left: (startLeft + left) + "px"}}
+      style={{top: (startTop + top) + "px", left: (startLeft + left) + "px", zIndex: (isClicked.current) ? 5 : 3}}
     >
       <g transform="translate(-690.982 -731.341)">
         <g transform="matrix(.46742 0 0 .46742 368.005 416.128)">
