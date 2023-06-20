@@ -90,6 +90,7 @@ export default class Board {
         } else {
             const validMoves = this.validMoves(color);
             let valid = false;
+            // console.log(validMoves, pos1, pos2, color)
             validMoves.forEach((move)=> {
                 if (move[0][0] === pos1[0] && move[0][1] === pos1[1] 
                     && move[1][0] === pos2[0] && move[1][1] === pos2[1]) {

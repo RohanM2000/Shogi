@@ -17,7 +17,7 @@ import Pawn from "./gamePieces/fuhyo";
 import Game from "../../shogiGame/game";
 
 
-function mapPiece(gamePlayBoard, idx) {
+function mapPiece(gamePlayBoard, idx, handleMove) {
     const row = Math.floor(idx/9);
     const col = idx % 9;
     const piece = gamePlayBoard.board.grid[row][col];
@@ -27,21 +27,21 @@ function mapPiece(gamePlayBoard, idx) {
 
     switch(name) {
         case "Footsoldier":
-            return <Pawn key={idx} startLeft={4 + 52 * col} startTop={417 - (1 + 52 * row)} color={piece.color} moveFunc={(x,y)=> console.log(x,y)}/>
+            return <Pawn key={idx} startLeft={4 + 52 * col} startTop={417 - (1 + 52 * row)} color={piece.color} moveFunc={(pos1,pos2)=>handleMove(gamePlayBoard, piece.color, pos1, pos2)}/>
         case "Lance":
-            return <Lance key={idx} startLeft={4 + 52 * col} startTop={417 - (1 + 52 * row)} color={piece.color} moveFunc={(x,y)=> console.log(x,y)}/>
+            return <Lance key={idx} startLeft={4 + 52 * col} startTop={417 - (1 + 52 * row)} color={piece.color} moveFunc={(pos1,pos2)=>handleMove(gamePlayBoard, piece.color, pos1, pos2)}/>
         case "SilverGeneral":
-            return <SilverGen key={idx} startLeft={4 + 52 * col} startTop={417 - (1 + 52 * row)} color={piece.color} moveFunc={(x,y)=> console.log(x,y)}/>
+            return <SilverGen key={idx} startLeft={4 + 52 * col} startTop={417 - (1 + 52 * row)} color={piece.color} moveFunc={(pos1,pos2)=>handleMove(gamePlayBoard, piece.color, pos1, pos2)}/>
         case "GoldGeneral":
-            return <GoldGen key={idx} startLeft={4 + 52 * col} startTop={417 - (1 + 52 * row)} color={piece.color} moveFunc={(x,y)=> console.log(x,y)}/>
+            return <GoldGen key={idx} startLeft={4 + 52 * col} startTop={417 - (1 + 52 * row)} color={piece.color} moveFunc={(pos1,pos2)=>handleMove(gamePlayBoard, piece.color, pos1, pos2)}/>
         case "HonorableHorse":
-            return <Knight key={idx} startLeft={4 + 52 * col} startTop={417 - (1 + 52 * row)} color={piece.color} moveFunc={(x,y)=> console.log(x,y)}/>        
+            return <Knight key={idx} startLeft={4 + 52 * col} startTop={417 - (1 + 52 * row)} color={piece.color} moveFunc={(pos1,pos2)=>handleMove(gamePlayBoard, piece.color, pos1, pos2)}/>        
         case "FlyingChariot":
-            return <Rook key={idx} startLeft={4 + 52 * col} startTop={417 - (1 + 52 * row)} color={piece.color} moveFunc={(x,y)=> console.log(x,y)}/>
+            return <Rook key={idx} startLeft={4 + 52 * col} startTop={417 - (1 + 52 * row)} color={piece.color} moveFunc={(pos1,pos2)=>handleMove(gamePlayBoard, piece.color, pos1, pos2)}/>
         case "Bishop":
-            return <Bishop key={idx} startLeft={4 + 52 * col} startTop={417 - (1 + 52 * row)} color={piece.color} moveFunc={(x,y)=> console.log(x,y)}/>
+            return <Bishop key={idx} startLeft={4 + 52 * col} startTop={417 - (1 + 52 * row)} color={piece.color} moveFunc={(pos1,pos2)=>handleMove(gamePlayBoard, piece.color, pos1, pos2)}/>
         case "JewelledGeneral":
-            return <KingBlack key={idx} startLeft={4 + 52 * col} startTop={417 - (1 + 52 * row)} color={piece.color} moveFunc={(x,y)=> console.log(x,y)}/>
+            return <KingBlack key={idx} startLeft={4 + 52 * col} startTop={417 - (1 + 52 * row)} color={piece.color} moveFunc={(pos1,pos2)=>handleMove(gamePlayBoard, piece.color, pos1, pos2)}/>
         default:
             return null;
     }
@@ -52,25 +52,67 @@ export default function GameBoard () {
     const dispatch = useDispatch();
     const [move, setMove] = useState("");
     const game = useSelector(state=> state.games[gameId]);
+    const [moveCount, setMoveCount] = useState(0);
     let curGame;
+    const gameLength = useRef(0);
     if (game) {
         curGame = new Game(game.white_id, game.black_id);
+        let moves = game.body.split(" ");
+        // console.log(moves);
+        // moves = moves.map(arr=>arr.split(".")[1]);
+        // console.log(moves);
+        moves = moves.map(unfilteredMove => unfilteredMove.split("-").map(stringMove=>stringMove.split(",").map(stringInt=>parseInt(stringInt))));
+        gameLength.current = moves.length;
+        // console.log(moves);
         // curGame.board.makeMove("white",[2,0],[3,0])
+        for (let i = 0; i < moveCount; i++) {
+            const tempColor = (i % 2 === 0) ? "white" : "black";
+            if (i < moves.length) {
+                curGame.board.makeMove(tempColor, ...moves[i])
+                // console.log("attemping to make move", curGame.board.makeMove(tempColor, ...moves[i]));
+            }
+        }
+        // console.log(curGame.board);
     }
-    console.log(curGame);
+    // console.log(curGame);
+    const handleKeyPress = (e) => {
+        e.preventDefault();
+
+        if (e.key === "ArrowRight") {
+            setMoveCount(state=>{
+                if (state === gameLength.current) return state;
+                return state + 1;
+            })
+        }
+        if (e.key === "ArrowLeft") {
+            setMoveCount(state=>{
+                if (state === 0) return state;
+                return state - 1;
+            })
+        }
+    }
     useEffect(()=>{
-        dispatch(fetchGame(gameId));
+        dispatch(fetchGame(gameId)).then(document.addEventListener("keydown", handleKeyPress))
+        // document.addEventListener("keydown", handleKeyPress);
         const subscription = consumer.subscriptions.create({
             channel: "GamesChannel", id: gameId
         }, {
             received(game) {
-                dispatch(receiveGame(game));
+                // dispatch(receiveGame(game));
             }
         });
-
-        return () => subscription?.unsubscribe();
+        return () => {
+            subscription?.unsubscribe();
+            document.removeEventListener("keydown",handleKeyPress);
+        }
 
     },[gameId, dispatch]);
+
+    useEffect(()=>{
+        if (game) {
+            setMoveCount(game.body.split(" ").length);
+        }
+    },[game])
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -78,7 +120,24 @@ export default function GameBoard () {
         dispatch(updateGame({
             gameId, move
         }));
+    }
 
+    function parseMove(pos1, pos2) {
+        return pos1[0] + "," + pos1[1] + "-" + pos2[0] + "," + pos2[1];
+    }
+
+    function handleMove(gamePlayBoard, color, pos1, pos2) {
+        const result = gamePlayBoard.board.makeMove(color, pos1, pos2);
+        if (result) {
+            console.log("the move resulted in a ", result, "being captured");
+            dispatch(updateGame({
+                gameId,
+                move: parseMove(pos1, pos2)
+            })).then(setMoveCount(state=>state+1));
+        } else {
+            console.log("failed move!", result);
+            return false;
+        }
     }
     const tempArr = [];
     for (let i = 0; i < 81; i++) {
@@ -102,7 +161,7 @@ export default function GameBoard () {
                     const col = idx % 9;
                     if (idx % 2 == 0) return <Pawn key={idx} startLeft={4 + 52 * row} startTop={1 + 52 * col} color="black" moveFunc={(x,y)=> console.log(x,y)}/>
                 })} */}
-                {tempArr.map((temp,idx)=>mapPiece(curGame, idx))}
+                {tempArr.map((temp,idx)=>mapPiece(curGame, idx, handleMove))}
             </div>
         </>
     ) : null;
