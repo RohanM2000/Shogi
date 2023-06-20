@@ -20,7 +20,12 @@ function Lance({startLeft, startTop, color, moveFunc}) {
   const handleMouseUp = (e) => {
     isClicked.current = false;
     // console.log((startTop + 25)/52 | 0, (startLeft + 25)/52 | 0, (startTop + top + 25)/52 | 0, (startLeft + left+ 25)/52 | 0);
-    moveFunc([9 - (startTop + 25)/52 | 0, (startLeft + 25)/52 | 0], [9 - (startTop + top + 25)/52 | 0, (startLeft + left+ 25)/52 | 0]);
+    const result = moveFunc([9 - (startTop + 25)/52 | 0, (startLeft + 25)/52 | 0], [9 - (startTop + top + 25)/52 | 0, (startLeft + left+ 25)/52 | 0]);
+        if (result === false) {
+            setTop(0);
+            setLeft(0);
+        }
+        // moveFunc([9 - (startTop + 25)/52 | 0, (startLeft + 25)/52 | 0], [9 - (startTop + top + 25)/52 | 0, (startLeft + left+ 25)/52 | 0]);
   };
 
   const handleMouseLeave = (e) => {
