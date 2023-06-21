@@ -111,7 +111,7 @@ export default function GameBoard () {
             channel: "GamesChannel", id: gameId
         }, {
             received(game) {
-                // dispatch(receiveGame(game));
+                dispatch(receiveGame(game));
             }
         });
         return () => {

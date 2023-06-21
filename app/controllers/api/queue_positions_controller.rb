@@ -8,6 +8,7 @@ class Api::QueuePositionsController < ApplicationController
             result = @position.attempt_to_match
 
             if result
+                QueuesChannel.broadcast_to(@position.standard_queue, result)
                 render json: {gameId: result, status: "matched up with another user"}
             else
                 render json: {status: "waiting for a match", position: @position}
