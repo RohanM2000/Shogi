@@ -3,7 +3,7 @@ class Api::GamesController < ApplicationController
         @game = Game.new(game_params, body: "")
 
         if @game.save
-            @room.create(game_id: @game.id)
+            # @room.create(game_id: @game.id)
             render :show
         else
             render json: {errors: @game.errors.full_messages}, status: 422

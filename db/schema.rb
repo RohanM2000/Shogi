@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_20_220620) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_21_003903) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -40,6 +40,20 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_20_220620) do
     t.bigint "game_id", null: false
   end
 
+  create_table "standard_queue_positions", force: :cascade do |t|
+    t.bigint "standard_queue_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["standard_queue_id"], name: "index_standard_queue_positions_on_standard_queue_id"
+    t.index ["user_id"], name: "index_standard_queue_positions_on_user_id"
+  end
+
+  create_table "standard_queues", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "username", null: false
     t.string "email", null: false
@@ -56,4 +70,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_20_220620) do
   add_foreign_key "games", "users", column: "white_id"
   add_foreign_key "messages", "users", column: "author_id"
   add_foreign_key "rooms", "games"
+  add_foreign_key "standard_queue_positions", "standard_queues"
+  add_foreign_key "standard_queue_positions", "users"
 end

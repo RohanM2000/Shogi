@@ -15,6 +15,9 @@ function App() {
           <GameBoard />
           <Room />
         </Route>
+        <Route path='/play'>
+          
+        </Route>
         <Route path='/'>
           <SplashPage />
         </Route>
