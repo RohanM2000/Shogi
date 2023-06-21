@@ -5,9 +5,10 @@ import { useSelector, useDispatch } from "react-redux";
 export default function LoginFormModal () {
   const showModal = useSelector(getModal("login"));
   const dispatch = useDispatch();
+  const lang = useSelector(state=>state.languages.lang);
   return (
     <>
-      <button onClick={()=>dispatch(receiveModal("login"))}>Log In</button>
+      <button onClick={()=>dispatch(receiveModal("login"))}>{lang === "en" ? "Log In" : "ログイン"}</button>
       {showModal && 
         <Modal onClose={()=>dispatch(removeModal())}>
           <LoginForm />

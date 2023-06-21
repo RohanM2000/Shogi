@@ -154,7 +154,7 @@ div.or-separator span.or-value{
 }
 
 div.or-separator span.span-line {
-    width: 140px;
+    width: 120px;
     height: 1px;
     border: 1px solid gray;
     background-color: gray;

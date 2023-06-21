@@ -14,6 +14,7 @@ const SignupForm = () => {
     const dispatch = useDispatch();
     const [seePassword, setSeePassword] = useState(false);
     const [seeConfirm, setSeeConfirm] = useState(false);
+    const lang = useSelector(state=>state.languages.lang);
     if (sessionUser) return <Redirect to="/" />;
 
     function handlePasswordToggle(e) {
@@ -56,19 +57,19 @@ const SignupForm = () => {
                     <strong>
                         <i className="fa-solid fa-user"></i>
                     </strong>
-                    <input type="text" className="credential-field" value={username} onChange={(e)=> setUsername(e.target.value)} required placeholder="Username"/>
+                    <input type="text" className="credential-field" value={username} onChange={(e)=> setUsername(e.target.value)} required placeholder={lang === "en" ? "Username" : "ユーザー名"}/>
                 </div>
                 <div className="input-field">
                     <strong>
                         <i className="fa-solid fa-envelope"></i>
                     </strong>
-                    <input type="text" className="credential-field" value={email} onChange={(e)=> setEmail(e.target.value)} required placeholder="Email"/>
+                    <input type="text" className="credential-field" value={email} onChange={(e)=> setEmail(e.target.value)} required placeholder={lang === "en" ? "Email" : "Eメール"}/>
                 </div>
                 <div className="input-field">
                     <strong>
                         <i className="fa-solid fa-lock"></i>
                     </strong>
-                        <input type={(seePassword) ? "text" : "password"} value={password} onChange={(e)=> setPassword(e.target.value)} required placeholder="Password"/>
+                        <input type={(seePassword) ? "text" : "password"} value={password} onChange={(e)=> setPassword(e.target.value)} required placeholder={lang === "en" ? "Password" : "パスワード"}/>
                     <strong onClick={handlePasswordToggle} className="eye">
                         {(seePassword) ? <i className="fa-solid fa-eye-slash" id="slash"></i> : <i className="fa-solid fa-eye"></i>}
                     </strong>
@@ -77,16 +78,16 @@ const SignupForm = () => {
                     <strong>
                         <i className="fa-solid fa-lock"></i>
                     </strong>
-                        <input type={(seeConfirm) ? "text" : "password"} value={confirmPassword} onChange={(e)=> setConfirmPassword(e.target.value)} required placeholder="Confirm Password"/>
+                        <input type={(seeConfirm) ? "text" : "password"} value={confirmPassword} onChange={(e)=> setConfirmPassword(e.target.value)} required placeholder={lang === "en" ? "Confirm Password" : "パスワードの確認"}/>
                     <strong onClick={handleConfirmToggle} className="eye">
                         {(seeConfirm) ? <i className="fa-solid fa-eye-slash" id="slash"></i> : <i className="fa-solid fa-eye"></i>}
                     </strong>
                 </div>
             </div>
-            <button>Sign Up</button>
+            <button>{lang === "en" ? "Sign Up" : "サインアップ"}</button>
             <div className="or-separator">
                 <span className="span-line"/>
-                <span className="or-value">OR</span>
+                <span className="or-value">{lang === "en" ? "OR" : "または"}</span>
                 <span className="span-line"/>
             </div>
             <div className="redirect-sign-method" onClick={(e)=>{

@@ -5,13 +5,15 @@ import roomsReducer from "./rooms";
 import usersReducer from "./users";
 import gamesReducer from "./games";
 import modalsReducer from "./modals";
+import languagesReducer from "./languages";
 const rootReducer = combineReducers({
     session: sessionReducer,
     messages: messagesReducer,
     rooms: roomsReducer,
     users: usersReducer,
     games: gamesReducer,
-    modals: modalsReducer
+    modals: modalsReducer,
+    languages: languagesReducer
 });
 
 const thunk = store => next => action => {

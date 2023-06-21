@@ -1,13 +1,17 @@
-import { ProfileButton } from "./ProfileButton";
+// import { ProfileButton } from "./ProfileButton";
 import { useSelector } from "react-redux";
 import { NavLink, Link } from "react-router-dom/cjs/react-router-dom.min";
 import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
 import LogoutButton from "./LogoutButton";
+import {swapLanguage} from "../../store/languages";
+import { useDispatch } from "react-redux";
 // import { logoutUser } from "../../store/session";
 import "./Navigation.scss";
 const Navigation = () => {
     const user = useSelector(state=> state.session.user);
+    const lang = useSelector(state=> state.languages.lang);
+    const dispatch = useDispatch();
     // const dispatch = useDispatch();
     let links;
 
@@ -24,13 +28,13 @@ const Navigation = () => {
                 <ul className="actions-list-nav-bar">
                     <Link to="/play">
                             <button className="play-button">
-                                <i className="fa-solid fa-hand-point-left"></i><strong>Play</strong>
+                                <i className="fa-solid fa-hand-point-left"></i><strong>{lang === "en" ? "Play": "プレイ"}</strong>
                             </button>
                     </Link>
                 </ul>
                 )
     }
-    return (
+    return lang ? (
         <div className="nav-bar">
             <NavLink exact to="/">
                 <i className="fa-solid fa-chess-pawn"></i><strong className="bold-shogi">Shogi</strong><strong>.com</strong>
@@ -39,8 +43,11 @@ const Navigation = () => {
                 </ul>}
             </NavLink>
             {links}
+            <div className="language-links">
+                <button onClick={()=>swapLanguage(dispatch)}><i className="fa-solid fa-earth-asia"></i><strong>{lang === "en" ? "English" : "日本語"}</strong></button>
+            </div>
         </div>
-    )
+    ) : null;
 };
 
 export default Navigation;

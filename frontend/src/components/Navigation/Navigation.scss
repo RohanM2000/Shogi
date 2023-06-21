@@ -138,10 +138,44 @@
                 left: 65px;
                 font-size: 27px;
                 font-weight: 600;
+                white-space: nowrap;
             }
 
             i {
                 color: burlywood;
+            }
+        }
+    }
+    div.language-links{
+        margin-top: 300px;
+        width: 150px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+
+        button {
+            height: 36px;
+            width: 150px;
+            background-color: transparent;
+            border: none;
+            outline: none;
+            display: block;
+            i {
+                color: lightgray
+            }
+
+            strong {
+                color: lightgrey;
+                margin-left: 10px;
+            }
+        }
+
+        button:hover {
+            background-color: rgb(18, 17, 16);
+            cursor: pointer;
+            strong {
+                color: white;
             }
         }
     }
