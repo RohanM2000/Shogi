@@ -13,13 +13,13 @@ class StandardQueuePosition < ApplicationRecord
   belongs_to :user
 
   def attempt_to_match
-    second_pos = StandardQueuePosition.where(standard_queue_id: this.standard_queue_id).where.not(user_id: this.user_id)
+    second_pos = StandardQueuePosition.where(standard_queue_id: self.standard_queue_id).where.not(user_id: self.user_id)
     return false if second_pos.length < 1
     other_id = second_pos[0].user_id
-    current_id = this.user_id
+    current_id = self.user_id
     new_game = Game.create!(white_id: other_id, black_id: current_id, body: "")
     new_room = Room.create!(game_id: new_game.id)
-    this.destroy!
+    self.destroy!
     second_pos[0].destroy!
     return new_game.id
   end

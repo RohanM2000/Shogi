@@ -1,6 +1,7 @@
 class Api::QueuePositionsController < ApplicationController
     def create
-        @position = StandardQueuePosition.new(queue_position_params, user_id: current_user.id)
+        @position = StandardQueuePosition.new(queue_position_params)
+        @position.user_id = current_user.id
 
 
         if @position.save
@@ -18,7 +19,7 @@ class Api::QueuePositionsController < ApplicationController
     end
 
     def destroy
-        @position = StandardQueuePosition.find_by(id: params[:id])
+        @position = StandardQueuePosition.find_by(user_id: current_user.id)
         if @position
             @position.destroy
         end

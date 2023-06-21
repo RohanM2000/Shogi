@@ -3,6 +3,7 @@ import Navigation from "./components/Navigation";
 import Room from "./components/Room";
 import GameBoard from "./components/GameBoard";
 import SplashPage from "./components/SplashPage";
+import PlayQueue from "./components/PlayQueue";
 import "./App.scss";
 function App() {
   return (
@@ -16,7 +17,7 @@ function App() {
           <Room />
         </Route>
         <Route path='/play'>
-          
+          <PlayQueue />
         </Route>
         <Route path='/'>
           <SplashPage />
