@@ -10,7 +10,7 @@ Rails.application.routes.draw do
     resource :session, only: %i(show create destroy)
     resources :rooms, only: [:show, :create]
     resources :messages, only: [:create]
-    resources :games, only: [:create, :show, :update]
+    resources :games, only: [:index, :show, :update]
     resources :queue_positions, only: [:create, :destroy]
   end
 

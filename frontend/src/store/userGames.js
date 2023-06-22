@@ -1,0 +1,2 @@
+const RECEIVE_USER_GAMES = 'userGames/RECEIVE_USER_GAMES';
+
