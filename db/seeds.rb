@@ -13,6 +13,7 @@ ApplicationRecord.transaction do
     Message.destroy_all
     Room.destroy_all
     Game.destroy_all
+    StandardQueue.destroy_all
   
     puts "Resetting primary keys..."
     # For easy testing, so that after seeding, the first `User` has `id` of 1
@@ -20,6 +21,7 @@ ApplicationRecord.transaction do
     ApplicationRecord.connection.reset_pk_sequence!('rooms')
     ApplicationRecord.connection.reset_pk_sequence!('messages')
     ApplicationRecord.connection.reset_pk_sequence!('games')
+    ApplicationRecord.connection.reset_pk_sequence!('standard_queues')
 
   
     puts "Creating users..."
@@ -43,6 +45,8 @@ ApplicationRecord.transaction do
     # Room.create!(
     #   game_id: 1
     # )
+
+    StandardQueue.create!()
   
     puts "Done!"
   end
