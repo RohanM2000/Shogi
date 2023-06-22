@@ -15,13 +15,18 @@ export default function Room() {
     const currentUser = useSelector(state => state.session.user);
     const users = useSelector(state => state.users);
     const [inputVal, setInputVal] = useState("");
+
+    function autoScroll () {
+        const elem = document.querySelector('ul.message-list');
+        elem.scrollTop = elem.scrollHeight;
+    };
+
     useEffect(()=>{
         dispatch(fetchUsers()).then(()=>dispatch(fetchRoom(gameId)));
         const subscription = consumer.subscriptions.create(
           { channel: 'RoomsChannel', id: gameId },
           {
               received: message => {
-                // console.log('Received message: ', message);
                 if (message.author_id !== currentUser.id){
                     dispatch(receiveMessage({
                         roomId: message.room_id,
@@ -30,29 +35,20 @@ export default function Room() {
                         id: message.id,
                         createdAt: message.created_at
                     }));
+                    autoScroll();
                 }
               }
           }
         );
         return () => subscription?.unsubscribe();
     },[dispatch, gameId]);
-    // ...
-    // Effect to run when entering a room
-    // useEffect(() => {
-    //   // ...
-  
-    //   // Add the following lines to the end of the `useEffect` to create a
-    //   // subscription:
-  
-    // }, [roomId, dispatch]);  // This line is already present in the file
-    // ...
     function handleSubmit(e) {
         e.preventDefault();
         dispatch(createMessage({
             body: inputVal,
             author_id: currentUser.id,
             room_id: room.id
-        }));
+        })).then(autoScroll);
         setInputVal("");
     }
     let prevId = 0;

@@ -2,7 +2,7 @@ import csrfFetch from "./csrf";
 const RECEIVE_USER = "users/RECEIVE_USER";
 const RECEIVE_USERS = "users/RECEIVE_USERS";
 
-const receiveUser = (user) => {
+export const receiveUser = (user) => {
     return {
         type: RECEIVE_USER,
         user
@@ -13,6 +13,20 @@ const receiveUsers = (users) => {
     return {
         type: RECEIVE_USERS,
         users
+    };
+};
+
+export const getUsers = (state) => {
+    if (!state) return [];
+    if (!state.users) return [];
+    return Object.values(state.users);
+}
+
+export const getUser = (userId) => {
+    return (state) => {
+        if (!state) return null;
+        if (!state.users) return null;
+        return state.users[userId];
     };
 };
 

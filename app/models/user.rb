@@ -1,3 +1,5 @@
+require "open-uri"
+
 # == Schema Information
 #
 # Table name: users
@@ -10,18 +12,22 @@
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #
+
+
 class User < ApplicationRecord
   has_secure_password
+  has_one_attached :photo
 
   validates :username, length: {in: 3..30}, format: {without: URI::MailTo::EMAIL_REGEXP, message: "can't be a valid email"}, uniqueness: true
   validates :email, length: {in: 3..255}, format: {with: URI::MailTo::EMAIL_REGEXP}, uniqueness: true
   validates :password, length: {in: 6..255}, allow_nil: true
   validates :session_token, uniqueness: true, presence: true
 
-  before_validation :ensure_session_token
+  before_validation :ensure_session_token, :generate_default_pic
 
   has_many :games_as_white, class_name: :Game, inverse_of: :white
   has_many :games_as_black, class_name: :Game, inverse_of: :black
+
 
   def self.find_by_credentials(usernameEmail, password)
     if URI::MailTo::EMAIL_REGEXP.match(usernameEmail)
@@ -31,23 +37,31 @@ class User < ApplicationRecord
     end
     return user ? user.authenticate(password) : false
   end
-
-
+  
+  
   def reset_session_token!
     update!(session_token: generate_unique_session_token)
     return session_token
   end
-
+  
   private
-
+  
   def generate_unique_session_token
     loop do
       session_token = SecureRandom.base64
       return session_token unless User.exists?(session_token: session_token)
     end
   end
-
+  
   def ensure_session_token
     self.session_token ||= generate_unique_session_token
   end
+
+  def generate_default_pic
+    unless self.photo.attached?
+      file = URI.open("https://shogi-seeds.s3.us-west-1.amazonaws.com/pig_picture.jpg")
+      self.photo.attach(io: file, filename: "default.jpg");
+    end
+  end
+  
 end

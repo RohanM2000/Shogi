@@ -1,7 +1,7 @@
 div.chat-space {
     display: flex;
     flex-direction: column;
-    margin-left: 400px;
+    margin-left: 30vh;
 }
 
 ul.message-list {
@@ -10,7 +10,7 @@ ul.message-list {
     height: 300px;
     /* resize: vertical; */
     /* resize: block; */
-    width: 500px;
+    width: 70vh;
     background-color: #43474d;
     color: #a0a5ad;
     font-size: 15px;
@@ -46,14 +46,14 @@ ul.message-list strong{
 
 form.chat-form {
     background-color: #43474d;
-    width: 500px;
+    width: 70vh;
     margin-top: 0px;
     border-top: 0.5px solid #9e9e96;
 }
 
 form.chat-form input {
     background-color: #43474d;
-    width: 500px;
+    width: 70vh;
     padding: 0px;
     margin: 0px;
     border: 0px;

@@ -35,9 +35,19 @@ class Api::UsersController < ApplicationController
     render :index
   end
 
+  def update
+    @user = current_user
+
+    if @user.update(user_params)
+      render :showNoEmail
+    else
+      render json: { errors: ["Could not save picture to current profile"]}, status: 422
+    end
+  end
+
   private
 
   def user_params
-    params.require(:user).permit(:username, :email, :password)
+    params.require(:user).permit(:username, :email, :password, :photo)
   end
 end

@@ -4,6 +4,8 @@ import Room from "./components/Room";
 import GameBoard from "./components/GameBoard";
 import SplashPage from "./components/SplashPage";
 import PlayQueue from "./components/PlayQueue";
+import UserIndex from "./components/UserIndex";
+import ProfilePage from "./components/ProfilePage";
 import "./App.scss";
 function App() {
   return (
@@ -18,6 +20,12 @@ function App() {
         </Route>
         <Route path='/play'>
           <PlayQueue />
+        </Route>
+        <Route path='/members'>
+          <UserIndex />
+        </Route>
+        <Route path='/profile'>
+          <ProfilePage />
         </Route>
         <Route path='/'>
           <SplashPage />
