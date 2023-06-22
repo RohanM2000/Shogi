@@ -1,0 +1,23 @@
+ul.user-list {
+    display: flex;
+    flex-direction: column;
+    background-color: black;
+    align-items: flex-start;
+    width: 70vh;
+    margin-left: 20vh;
+    height: auto;
+    li {
+        display: flex;
+        flex-direction: row;
+
+        img.user-photo-index {
+            width: 10vh;
+            height: 10vh;
+        }
+        
+        strong {
+            color: white;
+            font-size: 5vh;
+        }
+    }
+}

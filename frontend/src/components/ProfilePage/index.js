@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import csrfFetch from "../../store/csrf";
 import { useEffect, useState } from "react";
 import { fetchUser, getUser, receiveUser } from "../../store/users";
+import "./ProfilePage.scss";
 export default function () {
     const currentUser = useSelector(state=> state.session.user ? state.session.user : {});
     const dispatch = useDispatch();
@@ -48,13 +49,22 @@ export default function () {
     if (photoUrl) preview = <img src={photoUrl} alt="" />
 
     return user ? (
-        <>
+        <div className="profile-main">
+            <ul className="info-list">
+                <img src={user.photoUrl} alt=""/>
+                <li>
+                    {user.username}
+                </li>
+                <li>
+                    {currentUser.email}
+                </li>
+            </ul>
             <form onSubmit={handleSubmit}>
                 <input type="file" onChange={handleFile}/> 
-                <button>SUBMIT</button>
+                <button>Upload Photo</button>
             </form>
             {preview}
-        </>
+        </div>
     ) : null;
 
 };

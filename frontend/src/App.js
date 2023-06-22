@@ -6,6 +6,7 @@ import SplashPage from "./components/SplashPage";
 import PlayQueue from "./components/PlayQueue";
 import UserIndex from "./components/UserIndex";
 import ProfilePage from "./components/ProfilePage";
+import UserShow from "./components/UserShow";
 import "./App.scss";
 function App() {
   return (
@@ -20,6 +21,9 @@ function App() {
         </Route>
         <Route path='/play'>
           <PlayQueue />
+        </Route>
+        <Route path='/members/:memberId'>
+          <UserShow />
         </Route>
         <Route path='/members'>
           <UserIndex />
