@@ -119,13 +119,12 @@ export default function GameBoard () {
     return game ? (
         <div className="game-area">
             <div className="opposite player-tag">
-
+            {console.log("game body", game.body)}
+            {console.log("current game", curGame)}
+            {console.log("total game", totalGame)}
             </div>
             <div className="game-board">
-                {tempArr.map((temp,idx)=> <div key={idx} dataid={idx} 
-                onMouseDown={(e=>console.log("mousedown on", e.currentTarget.getAttribute("dataid")))}
-                onMouseUp={(e=>console.log("mouseup on", e.currentTarget.getAttribute("dataid")))}
-                ></div>)}
+                {tempArr.map((temp,idx)=> <div key={idx} ></div>)}
                 {tempArr.map((temp,idx)=>mapPiece(curGame, idx, handleMove, totalGame))}
             </div>
             <div className="player-tag">
