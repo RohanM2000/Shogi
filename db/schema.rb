@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_22_180647) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_23_184805) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -48,6 +48,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_22_180647) do
     t.text "body"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "status", default: "started"
     t.index ["black_id"], name: "index_games_on_black_id"
     t.index ["white_id"], name: "index_games_on_white_id"
   end

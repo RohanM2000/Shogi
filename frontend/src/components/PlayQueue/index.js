@@ -15,7 +15,6 @@ export default function PlayQueue () {
             });
             if (response.ok) {
                 const queueInfo = await response.json();
-                console.log(queueInfo);
                 if (queueInfo.position) {
                     setQueueId(queueInfo.position.id);
                 } else {

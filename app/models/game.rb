@@ -15,8 +15,8 @@ class Game < ApplicationRecord
     belongs_to :black, class_name: :User
     has_one :room, dependent: :destroy
 
-    def make_move(move) 
+    def make_move(move, status) 
         body = self.body.to_s + " " + move.to_s
-        self.update(body: body)
+        self.update(body: body, status: status)
     end
 end

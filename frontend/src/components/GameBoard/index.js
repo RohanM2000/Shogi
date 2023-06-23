@@ -17,7 +17,7 @@ function mapPiece(gamePlayBoard, idx, handleMove, totBoard) {
     // const name = piece.constructor.name;
     const name = piece.name();
 
-    return <Piece startLeft={4 + 52 * col} startTop={417 - (1 + 52 * row)} color={piece.color} moveFunc={(pos1,pos2)=>handleMove(totBoard, piece.color, pos1, pos2)} name={name} />
+    return <Piece key={idx} startLeft={4 + 52 * col} startTop={417 - (1 + 52 * row)} color={piece.color} moveFunc={(pos1,pos2)=>handleMove(totBoard, piece.color, pos1, pos2)} name={name} />
 }
 
 export default function GameBoard () {
@@ -52,9 +52,6 @@ export default function GameBoard () {
                 totalGame.board.makeMove(tempColor, ...moves[i]);
                 totalGame.swap();
             }
-        }
-        if (totalGame.board.isCheckmate(totalGame.currentPlayer)) {
-
         }
     }
     const handleKeyPress = (e) => {
@@ -93,6 +90,7 @@ export default function GameBoard () {
     useEffect(()=>{
         if (game) {
             setMoveCount(game.body.split(" ").length);
+            console.log("status", game.status);
         }
     },[game]);
       
@@ -101,9 +99,17 @@ export default function GameBoard () {
         if (color !== gamePlayBoard.currentPlayer) return false;
         const result = gamePlayBoard.board.makeMove(color, pos1, pos2);
         if (result) {
+            let status = "ongoing";
+            if (gamePlayBoard.board.isCheckmate("black")) {
+                    status = "white won";
+            }
+            if (gamePlayBoard.board.isCheckmate("white")) {
+                    status = "black won";
+            }
             dispatch(updateGame({
                 gameId,
-                move: parseMove(pos1, pos2)
+                move: parseMove(pos1, pos2),
+                status
             })).then(setMoveCount(state=>state+1));
         } else {
             console.log("failed move!", result);
@@ -120,9 +126,7 @@ export default function GameBoard () {
     return game ? (
         <div className="game-area">
             <div className="opposite player-tag">
-            {console.log("game body", game.body)}
-            {console.log("current game", curGame)}
-            {console.log("total game", totalGame)}
+                {}
             </div>
             <div className="game-board">
                 {tempArr.map((temp,idx)=> <div key={idx} ></div>)}

@@ -25,7 +25,7 @@ class Api::GamesController < ApplicationController
     def update
         @game = Game.find_by(id: params[:id])
 
-        if @game.make_move(params[:move])
+        if @game.make_move(params[:move], params[:status])
             GamesChannel.broadcast_to(@game, @game)
             render json: @game
         else 
