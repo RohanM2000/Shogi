@@ -9,11 +9,12 @@
 ApplicationRecord.transaction do 
     puts "Destroying tables..."
     # Unnecessary if using `rails db:seed:replant`
-    User.destroy_all
     Message.destroy_all
     Room.destroy_all
     Game.destroy_all
+    StandardQueuePosition.destroy_all
     StandardQueue.destroy_all
+    User.destroy_all
   
     puts "Resetting primary keys..."
     # For easy testing, so that after seeding, the first `User` has `id` of 1
@@ -22,6 +23,7 @@ ApplicationRecord.transaction do
     ApplicationRecord.connection.reset_pk_sequence!('messages')
     ApplicationRecord.connection.reset_pk_sequence!('games')
     ApplicationRecord.connection.reset_pk_sequence!('standard_queues')
+    ApplicationRecord.connection.reset_pk_sequence!('standard_queue_positions')
 
   
     puts "Creating users..."
