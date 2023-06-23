@@ -31,6 +31,11 @@ const Navigation = () => {
                                 <i className="fa-solid fa-hand-point-left"></i><strong>{lang === "en" ? "Play": "プレイ"}</strong>
                             </button>
                     </Link>
+                    <Link to="/members">
+                            <button className="leaderboard">
+                                <i className="fa-solid fa-hand-point-left"></i><strong>{lang === "en" ? "Leaderboard": "プランキング"}</strong>
+                            </button>
+                    </Link>
                 </ul>
                 )
     }
