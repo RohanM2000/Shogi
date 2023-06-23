@@ -217,7 +217,7 @@ export default class Board {
     }
 
     isCheckmate(color) {
-        if (this.validMoves(color).length < 1 && this.inCheck(color)) return true;
+        if (this.validMoves(color).length < 1) return true;
         return false;
     }
 }

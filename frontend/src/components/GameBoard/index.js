@@ -5,15 +5,7 @@ import { fetchGame, receiveGame } from "../../store/games";
 import { updateGame } from "../../store/games";
 import consumer from "../../consumer";
 import "./GameBoard.scss";
-import Lance from "./gamePieces/kyosha";
-import King from "./gamePieces/osho";
-import GoldGen from "./gamePieces/kinsho";
-import Knight from "./gamePieces/keima";
-import Bishop from "./gamePieces/kakugyo";
-import Rook from "./gamePieces/hisha";
-import KingBlack from "./gamePieces/gyokusho";
-import SilverGen from "./gamePieces/ginsho";
-import Pawn from "./gamePieces/fuhyo";
+import Piece from "./gamePieces/piece";
 import Game from "../../shogiGame/game";
 import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
 
@@ -23,73 +15,49 @@ function mapPiece(gamePlayBoard, idx, handleMove, totBoard) {
     const piece = gamePlayBoard.board.grid[row][col];
 
     const name = piece.constructor.name;
-    // console.log(name);
 
-    switch(name) {
-        case "Footsoldier":
-            return <Pawn key={idx} startLeft={4 + 52 * col} startTop={417 - (1 + 52 * row)} color={piece.color} moveFunc={(pos1,pos2)=>handleMove(totBoard, piece.color, pos1, pos2)}/>
-        case "Lance":
-            return <Lance key={idx} startLeft={4 + 52 * col} startTop={417 - (1 + 52 * row)} color={piece.color} moveFunc={(pos1,pos2)=>handleMove(totBoard, piece.color, pos1, pos2)}/>
-        case "SilverGeneral":
-            return <SilverGen key={idx} startLeft={4 + 52 * col} startTop={417 - (1 + 52 * row)} color={piece.color} moveFunc={(pos1,pos2)=>handleMove(totBoard, piece.color, pos1, pos2)}/>
-        case "GoldGeneral":
-            return <GoldGen key={idx} startLeft={4 + 52 * col} startTop={417 - (1 + 52 * row)} color={piece.color} moveFunc={(pos1,pos2)=>handleMove(totBoard, piece.color, pos1, pos2)}/>
-        case "HonorableHorse":
-            return <Knight key={idx} startLeft={4 + 52 * col} startTop={417 - (1 + 52 * row)} color={piece.color} moveFunc={(pos1,pos2)=>handleMove(totBoard, piece.color, pos1, pos2)}/>        
-        case "FlyingChariot":
-            return <Rook key={idx} startLeft={4 + 52 * col} startTop={417 - (1 + 52 * row)} color={piece.color} moveFunc={(pos1,pos2)=>handleMove(totBoard, piece.color, pos1, pos2)}/>
-        case "Bishop":
-            return <Bishop key={idx} startLeft={4 + 52 * col} startTop={417 - (1 + 52 * row)} color={piece.color} moveFunc={(pos1,pos2)=>handleMove(totBoard, piece.color, pos1, pos2)}/>
-        case "JewelledGeneral":
-            return <KingBlack key={idx} startLeft={4 + 52 * col} startTop={417 - (1 + 52 * row)} color={piece.color} moveFunc={(pos1,pos2)=>handleMove(totBoard, piece.color, pos1, pos2)}/>
-        default:
-            return null;
-    }
+    return <Piece startLeft={4 + 52 * col} startTop={417 - (1 + 52 * row)} color={piece.color} moveFunc={(pos1,pos2)=>handleMove(totBoard, piece.color, pos1, pos2)} name={name} />
 }
 
 export default function GameBoard () {
     const { gameId } = useParams();
     const dispatch = useDispatch();
-    const [move, setMove] = useState("");
     const game = useSelector(state=> state.games[gameId]);
     const [moveCount, setMoveCount] = useState(0);
     const user = useSelector(state=> state.session.user);
     const gameLength = useRef(0);
-
     
+    
+    function parseMove(pos1, pos2) {
+        return pos1[0] + "," + pos1[1] + "-" + pos2[0] + "," + pos2[1];
+    };
     let curGame;
     let totalGame;
     if (game) {
         curGame = new Game(game.white_id, game.black_id);
         totalGame = new Game(game.white_id, game.black_id);
         let moves = game.body.split(" ");
-        // console.log(moves);
-        // moves = moves.map(arr=>arr.split(".")[1]);
-        // console.log(moves);
         moves = moves.map(unfilteredMove => unfilteredMove.split("-").map(stringMove=>stringMove.split(",").map(stringInt=>parseInt(stringInt))));
         gameLength.current = moves.length;
-        // console.log(moves);
-        // curGame.board.makeMove("white",[2,0],[3,0])
         for (let i = 0; i < moveCount; i++) {
             const tempColor = (i % 2 === 0) ? "white" : "black";
             if (i < moves.length) {
-                curGame.board.makeMove(tempColor, ...moves[i])
-                // console.log("attemping to make move", curGame.board.makeMove(tempColor, ...moves[i]));
+                curGame.board.makeMove(tempColor, ...moves[i]);
             }
         }
         for (let i = 0; i < gameLength.current; i++) {
             const tempColor = (i % 2 === 0) ? "white" : "black";
             if (i < moves.length) {
-                totalGame.board.makeMove(tempColor, ...moves[i])
+                totalGame.board.makeMove(tempColor, ...moves[i]);
                 totalGame.swap();
-                // console.log("attemping to make move", curGame.board.makeMove(tempColor, ...moves[i]));
             }
         }
-        // console.log(curGame.board);
+        if (totalGame.board.isCheckmate(totalGame.currentPlayer)) {
+
+        }
     }
-    // console.log(curGame);
     const handleKeyPress = (e) => {
-        // e.preventDefault();
+        // e.preventDefault(); DO NOT PREVENT DEFAULT, OR WILL LEAD TO ISSUES TYPING IN THE CHATBOX
 
         if (e.key === "ArrowRight") {
             setMoveCount(state=>{
@@ -103,7 +71,7 @@ export default function GameBoard () {
                 return state - 1;
             })
         }
-    }
+    };
     useEffect(()=>{
         dispatch(fetchGame(gameId)).then(document.addEventListener("keydown", handleKeyPress))
         // document.addEventListener("keydown", handleKeyPress);
@@ -117,7 +85,7 @@ export default function GameBoard () {
         return () => {
             subscription?.unsubscribe();
             document.removeEventListener("keydown",handleKeyPress);
-        }
+        };
 
     },[gameId, dispatch]);
     
@@ -125,18 +93,13 @@ export default function GameBoard () {
         if (game) {
             setMoveCount(game.body.split(" ").length);
         }
-    },[game])
+    },[game]);
       
-    function parseMove(pos1, pos2) {
-        return pos1[0] + "," + pos1[1] + "-" + pos2[0] + "," + pos2[1];
-    }
 
     function handleMove(gamePlayBoard, color, pos1, pos2) {
         if (color !== gamePlayBoard.currentPlayer) return false;
         const result = gamePlayBoard.board.makeMove(color, pos1, pos2);
         if (result) {
-            console.log("the move resulted in a ", result, "being captured");
-            // gamePlayBoard.swap();
             dispatch(updateGame({
                 gameId,
                 move: parseMove(pos1, pos2)
@@ -145,7 +108,7 @@ export default function GameBoard () {
             console.log("failed move!", result);
             return false;
         }
-    }
+    };
     const tempArr = [];
     for (let i = 0; i < 81; i++) {
         tempArr.push("");
@@ -170,4 +133,4 @@ export default function GameBoard () {
             </div>
         </div>
     ) : null;
-}
+};
