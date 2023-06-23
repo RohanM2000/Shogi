@@ -12,14 +12,16 @@ import { Modal } from "../../context/Modal";
 import { receiveModal, removeModal, getModal } from "../../store/modals";
 import GameOver from "../GameOverModal";
 
-function mapPiece(gamePlayBoard, idx, handleMove, totBoard) {
+function mapPiece(gamePlayBoard, idx, handleMove, totBoard, flip) {
     const row = Math.floor(idx/9);
     const col = idx % 9;
     const piece = gamePlayBoard.board.grid[row][col];
 
     // const name = piece.constructor.name;
     const name = piece.name();
-
+    if (flip) {
+        return <Piece key={idx} startLeft={417 - (52 * col - 2)} startTop={(1 + 52 * row)} color={piece.color} moveFunc={(pos1,pos2)=>handleMove(totBoard, piece.color, pos1, pos2)} name={name} flip={true}/>
+    }
     return <Piece key={idx} startLeft={4 + 52 * col} startTop={417 - (1 + 52 * row)} color={piece.color} moveFunc={(pos1,pos2)=>handleMove(totBoard, piece.color, pos1, pos2)} name={name} />
 }
 
@@ -64,13 +66,13 @@ export default function GameBoard () {
             setMoveCount(state=>{
                 if (state === gameLength.current) return state;
                 return state + 1;
-            })
+            });
         }
         if (e.key === "ArrowLeft") {
             setMoveCount(state=>{
                 if (state <= 1) return state;
                 return state - 1;
-            })
+            });
         }
     };
     useEffect(()=>{
@@ -130,7 +132,7 @@ export default function GameBoard () {
     }
     if (!user) {
         return <Redirect to="/" />;
-    } 
+    }
     return game ? (
         <>
             <div className="game-area">
@@ -139,7 +141,7 @@ export default function GameBoard () {
                 </div>
                 <div className="game-board">
                     {tempArr.map((temp,idx)=> <div key={idx} ></div>)}
-                    {tempArr.map((temp,idx)=>mapPiece(curGame, idx, handleMove, totalGame))}
+                    {tempArr.map((temp,idx)=>mapPiece(curGame, idx, handleMove, totalGame, user.id === game.black_id))}
                 </div>
                 <div className="player-tag">
                     {console.log(game, user.id)}

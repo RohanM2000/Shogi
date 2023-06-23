@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useRef } from "react";
-function Piece({startLeft, startTop, color, moveFunc, name}) {
+function Piece({startLeft, startTop, color, moveFunc, name,flip}) {
     const [top, setTop] = useState(0);
     const [left, setLeft] = useState(0);
     const prevPos = useRef({
@@ -20,7 +20,17 @@ function Piece({startLeft, startTop, color, moveFunc, name}) {
     const handleMouseUp = (e) => {
         isClicked.current = false;
         validMoved.current = true;
-        const result = moveFunc([9 - (startTop + 25)/52 | 0, (startLeft + 25)/52 | 0], [9 - (startTop + top + 25)/52 | 0, (startLeft + left+ 25)/52 | 0]);
+        const initx = 9 - (startTop + 25)/52 | 0;
+        const inity = (startLeft + 25)/52 | 0;
+        const tox = 9 - (startTop + top + 25)/52 | 0;
+        const toy = (startLeft + left+ 25)/52 | 0;
+        // const result = moveFunc([9 - (startTop + 25)/52 | 0, (startLeft + 25)/52 | 0], [9 - (startTop + top + 25)/52 | 0, (startLeft + left+ 25)/52 | 0]);
+        let result;
+        if (flip) {
+            result = moveFunc([8 - initx, 8 - inity], [8 - tox, 8 - toy]);
+        } else {
+            result = moveFunc([initx, inity],[tox,toy]);
+        }
         if (result === false) {
             setTop(0);
             setLeft(0);
@@ -71,11 +81,25 @@ function Piece({startLeft, startTop, color, moveFunc, name}) {
             piece = null;
             break;
     }
+    let colorClass;
 
+    if (flip) {
+        if (color === "black") {
+            colorClass = "piece white";
+        } else {
+            colorClass = "piece black";
+        }
+    } else {
+        if (color === "black") {
+            colorClass = "piece black";
+        } else {
+            colorClass = "piece white";
+        }
+    }
     return (
       <img
       src={piece}
-      className={color === "black" ? "piece black" : "piece white"}
+      className={colorClass}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseLeave}
