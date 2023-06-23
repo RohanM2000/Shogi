@@ -14,7 +14,8 @@ function mapPiece(gamePlayBoard, idx, handleMove, totBoard) {
     const col = idx % 9;
     const piece = gamePlayBoard.board.grid[row][col];
 
-    const name = piece.constructor.name;
+    // const name = piece.constructor.name;
+    const name = piece.name();
 
     return <Piece startLeft={4 + 52 * col} startTop={417 - (1 + 52 * row)} color={piece.color} moveFunc={(pos1,pos2)=>handleMove(totBoard, piece.color, pos1, pos2)} name={name} />
 }

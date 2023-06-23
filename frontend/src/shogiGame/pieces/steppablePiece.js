@@ -16,19 +16,6 @@ export default class SteppablePiece extends Piece{
                     newPositions.push(newPos);
                 }
         })
-        // this.steps().forEach((step)=> {
-        //     if (this.color === "white") {
-        //         const newPos = [x + step[0], y + step[1]];
-        //         if (validPosition(newPos) && this.color !== this.board.grid[newPos[0]][newPos[1]].color) {
-        //             newPositions.push(newPos);
-        //         }
-        //     } else {
-        //         const newPos = [x - step[0], y - step[1]];
-        //         if (validPosition(newPos) && this.color !== this.board.grid[newPos[0]][newPos[1]].color) {
-        //             newPositions.push(newPos);
-        //         }
-        //     }
-        // });
         return newPositions;
     }
 }
