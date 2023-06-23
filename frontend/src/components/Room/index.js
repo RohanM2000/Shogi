@@ -15,6 +15,8 @@ export default function Room() {
     const currentUser = useSelector(state => state.session.user);
     const users = useSelector(state => state.users);
     const [inputVal, setInputVal] = useState("");
+    const game = useSelector(state=> state.games[gameId]);
+
 
     function autoScroll () {
         const elem = document.querySelector('ul.message-list');
@@ -70,9 +72,10 @@ export default function Room() {
                 })
                 }
             </ul>
-            <form onSubmit={handleSubmit} className="chat-form">
+            {game && (game.white_id === currentUser.id || game.black_id === currentUser.id) &&
+                <form onSubmit={handleSubmit} className="chat-form">
                 <input type="text" value={inputVal} onChange={(e)=>setInputVal(e.target.value)} placeholder="Send a message..."/>
-            </form>
+            </form>}
         </div>
     )
 }

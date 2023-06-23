@@ -1,5 +1,4 @@
 import SignupForm from "./SignupForm";
-import { useState } from "react";
 import { Modal } from "../../context/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { receiveModal, getModal, removeModal } from "../../store/modals";

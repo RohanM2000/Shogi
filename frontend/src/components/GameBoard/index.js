@@ -8,6 +8,9 @@ import "./GameBoard.scss";
 import Piece from "./gamePieces/piece";
 import Game from "../../shogiGame/game";
 import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
+import { Modal } from "../../context/Modal";
+import { receiveModal, removeModal, getModal } from "../../store/modals";
+import GameOver from "../GameOverModal";
 
 function mapPiece(gamePlayBoard, idx, handleMove, totBoard) {
     const row = Math.floor(idx/9);
@@ -27,7 +30,7 @@ export default function GameBoard () {
     const [moveCount, setMoveCount] = useState(0);
     const user = useSelector(state=> state.session.user);
     const gameLength = useRef(0);
-    
+    const showModal = useSelector(getModal("gameover"));
     
     function parseMove(pos1, pos2) {
         return pos1[0] + "," + pos1[1] + "-" + pos2[0] + "," + pos2[1];
@@ -40,14 +43,14 @@ export default function GameBoard () {
         let moves = game.body.split(" ");
         moves = moves.map(unfilteredMove => unfilteredMove.split("-").map(stringMove=>stringMove.split(",").map(stringInt=>parseInt(stringInt))));
         gameLength.current = moves.length;
-        for (let i = 0; i < moveCount; i++) {
-            const tempColor = (i % 2 === 0) ? "white" : "black";
+        for (let i = 1; i < moveCount; i++) {
+            const tempColor = (i % 2 === 1) ? "white" : "black";
             if (i < moves.length) {
                 curGame.board.makeMove(tempColor, ...moves[i]);
             }
         }
-        for (let i = 0; i < gameLength.current; i++) {
-            const tempColor = (i % 2 === 0) ? "white" : "black";
+        for (let i = 1; i < gameLength.current; i++) {
+            const tempColor = (i % 2 === 1) ? "white" : "black";
             if (i < moves.length) {
                 totalGame.board.makeMove(tempColor, ...moves[i]);
                 totalGame.swap();
@@ -65,7 +68,7 @@ export default function GameBoard () {
         }
         if (e.key === "ArrowLeft") {
             setMoveCount(state=>{
-                if (state === 0) return state;
+                if (state <= 1) return state;
                 return state - 1;
             })
         }
@@ -91,12 +94,17 @@ export default function GameBoard () {
         if (game) {
             setMoveCount(game.body.split(" ").length);
             console.log("status", game.status);
+            if (game.status !== "ongoing" && game.status !== "started") {
+                dispatch(receiveModal("gameover"));
+            }
         }
     },[game]);
       
 
     function handleMove(gamePlayBoard, color, pos1, pos2) {
         if (color !== gamePlayBoard.currentPlayer) return false;
+        if (color === "white" && user.id !== game.white_id) return false;
+        if (color === "black" && user.id !== game.black_id) return false;
         const result = gamePlayBoard.board.makeMove(color, pos1, pos2);
         if (result) {
             let status = "ongoing";
@@ -124,17 +132,24 @@ export default function GameBoard () {
         return <Redirect to="/" />;
     } 
     return game ? (
-        <div className="game-area">
-            <div className="opposite player-tag">
-                {}
+        <>
+            <div className="game-area">
+                <div className="opposite player-tag">
+                    {}
+                </div>
+                <div className="game-board">
+                    {tempArr.map((temp,idx)=> <div key={idx} ></div>)}
+                    {tempArr.map((temp,idx)=>mapPiece(curGame, idx, handleMove, totalGame))}
+                </div>
+                <div className="player-tag">
+                    {console.log(game, user.id)}
+                </div>
             </div>
-            <div className="game-board">
-                {tempArr.map((temp,idx)=> <div key={idx} ></div>)}
-                {tempArr.map((temp,idx)=>mapPiece(curGame, idx, handleMove, totalGame))}
-            </div>
-            <div className="player-tag">
-                {}
-            </div>
-        </div>
+            {showModal &&
+                <Modal onClose={()=>dispatch(removeModal())}>
+                    <GameOver message={game.status}/>
+                </Modal>
+            }
+        </>
     ) : null;
 };
