@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useRef } from "react";
-function Piece({startLeft, startTop, color, moveFunc, name,flip}) {
+function Piece({startLeft, startTop, color, moveFunc, name, flip, viewHeight}) {
     const [top, setTop] = useState(0);
     const [left, setLeft] = useState(0);
     const prevPos = useRef({
@@ -16,16 +16,18 @@ function Piece({startLeft, startTop, color, moveFunc, name,flip}) {
         prevPos.top = e.clientY;
         prevPos.left = e.clientX;
     };
-
+    const containerHeight = 0.081 * viewHeight;
+    const midBoost = 0.04 * viewHeight;
     const handleMouseUp = (e) => {
         isClicked.current = false;
         validMoved.current = true;
-        const initx = 9 - (startTop + 25)/52 | 0;
-        const inity = (startLeft + 25)/52 | 0;
-        const tox = 9 - (startTop + top + 25)/52 | 0;
-        const toy = (startLeft + left+ 25)/52 | 0;
+        const initx = 9 - (startTop + midBoost)/containerHeight | 0;
+        const inity = (startLeft + midBoost)/containerHeight | 0;
+        const tox = 9 - (startTop + top + midBoost)/containerHeight | 0;
+        const toy = (startLeft + left + midBoost)/containerHeight | 0;
         // const result = moveFunc([9 - (startTop + 25)/52 | 0, (startLeft + 25)/52 | 0], [9 - (startTop + top + 25)/52 | 0, (startLeft + left+ 25)/52 | 0]);
         let result;
+        // console.log([initx,inity],[tox,toy]);
         if (flip) {
             result = moveFunc([8 - initx, 8 - inity], [8 - tox, 8 - toy]);
         } else {
@@ -75,7 +77,11 @@ function Piece({startLeft, startTop, color, moveFunc, name,flip}) {
             piece = "https://upload.wikimedia.org/wikipedia/commons/4/4f/Shogi_kakugyo%28svg%29.svg";
             break;
         case "JewelledGeneral":
-            piece = "https://upload.wikimedia.org/wikipedia/commons/b/bd/Shogi_gyokusho%28svg%29.svg";
+            if (color === "black") {
+                piece = "https://upload.wikimedia.org/wikipedia/commons/b/bd/Shogi_gyokusho%28svg%29.svg";
+            } else {
+                piece = "https://upload.wikimedia.org/wikipedia/commons/0/05/Shogi_osho%28svg%29.svg";
+            }
             break;
         default:
             piece = null;

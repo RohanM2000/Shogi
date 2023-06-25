@@ -2,8 +2,9 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    width: 468px;
-    height: 468px;
+    justify-content: space-between;
+    width: 74vh;
+    height: 74vh;
     background-color: black;
     position: relative;
 }
@@ -12,9 +13,9 @@
     display: block;
     position: relative;
     background-color: #779556;
-    margin: 1px;
-    width: 50px;
-    height: 50px;
+    margin: 0.1vh;
+    width: 8vh;
+    height: 8vh;
     padding: 0px;
     border: none;
     outline: none;
@@ -24,6 +25,7 @@
 .piece{
     position: absolute;
     z-index: 3;
+    width: 6.5vh;
 }
 
 .black{
@@ -46,9 +48,8 @@ div.game-container {
 div.game-area {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    // justify-content: space-between;
     align-items: flex-start;
-    height: 550px;
     div.player-tag {
         height: 35px;
         display: flex;
@@ -73,14 +74,14 @@ div.game-area {
         background-color: black;
         color: white;
         border: 1px solid black;
-        opacity: .5;
+        opacity: .3;
     }
 
     div.white-player {
         background-color: white;
         color: black;
         border: 1px solid white;
-        opacity: .5;
+        opacity: .3;
     }
 
     div.move-active {

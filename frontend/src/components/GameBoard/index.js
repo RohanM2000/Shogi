@@ -13,17 +13,16 @@ import { receiveModal, removeModal, getModal } from "../../store/modals";
 import GameOver from "../GameOverModal";
 import { fetchUsers } from "../../store/users";
 
-function mapPiece(gamePlayBoard, idx, handleMove, totBoard, flip) {
+function mapPiece(gamePlayBoard, idx, handleMove, totBoard, flip, viewHeight) {
     const row = Math.floor(idx/9);
     const col = idx % 9;
     const piece = gamePlayBoard.board.grid[row][col];
-
     // const name = piece.constructor.name;
     const name = piece.name();
     if (flip) {
-        return <Piece key={idx} startLeft={417 - (52 * col - 4)} startTop={(1 + 52 * row)} color={piece.color} moveFunc={(pos1,pos2)=>handleMove(totBoard, piece.color, pos1, pos2)} name={name} flip={true}/>
+        return <Piece key={idx} startLeft={viewHeight/1.5 - (viewHeight/12.15 * col)} startTop={viewHeight/500 + viewHeight/12.17 * row} color={piece.color} moveFunc={(pos1,pos2)=>handleMove(totBoard, piece.color, pos1, pos2)} name={name} flip={true} viewHeight={viewHeight}/>
     }
-    return <Piece key={idx} startLeft={4 + 52 * col} startTop={417 - (1 + 52 * row)} color={piece.color} moveFunc={(pos1,pos2)=>handleMove(totBoard, piece.color, pos1, pos2)} name={name} />
+    return <Piece key={idx} startLeft={viewHeight/120 + viewHeight/12.17 * col} startTop={viewHeight/1.515 - (viewHeight/12.15 * row)} color={piece.color} moveFunc={(pos1,pos2)=>handleMove(totBoard, piece.color, pos1, pos2)} name={name} viewHeight={viewHeight}/>
 }
 
 export default function GameBoard () {
@@ -38,6 +37,16 @@ export default function GameBoard () {
     function parseMove(pos1, pos2) {
         return pos1[0] + "," + pos1[1] + "-" + pos2[0] + "," + pos2[1];
     };
+    const [viewHeight, setViewHeight] = useState(window.innerHeight);
+    useEffect(()=>{
+        function handleResize() {
+            setViewHeight(window.innerHeight);
+        };
+    
+        window.addEventListener("resize", handleResize);
+    
+        return ()=> window.removeEventListener("resize", handleResize);
+    },[]);
     let curGame;
     let totalGame;
     if (game) {
@@ -181,7 +190,7 @@ export default function GameBoard () {
                     </div>
                     <div className="game-board">
                         {tempArr.map((temp,idx)=> <div key={idx} ></div>)}
-                        {tempArr.map((temp,idx)=>mapPiece(curGame, idx, handleMove, totalGame, user.id === game.black_id))}
+                        {tempArr.map((temp,idx)=> mapPiece(curGame, idx, handleMove, totalGame, user.id === game.black_id, viewHeight))}
                     </div>
                     <div className={bottomClass}>
                         <img src={bottomImg} />
