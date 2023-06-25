@@ -1,36 +1,21 @@
-import { useEffect, useState } from "react";
 import { useSelector,useDispatch } from "react-redux";
-import { logoutUser } from "../../store/session";
-export function ProfileButton () {
-    const [showMenu, setShowMenu] = useState(false);
-    const user = useSelector(state => state.session.user);
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { fetchUser } from "../../store/users";
+import { getUser } from "../../store/users";
+import { useEffect } from "react";
+export default function ProfileButton () {
+    const history = useHistory();
+    const lang = useSelector(state=>state.languages.lang);
+    const user = useSelector(state=>state.session.user);
+    const curUser = useSelector(getUser(user.id));
     const dispatch = useDispatch();
-
     useEffect(()=>{
-        if (!showMenu) return;
-
-        function closeMenu() {
-            setShowMenu(false);
-        }
-
-        document.addEventListener("click", closeMenu)
-
-        return ()=> document.removeEventListener("click", closeMenu);
-    },[showMenu]);
-
-
+        dispatch(fetchUser(user.id));
+    },[dispatch])
     return (
-        <>
-            <div style={{ color: "orange", fontSize: "100px" }}>
-                <i className="fa-solid fa-carrot" onClick={()=> setShowMenu(priorState => !priorState)}></i>
-            </div>
-            {showMenu && (
-                <ul>
-                    <li>{user.username}</li>
-                    <li>{user.email}</li>
-                    <li><button onClick={()=> dispatch(logoutUser())}>Sign Out</button></li>
-                </ul>
-            )}
-        </>
-  );
+        <button onClick={(e)=>{
+            e.preventDefault();
+            history.push("/profile");
+        }}><img src={curUser ? curUser.photoUrl : null} alt=""/><strong>{lang === "en" ? "Profile" : "プロフィール"}</strong></button>
+    );
 };

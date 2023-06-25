@@ -4,6 +4,7 @@ import { NavLink, Link } from "react-router-dom/cjs/react-router-dom.min";
 import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
 import LogoutButton from "./LogoutButton";
+import ProfileButton from "./ProfileButton";
 import {swapLanguage} from "../../store/languages";
 import { useDispatch } from "react-redux";
 // import { logoutUser } from "../../store/session";
@@ -53,6 +54,7 @@ const Navigation = () => {
             <NavLink exact to="/">
                 <i className="fa-solid fa-chess-pawn"></i><strong className="bold-shogi">Shogi</strong><strong>.com</strong>
                 {user && <ul className="hidden-logout">
+                    <ProfileButton />
                     <LogoutButton />
                 </ul>}
             </NavLink>
