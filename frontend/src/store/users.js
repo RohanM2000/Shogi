@@ -40,8 +40,13 @@ export const fetchUser = (userId) => async (dispatch) => {
     return response;
 };
 
-export const fetchUsers = () => async (dispatch) => {
-    const response = await csrfFetch('/api/users');
+export const fetchUsers = (searchQuery) => async (dispatch) => {
+    let response;
+    if (!searchQuery) {
+        response = await csrfFetch('/api/users');
+    } else {
+        response = await csrfFetch(`/api/users?searchQuery=${searchQuery}`);
+    }
     
     if (response.ok) {
         const users = await response.json();
@@ -58,11 +63,10 @@ export default function usersReducer (prevState = {}, action) {
             newState = { ...prevState, [action.user.id]: action.user};
             return newState;
         case RECEIVE_USERS:
-            newState = { ...prevState};
+            newState = {};
             action.users.forEach((user)=> newState[user.id] = user);
             return newState;
         default:
             return prevState;
-            break;
     }
 };

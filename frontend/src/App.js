@@ -25,7 +25,10 @@ function App() {
         <Route path='/members/:memberId'>
           <UserShow />
         </Route>
-        <Route path='/members'>
+        <Route path='/leaderboard'>
+          <UserIndex />
+        </Route>
+        <Route path='/search/:searchQuery'>
           <UserIndex />
         </Route>
         <Route path='/profile'>

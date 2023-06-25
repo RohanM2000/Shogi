@@ -3,13 +3,15 @@ import { useSelector, useDispatch } from "react-redux";
 import { getUsers } from "../../store/users";
 import { fetchUsers } from "../../store/users";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
+import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import "./UserIndex.scss";
 export default function UserIndex () {
+    const { searchQuery } = useParams();
     const dispatch = useDispatch();
     const users = useSelector(getUsers);
     useEffect(()=>{
-        dispatch(fetchUsers());
-    },[dispatch]);
+        dispatch(fetchUsers(searchQuery));
+    },[dispatch, searchQuery]);
 
     return users ? (
         <>

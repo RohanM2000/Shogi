@@ -6,7 +6,6 @@
     height: 468px;
     background-color: black;
     position: relative;
-    margin-left: 5vh;
 }
 
 .game-board div{
@@ -16,7 +15,6 @@
     margin: 1px;
     width: 50px;
     height: 50px;
-    /* padding: 25px; */
     padding: 0px;
     border: none;
     outline: none;
@@ -34,4 +32,59 @@
 
 .white{
     z-index: 1;
+}
+
+div.game-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    margin-left: 1vw;
+}
+
+div.game-area {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    height: 550px;
+    width: 468px;
+    div.player-tag {
+        height: 35px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        width: 150px;
+        border-radius: 5px;
+
+        img {
+            height: 30px;
+            width: 30px;
+            margin-right: 5px;
+            border-radius: 3px;
+        }
+
+        strong {
+            font-size: 148x;
+        }
+    }
+
+    div.black-player {
+        background-color: black;
+        color: white;
+        border: 1px solid black;
+        opacity: .5;
+    }
+
+    div.white-player {
+        background-color: white;
+        color: black;
+        border: 1px solid white;
+        opacity: .5;
+    }
+
+    div.move-active {
+        opacity: 1;
+    }
 }

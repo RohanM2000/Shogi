@@ -11,6 +11,7 @@ import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
 import { Modal } from "../../context/Modal";
 import { receiveModal, removeModal, getModal } from "../../store/modals";
 import GameOver from "../GameOverModal";
+import { fetchUsers } from "../../store/users";
 
 function mapPiece(gamePlayBoard, idx, handleMove, totBoard, flip) {
     const row = Math.floor(idx/9);
@@ -20,7 +21,7 @@ function mapPiece(gamePlayBoard, idx, handleMove, totBoard, flip) {
     // const name = piece.constructor.name;
     const name = piece.name();
     if (flip) {
-        return <Piece key={idx} startLeft={417 - (52 * col - 2)} startTop={(1 + 52 * row)} color={piece.color} moveFunc={(pos1,pos2)=>handleMove(totBoard, piece.color, pos1, pos2)} name={name} flip={true}/>
+        return <Piece key={idx} startLeft={417 - (52 * col - 4)} startTop={(1 + 52 * row)} color={piece.color} moveFunc={(pos1,pos2)=>handleMove(totBoard, piece.color, pos1, pos2)} name={name} flip={true}/>
     }
     return <Piece key={idx} startLeft={4 + 52 * col} startTop={417 - (1 + 52 * row)} color={piece.color} moveFunc={(pos1,pos2)=>handleMove(totBoard, piece.color, pos1, pos2)} name={name} />
 }
@@ -33,7 +34,7 @@ export default function GameBoard () {
     const user = useSelector(state=> state.session.user);
     const gameLength = useRef(0);
     const showModal = useSelector(getModal("gameover"));
-    
+    const users = useSelector(state=>state.users);
     function parseMove(pos1, pos2) {
         return pos1[0] + "," + pos1[1] + "-" + pos2[0] + "," + pos2[1];
     };
@@ -76,7 +77,8 @@ export default function GameBoard () {
         }
     };
     useEffect(()=>{
-        dispatch(fetchGame(gameId)).then(document.addEventListener("keydown", handleKeyPress))
+        dispatch(fetchUsers());
+        dispatch(fetchGame(gameId)).then(document.addEventListener("keydown", handleKeyPress));
         // document.addEventListener("keydown", handleKeyPress);
         const subscription = consumer.subscriptions.create({
             channel: "GamesChannel", id: gameId
@@ -133,18 +135,60 @@ export default function GameBoard () {
     if (!user) {
         return <Redirect to="/" />;
     }
+    let topName;
+    let bottomName;
+    let topClass = "player-tag";
+    let bottomClass = "player-tag";
+    let topImg;
+    let bottomImg;
+    if (users && game && users[game.white_id] && users[game.black_id]) {
+        if (user.id === game.black_id) {
+            bottomName = users[game.black_id].username;
+            topName = users[game.white_id].username;
+            topClass += " white-player";
+            bottomClass += " black-player"
+            if (totalGame.currentPlayer === "white") {
+                topClass += " move-active";
+            } else {
+                bottomClass += " move-active";
+            }
+            topImg = users[game.white_id].photoUrl;
+            bottomImg = users[game.black_id].photoUrl;
+        } else {
+            bottomName = users[game.white_id].username;
+            topName = users[game.black_id].username;
+            topClass += " black-player";
+            bottomClass += " white-player";
+            if (totalGame.currentPlayer === "white") {
+                bottomClass += " move-active";
+            } else {
+                topClass += " move-active";
+            }
+            topImg = users[game.black_id].photoUrl;
+            bottomImg = users[game.white_id].photoUrl;
+        }
+    }
+    
     return game ? (
         <>
-            <div className="game-area">
-                <div className="opposite player-tag">
-                    {}
-                </div>
-                <div className="game-board">
-                    {tempArr.map((temp,idx)=> <div key={idx} ></div>)}
-                    {tempArr.map((temp,idx)=>mapPiece(curGame, idx, handleMove, totalGame, user.id === game.black_id))}
-                </div>
-                <div className="player-tag">
-                    {console.log(game, user.id)}
+            <div className="game-container">
+                <div className="game-area">
+                    <div className={topClass}>
+                        <img src={topImg} />
+                        <strong>
+                            {topName}
+                        </strong>
+                    </div>
+                    <div className="game-board">
+                        {tempArr.map((temp,idx)=> <div key={idx} ></div>)}
+                        {tempArr.map((temp,idx)=>mapPiece(curGame, idx, handleMove, totalGame, user.id === game.black_id))}
+                    </div>
+                    <div className={bottomClass}>
+                        <img src={bottomImg} />
+                        <strong>
+                            {bottomName}
+                        </strong>
+                    </div>
                 </div>
             </div>
             {showModal &&

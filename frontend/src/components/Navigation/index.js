@@ -26,16 +26,25 @@ const Navigation = () => {
         // links = <ProfileButton />
         links = (
                 <ul className="actions-list-nav-bar">
-                    <Link to="/play">
-                            <button className="play-button">
-                                <i className="fa-solid fa-hand-point-left"></i><strong>{lang === "en" ? "Play": "プレイ"}</strong>
-                            </button>
-                    </Link>
-                    <Link to="/members">
-                            <button className="leaderboard">
-                                <i className="fa-solid fa-hand-point-left"></i><strong>{lang === "en" ? "Leaderboard": "プランキング"}</strong>
-                            </button>
-                    </Link>
+                    <li>
+                        <Link to="/play">
+                                <button className="play-button">
+                                    <i className="fa-solid fa-hand-point-left"></i><strong>{lang === "en" ? "Play": "プレイ"}</strong>
+                                </button>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="/leaderboard">
+                                <button className="leaderboard">
+                                    <i className="fa-solid fa-medal"></i><strong>{lang === "en" ? "Leaderboard": "ランキング"}</strong>
+                                </button>
+                        </Link>
+                    </li>
+                    <li>
+                        <form className="search-form">
+                            <input type="text" className="search-input" placeholder={lang === "en" ? "Search" : "検索"}/>
+                        </form>
+                    </li>
                 </ul>
                 )
     }

@@ -6,6 +6,7 @@ import usersReducer from "./users";
 import gamesReducer from "./games";
 import modalsReducer from "./modals";
 import languagesReducer from "./languages";
+import userGamesReducer from "./userGames";
 const rootReducer = combineReducers({
     session: sessionReducer,
     messages: messagesReducer,
@@ -13,7 +14,8 @@ const rootReducer = combineReducers({
     users: usersReducer,
     games: gamesReducer,
     modals: modalsReducer,
-    languages: languagesReducer
+    languages: languagesReducer,
+    userGames: userGamesReducer
 });
 
 const thunk = store => next => action => {
