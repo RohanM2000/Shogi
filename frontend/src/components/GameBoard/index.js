@@ -201,8 +201,8 @@ export default function GameBoard () {
                 </div>
             </div>
             {showModal &&
-                <Modal onClose={()=>dispatch(removeModal())}>
-                    <GameOver message={game.status}/>
+                <Modal onClose={()=>dispatch(removeModal())} type="gameover">
+                    <GameOver game={game} users={users}/>
                 </Modal>
             }
         </>

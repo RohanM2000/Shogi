@@ -24,7 +24,7 @@ export default function ModalProvider (props) {
     )
 };
 
-export function Modal ({onClose, children}) {
+export function Modal ({onClose, children, type}) {
     const modalNode = useContext(ModalContext);
 
     return (modalNode) ? ReactDOM.createPortal((
@@ -32,7 +32,7 @@ export function Modal ({onClose, children}) {
             <div id="modal-background" onClick={onClose}>
 
             </div>
-            <div id="modal-content">
+            <div id="modal-content" className={type === "gameover" ? "game-over-modal" : ""}>
                 {children}
             </div>
         </div>
