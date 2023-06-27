@@ -7,12 +7,14 @@ import LogoutButton from "./LogoutButton";
 import ProfileButton from "./ProfileButton";
 import {swapLanguage} from "../../store/languages";
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 // import { logoutUser } from "../../store/session";
 import "./Navigation.scss";
 const Navigation = () => {
     const user = useSelector(state=> state.session.user);
     const lang = useSelector(state=> state.languages.lang);
     const dispatch = useDispatch();
+    const history = useHistory();
     // const dispatch = useDispatch();
     let links;
 
@@ -28,10 +30,25 @@ const Navigation = () => {
         links = (
                 <ul className="actions-list-nav-bar">
                     <li>
-                        <Link to="/play">
+                        <Link to="/play/1">
                                 <button className="play-button">
                                     <i className="fa-solid fa-hand-point-left"></i><strong>{lang === "en" ? "Play": "プレイ"}</strong>
                                 </button>
+                                    {user && <ul className="hidden-logout">
+                                        <button onClick={(e)=>{
+                                            e.preventDefault();
+                                            history.push("/play/1");
+                                        }}><i className="fa-solid fa-clock"/><strong>{lang === "en" ? "Rapid" : "ラピッド"}</strong></button>
+                                        <button onClick={(e)=>{
+                                            e.preventDefault();
+                                            history.push("/play/2");
+                                        }}><i className="fa-solid fa-bolt"/><strong>{lang === "en" ? "Blitz" : "ブリッツ"}</strong></button>
+                                        <button onClick={(e)=>{
+                                            e.preventDefault();
+                                            history.push("/play/3");
+                                        }}><i className="fa-solid fa-gauge"/><strong>{lang === "en" ? "Bullet" : "ブレット"}</strong></button>
+                                        
+                                    </ul>}
                         </Link>
                     </li>
                     <li>

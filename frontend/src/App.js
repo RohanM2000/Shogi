@@ -19,7 +19,7 @@ function App() {
           <GameBoard />
           <Room />
         </Route>
-        <Route path='/play'>
+        <Route path='/play/:playId'>
           <PlayQueue />
         </Route>
         <Route path='/members/:memberId'>

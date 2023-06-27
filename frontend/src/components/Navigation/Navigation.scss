@@ -107,7 +107,7 @@
             strong {
                 position: absolute;
                 left: 55px;
-                top: 9px;
+                top: 8px;
                 font-size: 20px;
                 font-weight: 500;
                 color: lightgray;
@@ -119,6 +119,14 @@
                 height: 25px;
                 top: 10px;
                 left: 20px;
+            }
+
+            i.fa-gauge {
+                color: rgb(105, 84, 63);
+            }
+
+            i.fa-clock {
+                color: lightgreen;
             }
         }
         button:hover {

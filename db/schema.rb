@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_26_043835) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_27_043339) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -50,6 +50,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_26_043835) do
     t.datetime "updated_at", null: false
     t.string "status", default: "started"
     t.string "move_data", default: ""
+    t.bigint "queue_id", null: false
     t.index ["black_id"], name: "index_games_on_black_id"
     t.index ["white_id"], name: "index_games_on_white_id"
   end
@@ -98,6 +99,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_26_043835) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "games", "standard_queues", column: "queue_id"
   add_foreign_key "games", "users", column: "black_id"
   add_foreign_key "games", "users", column: "white_id"
   add_foreign_key "messages", "users", column: "author_id"

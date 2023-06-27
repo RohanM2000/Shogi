@@ -49,6 +49,8 @@ ApplicationRecord.transaction do
     # )
 
     StandardQueue.create!()
+    StandardQueue.create!()
+    StandardQueue.create!()
   
     puts "Done!"
   end
