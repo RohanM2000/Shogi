@@ -129,7 +129,6 @@ export default function GameBoard () {
                     setBlackActive(false);
                 }
             }
-            console.log(blackActive, whiteActive);
         }
     },[game]);
       

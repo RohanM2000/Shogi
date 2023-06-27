@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
+import { updateGame } from "../../store/games";
+import { useDispatch } from "react-redux";
 export default function Timer({game, color, active}) {
     const [timer, setTimer] = useState([0, 0, 0]);
+    const dispatch = useDispatch();
     let whiteTime = 0;
     let blackTime = 0;
     let recentTime = 0;
@@ -40,8 +43,18 @@ export default function Timer({game, color, active}) {
         return ()=> clearInterval(temp);
     },[game, active]);
     //TODO: make different time sets
-    const remainingTime = 600 - timer[2];
-    const minutes = parseInt(remainingTime / 60);
-    const seconds = parseInt(remainingTime % 60);
+    const remainingTime = 10 - timer[2];
+    if (game && remainingTime <= 0 && active) {
+        let status = "ongoing";
+        if (color === "white") status = "black won";
+        if (color === "black") status = "white won";
+        dispatch(updateGame({
+            gameId: game.id,
+            move: "time over",
+            status
+        }))
+    }
+    const minutes = remainingTime <= 0 ? 0 : parseInt(remainingTime / 60);
+    const seconds = remainingTime <= 0 ? 0 : parseInt(remainingTime % 60);
     return <h1>{`${minutes < 10 ? "0" + minutes : minutes}:${seconds < 10 ? "0" + seconds : seconds}`}</h1>;
 };

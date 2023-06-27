@@ -18,8 +18,12 @@ class Game < ApplicationRecord
     has_one :room, dependent: :destroy
 
     def make_move(move, status) 
-        body = self.body.to_s + " " + move.to_s
+        return self if self.status == "white won" || self.status == "black won"
         move_data = self.move_data.to_s + " " + Time.now.to_f.to_s
+        if move.to_s == "time over"    
+            return self.update(status: status, move_data: move_data)
+        end
+        body = self.body.to_s + " " + move.to_s
         self.update(body: body, status: status, move_data: move_data)
     end
 end
