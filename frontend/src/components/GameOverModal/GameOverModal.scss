@@ -22,6 +22,27 @@ div.game-over-div {
         }
     }
 
+    h1.elo-counter {
+        strong {
+            position: absolute;
+            left: 280px;
+            color: lightgray;
+            font-size: 20px;
+        }
+    }
+
+    div.black-elo {
+        h1 {
+            color: black;
+        }
+    }
+
+    div.white-elo {
+        h1 {
+            color: white;
+        }
+    }
+
     div.image-area {
         display: flex;
         flex-direction: row;

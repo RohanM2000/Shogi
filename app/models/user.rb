@@ -24,9 +24,12 @@ class User < ApplicationRecord
   validates :session_token, uniqueness: true, presence: true
 
   before_validation :ensure_session_token, :generate_default_pic
+  after_create :ensure_elo
+  after_update :ensure_elo
 
-  has_many :games_as_white, class_name: :Game, inverse_of: :white
-  has_many :games_as_black, class_name: :Game, inverse_of: :black
+  has_many :games_as_white, class_name: :Game, inverse_of: :white, dependent: :destroy
+  has_many :games_as_black, class_name: :Game, inverse_of: :black, dependent: :destroy
+  has_many :elos, dependent: :destroy
 
 
   def self.find_by_credentials(usernameEmail, password)
@@ -61,6 +64,12 @@ class User < ApplicationRecord
     unless self.photo.attached?
       file = URI.open("https://shogi-seeds.s3.us-west-1.amazonaws.com/pig_picture.jpg")
       self.photo.attach(io: file, filename: "default.jpg");
+    end
+  end
+
+  def ensure_elo
+    unless Elo.exists?(user_id: self.id)
+      Elo.create!(user: self, rating: 1500, game_id: 0)
     end
   end
   

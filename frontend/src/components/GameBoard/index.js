@@ -89,8 +89,8 @@ export default function GameBoard () {
         }
     };
     useEffect(()=>{
-        dispatch(fetchUsers());
-        dispatch(fetchGame(gameId)).then(document.addEventListener("keydown", handleKeyPress));
+        dispatch(fetchUsers()).catch((error)=>console.log(error));
+        dispatch(fetchGame(gameId)).then(()=>document.addEventListener("keydown", handleKeyPress)).catch((error)=>console.log(error));
         // document.addEventListener("keydown", handleKeyPress);
         const subscription = consumer.subscriptions.create({
             channel: "GamesChannel", id: gameId
@@ -110,9 +110,9 @@ export default function GameBoard () {
         if (game) {
             setMoveCount(game.body.split(" ").length);
             if (game.status !== "ongoing" && game.status !== "started") {
-                dispatch(receiveModal("gameover"));
                 setWhiteActive(false);
                 setBlackActive(false);
+                dispatch(receiveModal("gameover"));
             } 
             if (game.status === "started") {
                 setWhiteActive(false);
@@ -130,7 +130,7 @@ export default function GameBoard () {
                 }
             }
         }
-    },[game]);
+    },[game, dispatch]);
       
 
     function handleMove(gamePlayBoard, color, pos1, pos2) {
@@ -151,7 +151,7 @@ export default function GameBoard () {
                 gameId,
                 move: parseMove(pos1, pos2),
                 status
-            })).then(setMoveCount(state=>state+1));
+            })).then(()=>setMoveCount(state=>state+1)).catch();
         } else {
             console.log("failed move!", result);
             return false;
@@ -174,6 +174,8 @@ export default function GameBoard () {
     let bottomTimer;
     let topShow;
     let bottomShow;
+    let topElo;
+    let bottomElo;
     if (users && game && users[game.white_id] && users[game.black_id]) {
         if (user.id === game.black_id) {
             bottomName = users[game.black_id].username;
@@ -191,6 +193,14 @@ export default function GameBoard () {
             bottomImg = users[game.black_id].photoUrl;
             topTimer = <Timer game={game} color={"white"} active={whiteActive}/>;
             bottomTimer = <Timer game={game} color={"black"} active={blackActive}/>;
+            topElo = users[game.white_id].elos.sort((eloA, eloB) => {
+                return Math.sign(new Date(eloA.createdAt).getTime() - new Date(eloB.createdAt).getTime());
+             });
+            topElo = topElo[topElo.length - 1].rating
+            bottomElo = users[game.black_id].elos.sort((eloA, eloB) => {
+                return Math.sign(new Date(eloA.createdAt).getTime() - new Date(eloB.createdAt).getTime());
+             });
+            bottomElo = bottomElo[bottomElo.length - 1].rating
         } else {
             bottomName = users[game.white_id].username;
             topName = users[game.black_id].username;
@@ -207,6 +217,14 @@ export default function GameBoard () {
             bottomImg = users[game.white_id].photoUrl;
             topTimer = <Timer game={game} color={"black"} active={blackActive}/>;
             bottomTimer = <Timer game={game} color={"white"} active={whiteActive}/>;
+            topElo = users[game.black_id].elos.sort((eloA, eloB) => {
+                return Math.sign(new Date(eloA.createdAt).getTime() - new Date(eloB.createdAt).getTime());
+             });
+            topElo = topElo[topElo.length - 1].rating
+            bottomElo = users[game.white_id].elos.sort((eloA, eloB) => {
+                return Math.sign(new Date(eloA.createdAt).getTime() - new Date(eloB.createdAt).getTime());
+             });
+            bottomElo = bottomElo[bottomElo.length - 1].rating
         }
     }
     
@@ -218,7 +236,7 @@ export default function GameBoard () {
                         <div>
                             <img src={topImg} />
                             <strong>
-                                {topName}
+                                {topName} ({topElo})
                             </strong>
                         </div>
                         <div className="timer-area">
@@ -234,7 +252,7 @@ export default function GameBoard () {
                         <div>
                             <img src={bottomImg} />
                             <strong>
-                                {bottomName}
+                                {bottomName} ({bottomElo})
                             </strong>
                         </div>
                         <div className="timer-area">
@@ -246,7 +264,7 @@ export default function GameBoard () {
             </div>
             {showModal &&
                 <Modal onClose={()=>dispatch(removeModal())} type="gameover">
-                    <GameOver game={game} users={users}/>
+                    <GameOver game={game} />
                 </Modal>
             }
         </>

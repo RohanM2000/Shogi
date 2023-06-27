@@ -33,9 +33,9 @@ class Api::UsersController < ApplicationController
     @users = []
 
     if params[:search_query]
-      @users = User.where("username LIKE ?", "%#{params[:search_query]}%")
+      @users = User.where("username LIKE ?", "%#{params[:search_query]}%").includes(:elos)
     else
-      @users = User.all
+      @users = User.all.includes(:elos)
     end
 
     render :index

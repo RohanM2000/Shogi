@@ -67,7 +67,7 @@ export default function Timer({game, color, active}) {
             gameId: game.id,
             move: "time over",
             status
-        }))
+        })).catch((error)=>console.log(error));
     }
     const minutes = remainingTime <= 0 ? 0 : parseInt(remainingTime / 60);
     const seconds = remainingTime <= 0 ? 0 : parseInt(remainingTime % 60);
