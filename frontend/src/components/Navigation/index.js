@@ -51,14 +51,16 @@ const Navigation = () => {
     }
     return lang ? (
         <div className="nav-bar">
-            <NavLink exact to="/">
-                <i className="fa-solid fa-chess-pawn"></i><strong className="bold-shogi">Shogi</strong><strong>.com</strong>
-                {user && <ul className="hidden-logout">
-                    <ProfileButton />
-                    <LogoutButton />
-                </ul>}
-            </NavLink>
+            <div className="top-link-holder">
+                <NavLink exact to="/">
+                    <i className="fa-solid fa-chess-pawn"></i><strong className="bold-shogi">Shogi</strong><strong>.com</strong>
+                    {user && <ul className="hidden-logout">
+                        <ProfileButton />
+                        <LogoutButton />
+                    </ul>}
+                </NavLink>
             {links}
+            </div>
             <div className="language-links">
                 <button onClick={()=>swapLanguage(dispatch)}><i className="fa-solid fa-earth-asia"></i><strong>{lang === "en" ? "English" : "日本語"}</strong></button>
             </div>

@@ -3,6 +3,7 @@
     position: relative;
     flex-direction: column;
     align-items: center;
+    justify-content: space-between;
     width: 150px;
     background-color: rgb(39,37,34);
     height: 100vh;
@@ -207,7 +208,7 @@
         }
     }
     div.language-links{
-        margin-top: 50vh;
+        // margin-top: 30vh;
         width: 150px;
         display: flex;
         flex-direction: column;

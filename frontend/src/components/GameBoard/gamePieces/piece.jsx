@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 function Piece({startLeft, startTop, color, moveFunc, name, flip, viewHeight}) {
     const [top, setTop] = useState(0);
     const [left, setLeft] = useState(0);
@@ -9,6 +9,11 @@ function Piece({startLeft, startTop, color, moveFunc, name, flip, viewHeight}) {
     });
     const isClicked = useRef(false);
     const validMoved = useRef(false);
+
+    useEffect(()=>{
+        setTop(0);
+        setLeft(0);
+    },[startLeft, startTop, viewHeight, name])
 
     const handleMouseDown = (e) => {
         e.preventDefault();
@@ -57,6 +62,7 @@ function Piece({startLeft, startTop, color, moveFunc, name, flip, viewHeight}) {
     switch(name) {
         case "Footsoldier":
             piece = "https://upload.wikimedia.org/wikipedia/commons/2/2f/Shogi_fuhyo%28svg%29.svg";
+            // piece = "https://upload.wikimedia.org/wikipedia/commons/4/4b/Shougi_no_koma-fuhyou.svg";
             break;
         case "Lance":
             piece = "https://upload.wikimedia.org/wikipedia/commons/7/77/Shogi_kyosha%28svg%29.svg";

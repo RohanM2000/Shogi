@@ -8,6 +8,8 @@
 #  body       :text
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  status     :string           default("started")
+#  move_data  :string           default("")
 #
 class Game < ApplicationRecord
     validates :white_id, :black_id, presence: true
@@ -17,6 +19,7 @@ class Game < ApplicationRecord
 
     def make_move(move, status) 
         body = self.body.to_s + " " + move.to_s
-        self.update(body: body, status: status)
+        move_data = self.move_data.to_s + " " + Time.now.to_f.to_s
+        self.update(body: body, status: status, move_data: move_data)
     end
 end

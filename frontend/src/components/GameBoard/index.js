@@ -12,6 +12,7 @@ import { Modal } from "../../context/Modal";
 import { receiveModal, removeModal, getModal } from "../../store/modals";
 import GameOver from "../GameOverModal";
 import { fetchUsers } from "../../store/users";
+import Timer from "../Timer";
 
 function mapPiece(gamePlayBoard, idx, handleMove, totBoard, flip, viewHeight) {
     const row = Math.floor(idx/9);
@@ -38,6 +39,8 @@ export default function GameBoard () {
         return pos1[0] + "," + pos1[1] + "-" + pos2[0] + "," + pos2[1];
     };
     const [viewHeight, setViewHeight] = useState(window.innerHeight);
+    const [whiteActive, setWhiteActive] = useState(false);
+    const [blackActive, setBlackActive] = useState(false);
     useEffect(()=>{
         function handleResize() {
             setViewHeight(window.innerHeight);
@@ -106,10 +109,27 @@ export default function GameBoard () {
     useEffect(()=>{
         if (game) {
             setMoveCount(game.body.split(" ").length);
-            console.log("status", game.status);
             if (game.status !== "ongoing" && game.status !== "started") {
                 dispatch(receiveModal("gameover"));
+                setWhiteActive(false);
+                setBlackActive(false);
+            } 
+            if (game.status === "started") {
+                setWhiteActive(false);
+                setBlackActive(false);
             }
+            if (game.status === "ongoing") {
+                const lengthOfGame = game.body.split(" ").length;
+
+                if (lengthOfGame % 2 === 0) {
+                    setBlackActive(true);
+                    setWhiteActive(false);
+                } else {
+                    setWhiteActive(true);
+                    setBlackActive(false);
+                }
+            }
+            console.log(blackActive, whiteActive);
         }
     },[game]);
       
@@ -118,6 +138,7 @@ export default function GameBoard () {
         if (color !== gamePlayBoard.currentPlayer) return false;
         if (color === "white" && user.id !== game.white_id) return false;
         if (color === "black" && user.id !== game.black_id) return false;
+        if (game.status !== "started" && game.status !== "ongoing") return false;
         const result = gamePlayBoard.board.makeMove(color, pos1, pos2);
         if (result) {
             let status = "ongoing";
@@ -150,6 +171,10 @@ export default function GameBoard () {
     let bottomClass = "player-tag";
     let topImg;
     let bottomImg;
+    let topTimer;
+    let bottomTimer;
+    let topShow;
+    let bottomShow;
     if (users && game && users[game.white_id] && users[game.black_id]) {
         if (user.id === game.black_id) {
             bottomName = users[game.black_id].username;
@@ -158,11 +183,15 @@ export default function GameBoard () {
             bottomClass += " black-player"
             if (totalGame.currentPlayer === "white") {
                 topClass += " move-active";
+                topShow = true;
             } else {
                 bottomClass += " move-active";
+                bottomShow = true;
             }
             topImg = users[game.white_id].photoUrl;
             bottomImg = users[game.black_id].photoUrl;
+            topTimer = <Timer game={game} color={"white"} active={whiteActive}/>;
+            bottomTimer = <Timer game={game} color={"black"} active={blackActive}/>;
         } else {
             bottomName = users[game.white_id].username;
             topName = users[game.black_id].username;
@@ -170,11 +199,15 @@ export default function GameBoard () {
             bottomClass += " white-player";
             if (totalGame.currentPlayer === "white") {
                 bottomClass += " move-active";
+                bottomShow = true;
             } else {
                 topClass += " move-active";
+                topShow = true;
             }
             topImg = users[game.black_id].photoUrl;
             bottomImg = users[game.white_id].photoUrl;
+            topTimer = <Timer game={game} color={"black"} active={blackActive}/>;
+            bottomTimer = <Timer game={game} color={"white"} active={whiteActive}/>;
         }
     }
     
@@ -183,20 +216,32 @@ export default function GameBoard () {
             <div className="game-container">
                 <div className="game-area">
                     <div className={topClass}>
-                        <img src={topImg} />
-                        <strong>
-                            {topName}
-                        </strong>
+                        <div>
+                            <img src={topImg} />
+                            <strong>
+                                {topName}
+                            </strong>
+                        </div>
+                        <div className="timer-area">
+                            {topShow && <i className="fa-solid fa-stopwatch"/>}
+                            {topTimer}
+                        </div>
                     </div>
                     <div className="game-board">
                         {tempArr.map((temp,idx)=> <div key={idx} ></div>)}
                         {tempArr.map((temp,idx)=> mapPiece(curGame, idx, handleMove, totalGame, user.id === game.black_id, viewHeight))}
                     </div>
                     <div className={bottomClass}>
-                        <img src={bottomImg} />
-                        <strong>
-                            {bottomName}
-                        </strong>
+                        <div>
+                            <img src={bottomImg} />
+                            <strong>
+                                {bottomName}
+                            </strong>
+                        </div>
+                        <div className="timer-area">
+                            {bottomShow && <i className="fa-solid fa-stopwatch"/>}
+                            {bottomTimer}
+                        </div>
                     </div>
                 </div>
             </div>
