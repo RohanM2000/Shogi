@@ -20,7 +20,7 @@ export default function GameOver({game, users}) {
     if (lang !== "en" && winType !== "white") {
         displayMessage = "後手勝つ!";
     }
-    return game && users ? (
+    return game && users && whiteUser && blackUser ? (
         <div className={winType === "white" ? "game-over-div" : "game-over-div black-winner-style"}>
             <h1 className><strong>{displayMessage}</strong></h1>
             <div className="image-area">
