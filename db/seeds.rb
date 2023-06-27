@@ -9,6 +9,7 @@
 ApplicationRecord.transaction do 
     puts "Destroying tables..."
     # Unnecessary if using `rails db:seed:replant`
+    Elo.destroy_all
     Message.destroy_all
     Room.destroy_all
     Game.destroy_all
@@ -24,6 +25,7 @@ ApplicationRecord.transaction do
     ApplicationRecord.connection.reset_pk_sequence!('games')
     ApplicationRecord.connection.reset_pk_sequence!('standard_queues')
     ApplicationRecord.connection.reset_pk_sequence!('standard_queue_positions')
+    ApplicationRecord.connection.reset_pk_sequence!('elos')
 
   
     puts "Creating users..."
