@@ -17,7 +17,7 @@ class StandardQueuePosition < ApplicationRecord
     return false if second_pos.length < 1
     other_id = second_pos[0].user_id
     current_id = self.user_id
-    new_game = Game.create!(white_id: other_id, black_id: current_id, body: "")
+    new_game = Game.create!(white_id: other_id, black_id: current_id, body: "", queue_id: self.standard_queue_id)
     new_room = Room.create!(game_id: new_game.id)
     self.destroy!
     second_pos[0].destroy!

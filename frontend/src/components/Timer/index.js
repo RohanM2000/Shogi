@@ -42,8 +42,23 @@ export default function Timer({game, color, active}) {
         }
         return ()=> clearInterval(temp);
     },[game, active]);
-    //TODO: make different time sets
-    const remainingTime = 10 - timer[2];
+    let standardTime = 600;
+    if (game) {
+        switch(game.queue_id) {
+            case 1:
+                standardTime = 600;
+                break;
+            case 2:
+                standardTime = 300;
+                break;
+            case 3:
+                standardTime = 60;
+                break;
+            default:
+                break;
+        }
+    }
+    const remainingTime = standardTime - timer[2];
     if (game && remainingTime <= 0 && active) {
         let status = "ongoing";
         if (color === "white") status = "black won";
