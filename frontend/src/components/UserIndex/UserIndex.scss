@@ -1,16 +1,28 @@
 ul.user-list {
     display: flex;
+    overflow: auto;
     flex-direction: column;
-    background-color: black;
+    background-color: rgb(28, 27, 26);
     align-items: flex-start;
-    width: 70vh;
+    width: 70vw;
+    height: 100vh;
     margin-left: 20vh;
-    height: auto;
+    a {
+        text-decoration: none;
+    }
     li {
         display: flex;
         flex-direction: row;
-
+        align-items: center;
+        margin-top: 5vh;
+        margin-left: 3vw;
+        margin-right: 3vw;
+        background-color: rgb(39,37,34);
+        width: 64vw;
+        height: 12vh;
+        border-radius: 2vh;
         img.user-photo-index {
+            margin-left: 2vw;
             width: 10vh;
             height: 10vh;
         }
@@ -18,6 +30,8 @@ ul.user-list {
         strong {
             color: white;
             font-size: 5vh;
+            margin-left: 5vh;
+            
         }
     }
 }

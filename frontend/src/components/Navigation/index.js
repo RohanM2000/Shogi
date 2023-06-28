@@ -8,6 +8,7 @@ import ProfileButton from "./ProfileButton";
 import {swapLanguage} from "../../store/languages";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { useState } from "react";
 // import { logoutUser } from "../../store/session";
 import "./Navigation.scss";
 const Navigation = () => {
@@ -15,6 +16,7 @@ const Navigation = () => {
     const lang = useSelector(state=> state.languages.lang);
     const dispatch = useDispatch();
     const history = useHistory();
+    const [searchQuery, setSearchQuery] = useState("");
     // const dispatch = useDispatch();
     let links;
 
@@ -59,8 +61,16 @@ const Navigation = () => {
                         </Link>
                     </li>
                     <li>
-                        <form className="search-form">
-                            <input type="text" className="search-input" placeholder={lang === "en" ? "Search" : "検索"}/>
+                        <form className="search-form" onSubmit={(e)=>{
+                            e.preventDefault();
+                            history.push(`/search/${searchQuery}`);
+                        }}>
+                            <input type="text" 
+                            className="search-input" 
+                            placeholder={lang === "en" ? "Search" : "検索"} 
+                            value={searchQuery}
+                            onChange={(e)=>setSearchQuery(e.target.value)}
+                            />
                         </form>
                     </li>
                 </ul>
