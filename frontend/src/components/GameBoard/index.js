@@ -21,9 +21,9 @@ function mapPiece(gamePlayBoard, idx, handleMove, totBoard, flip, viewHeight) {
     // const name = piece.constructor.name;
     const name = piece.name();
     if (flip) {
-        return <Piece key={idx} startLeft={viewHeight/1.5 - (viewHeight/12.15 * col)} startTop={viewHeight/500 + viewHeight/12.17 * row} color={piece.color} moveFunc={(pos1,pos2)=>handleMove(totBoard, piece.color, pos1, pos2)} name={name} flip={true} viewHeight={viewHeight}/>
+        return <Piece key={idx} startLeft={viewHeight/1.5 - (viewHeight/12.15 * col)} startTop={viewHeight/500 + viewHeight/12.17 * row} color={piece.color} moveFunc={(pos1,pos2)=>handleMove(totBoard, piece.color, pos1, pos2)} name={name} flip={true} viewHeight={viewHeight} promoted={piece.promoted}/>
     }
-    return <Piece key={idx} startLeft={viewHeight/120 + viewHeight/12.17 * col} startTop={viewHeight/1.515 - (viewHeight/12.15 * row)} color={piece.color} moveFunc={(pos1,pos2)=>handleMove(totBoard, piece.color, pos1, pos2)} name={name} viewHeight={viewHeight}/>
+    return <Piece key={idx} startLeft={viewHeight/120 + viewHeight/12.17 * col} startTop={viewHeight/1.515 - (viewHeight/12.15 * row)} color={piece.color} moveFunc={(pos1,pos2)=>handleMove(totBoard, piece.color, pos1, pos2)} name={name} viewHeight={viewHeight} promoted={piece.promoted}/>
 }
 
 export default function GameBoard () {
@@ -58,16 +58,25 @@ export default function GameBoard () {
         let moves = game.body.split(" ");
         moves = moves.map(unfilteredMove => unfilteredMove.split("-").map(stringMove=>stringMove.split(",").map(stringInt=>parseInt(stringInt))));
         gameLength.current = moves.length;
+        const promotes = game.move_data.split(" ")
+        .map(data=>data.split(":")[1]);
+        // console.log("promotes:", promotes);
         for (let i = 1; i < moveCount; i++) {
             const tempColor = (i % 2 === 1) ? "white" : "black";
             if (i < moves.length) {
                 curGame.board.makeMove(tempColor, ...moves[i]);
+                if (promotes[i] !== "false") {
+                    curGame.board.grid[moves[i][1][0]][moves[i][1][1]].promoted = true;
+                }
             }
         }
         for (let i = 1; i < gameLength.current; i++) {
             const tempColor = (i % 2 === 1) ? "white" : "black";
             if (i < moves.length) {
                 totalGame.board.makeMove(tempColor, ...moves[i]);
+                if (promotes[i] !== "false") {
+                    totalGame.board.grid[moves[i][1][0]][moves[i][1][1]].promoted = true;
+                }
                 totalGame.swap();
             }
         }
@@ -138,6 +147,10 @@ export default function GameBoard () {
         if (color === "white" && user.id !== game.white_id) return false;
         if (color === "black" && user.id !== game.black_id) return false;
         if (game.status !== "started" && game.status !== "ongoing") return false;
+        let promote = false;
+        if (gamePlayBoard.board.mustPromote(color, pos1, pos2)) {
+            promote = true;
+        }
         const result = gamePlayBoard.board.makeMove(color, pos1, pos2);
         if (result) {
             let status = "ongoing";
@@ -150,10 +163,10 @@ export default function GameBoard () {
             dispatch(updateGame({
                 gameId,
                 move: parseMove(pos1, pos2),
-                status
+                status,
+                promote
             })).then(()=>setMoveCount(state=>state+1)).catch();
         } else {
-            console.log("failed move!", result);
             return false;
         }
     };

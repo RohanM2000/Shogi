@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useRef, useEffect } from "react";
-function Piece({startLeft, startTop, color, moveFunc, name, flip, viewHeight}) {
+function Piece({startLeft, startTop, color, moveFunc, name, flip, viewHeight, promoted}) {
     const [top, setTop] = useState(0);
     const [left, setLeft] = useState(0);
     const prevPos = useRef({
@@ -13,7 +13,7 @@ function Piece({startLeft, startTop, color, moveFunc, name, flip, viewHeight}) {
     useEffect(()=>{
         setTop(0);
         setLeft(0);
-    },[startLeft, startTop, viewHeight, name])
+    },[startLeft, startTop, viewHeight, name, color])
 
     const handleMouseDown = (e) => {
         e.preventDefault();
@@ -62,25 +62,31 @@ function Piece({startLeft, startTop, color, moveFunc, name, flip, viewHeight}) {
     switch(name) {
         case "Footsoldier":
             piece = "https://upload.wikimedia.org/wikipedia/commons/2/2f/Shogi_fuhyo%28svg%29.svg";
+            if (promoted) piece = "https://upload.wikimedia.org/wikipedia/commons/7/78/Shogi_tokin%28svg%29.svg";
             // piece = "https://upload.wikimedia.org/wikipedia/commons/4/4b/Shougi_no_koma-fuhyou.svg";
             break;
         case "Lance":
             piece = "https://upload.wikimedia.org/wikipedia/commons/7/77/Shogi_kyosha%28svg%29.svg";
+            if (promoted) piece = "https://upload.wikimedia.org/wikipedia/commons/f/f1/Shogi_narikyo%28svg%29.svg";
             break;
         case "SilverGeneral":
             piece = "https://upload.wikimedia.org/wikipedia/commons/1/18/Shogi_ginsho%28svg%29.svg";
+            if (promoted) piece = "https://upload.wikimedia.org/wikipedia/commons/a/ad/Shogi_narigin%28svg%29.svg";
             break;
         case "GoldGeneral":
             piece = "https://upload.wikimedia.org/wikipedia/commons/b/b1/Shogi_kinsho%28svg%29.svg";
             break;
         case "HonorableHorse":
             piece = "https://upload.wikimedia.org/wikipedia/commons/7/71/Shogi_keima.svg";
+            if (promoted) piece = "https://upload.wikimedia.org/wikipedia/commons/6/65/Shogi_narikei%28svg%29.svg";
             break;
         case "FlyingChariot":
             piece = "https://upload.wikimedia.org/wikipedia/commons/4/43/Shogi_hisha%28svg%29.svg";
+            if (promoted) piece = "https://upload.wikimedia.org/wikipedia/commons/b/b5/Shogi_ryuo%28svg%29.svg";
             break;
         case "Bishop":
             piece = "https://upload.wikimedia.org/wikipedia/commons/4/4f/Shogi_kakugyo%28svg%29.svg";
+            if (promoted) piece = "https://upload.wikimedia.org/wikipedia/commons/7/74/Shogi_ryuma%28svg%29.svg";
             break;
         case "JewelledGeneral":
             if (color === "black") {

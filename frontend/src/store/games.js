@@ -22,7 +22,7 @@ export const fetchGame = (gameId) => {
     };
 };
 
-export const updateGame = ({gameId, move, status}) => {
+export const updateGame = ({gameId, move, status, promote}) => {
     // console.log(gameId, move)
     return async (dispatch) => {
         const response = await csrfFetch(`/api/games/${gameId}`, {
@@ -31,7 +31,7 @@ export const updateGame = ({gameId, move, status}) => {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             },
-            body: JSON.stringify({move, status})
+            body: JSON.stringify({move, status, promote})
         });
 
         if (response.ok) {

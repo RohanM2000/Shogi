@@ -80,6 +80,53 @@ export default class Board {
         this.playerSecond = "";
     }
 
+    canPromote(color, pos1, pos2) {
+        const validMoves = this.validMoves(color);
+        let valid = false;
+        validMoves.forEach((move)=> {
+            if (move[0][0] === pos1[0] && move[0][1] === pos1[1] 
+                && move[1][0] === pos2[0] && move[1][1] === pos2[1]) {
+                    valid = true;
+                }
+        })
+        if (valid) {
+            if (color === "white" && (pos1[0] >= 6 || pos2[0] >= 6)) return true;
+            if (color === "black" && (pos1[0] <= 2 || pos2[0] <= 2)) return true;
+        } else {
+            return false;
+        }
+    }
+
+    mustPromote(color, pos1, pos2) {
+        if (!this.canPromote(color, pos1, pos2)) return false;
+        if (this.grid[pos1[0]][pos1[1]].name() === "Footsoldier") {
+            console.log("pawn");
+            if (color === "white" && pos2[0] === 8) {
+                return true;
+            } 
+            if (color === "black" && pos2[0] === 0) {
+                return true;
+            }
+        }
+        if (this.grid[pos1[0]][pos1[1]].name() === "Lance") {
+            if (color === "white" && pos2[0] === 8) {
+                return true;
+            } 
+            if (color === "black" && pos2[0] === 0) {
+                return true;
+            }
+        }
+        if (this.grid[pos1[0]][pos1[1]].name() === "HonorableHorse") {
+            if (color === "white" && pos2[0] >= 7) {
+                return true;
+            } 
+            if (color === "black" && pos2[0] <= 1) {
+                return true;
+            }
+        }
+        return false;
+    } 
+
     makeMove(color, pos1, pos2, override = false) {
         if (override) {
             const cappedPiece = this.grid[pos2[0]][pos2[1]];

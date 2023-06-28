@@ -8,7 +8,9 @@ export default function Timer({game, color, active}) {
     let blackTime = 0;
     let recentTime = 0;
     if (game) {
-        let times = game.move_data.split(" ").map(time=>parseFloat(time));
+        let times = game.move_data.split(" ")
+        .map(data=>data.split(":")[0])
+        .map(time=>parseFloat(time));
         for (let i = 2; i < times.length; i++) {
             if (i % 2 === 0) {
                 blackTime += times[i] - times[i - 1];

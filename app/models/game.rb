@@ -19,9 +19,9 @@ class Game < ApplicationRecord
     belongs_to :queue, class_name: :StandardQueue
     has_one :room, dependent: :destroy
 
-    def make_move(move, status) 
+    def make_move(move, status, promote = false) 
         return self if self.status == "white won" || self.status == "black won"
-        move_data = self.move_data.to_s + " " + Time.now.to_f.to_s
+        move_data = self.move_data.to_s + " " + Time.now.to_f.to_s + ":" + promote.to_s
         if status == 'white won'
             adjust_elos("white")
         end
