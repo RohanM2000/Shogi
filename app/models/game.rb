@@ -14,8 +14,8 @@
 #
 class Game < ApplicationRecord
     validates :white_id, :black_id, presence: true
-    belongs_to :white, class_name: :User
-    belongs_to :black, class_name: :User
+    belongs_to :white, class_name: :User, foreign_key: :white_id
+    belongs_to :black, class_name: :User, foreign_key: :black_id
     belongs_to :queue, class_name: :StandardQueue
     has_one :room, dependent: :destroy
 

@@ -25,9 +25,10 @@ class User < ApplicationRecord
 
   before_validation :ensure_session_token, :generate_default_pic
   after_create :ensure_elo
+  before_destroy :remove_pic, prepend: true
 
-  has_many :games_as_white, class_name: :Game, inverse_of: :white, dependent: :destroy
-  has_many :games_as_black, class_name: :Game, inverse_of: :black, dependent: :destroy
+  has_many :games_as_white, class_name: :Game, inverse_of: :white, dependent: :destroy, foreign_key: :white_id
+  has_many :games_as_black, class_name: :Game, inverse_of: :black, dependent: :destroy, foreign_key: :black_id
   has_many :elos, dependent: :destroy
 
 
@@ -64,6 +65,10 @@ class User < ApplicationRecord
       file = URI.open("https://shogi-seeds.s3.us-west-1.amazonaws.com/pig_picture.jpg")
       self.photo.attach(io: file, filename: "default.jpg");
     end
+  end
+
+  def remove_pic
+    self.photo.detach
   end
 
   def ensure_elo
