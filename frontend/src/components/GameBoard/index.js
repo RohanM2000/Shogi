@@ -13,6 +13,7 @@ import { receiveModal, removeModal, getModal } from "../../store/modals";
 import GameOver from "../GameOverModal";
 import { fetchUsers } from "../../store/users";
 import Timer from "../Timer";
+import clearPromote from "./clearPromote";
 
 function mapPiece(gamePlayBoard, idx, handleMove, totBoard, flip, viewHeight) {
     const row = Math.floor(idx/9);
@@ -35,6 +36,7 @@ export default function GameBoard () {
     const gameLength = useRef(0);
     const showModal = useSelector(getModal("gameover"));
     const users = useSelector(state=>state.users);
+    const lang = useSelector(state=> state.languages.lang);
     function parseMove(pos1, pos2) {
         return pos1[0] + "," + pos1[1] + "-" + pos2[0] + "," + pos2[1];
     };
@@ -91,6 +93,7 @@ export default function GameBoard () {
             });
         }
         if (e.key === "ArrowLeft") {
+            clearPromote();
             setMoveCount(state=>{
                 if (state <= 1) return state;
                 return state - 1;
@@ -121,6 +124,7 @@ export default function GameBoard () {
             if (game.status !== "ongoing" && game.status !== "started") {
                 setWhiteActive(false);
                 setBlackActive(false);
+                clearPromote();
                 dispatch(receiveModal("gameover"));
             } 
             if (game.status === "started") {
@@ -151,10 +155,69 @@ export default function GameBoard () {
         if (gamePlayBoard.board.mustPromote(color, pos1, pos2)) {
             promote = true;
         }
-        const result = gamePlayBoard.board.makeMove(color, pos1, pos2);
-        if (result) {
-            let status = "ongoing";
-            if (gamePlayBoard.board.isCheckmate("black")) {
+        const gameArea = document.querySelector("div.game-board");
+        if (gamePlayBoard.board.canPromote(color, pos1, pos2) && !promote) {
+            const backgroundDiv = document.createElement("div");
+            backgroundDiv.classList.add("background-promote");
+            const foregroundDiv = document.createElement("div");
+            foregroundDiv.classList.add("foreground-promote");
+            const explainEle = document.createElement("p");
+            if (lang === "en") {
+                explainEle.innerText = "Promote?";
+            } else {
+                explainEle.innerText = "裏返す?";
+            }
+            const yesButton = document.createElement("button");
+            yesButton.innerHTML = `<i class="fa-solid fa-check"></i>`;
+            yesButton.onclick = (e) => {
+                e.preventDefault();
+                const result = gamePlayBoard.board.makeMove(color, pos1, pos2);
+                gamePlayBoard.board.grid[pos2[0]][pos2[1]].promoted = true;
+                let status = "ongoing";
+                if (gamePlayBoard.board.isCheckmate("black")) {
+                    status = "white won";
+                }
+                if (gamePlayBoard.board.isCheckmate("white")) {
+                    status = "black won";
+                }
+                clearPromote();
+                dispatch(updateGame({
+                    gameId,
+                    move: parseMove(pos1, pos2),
+                    status,
+                    promote: true
+                })).then(()=>setMoveCount(state=>state+1)).catch();
+            }
+            const noButton = document.createElement("button");
+            noButton.innerHTML = `<i class="fa-solid fa-xmark"></i>`;
+            noButton.onclick = (e) => {
+                e.preventDefault();
+                const result = gamePlayBoard.board.makeMove(color, pos1, pos2);
+                let status = "ongoing";
+                if (gamePlayBoard.board.isCheckmate("black")) {
+                    status = "white won";
+                }
+                if (gamePlayBoard.board.isCheckmate("white")) {
+                    status = "black won";
+                }
+                clearPromote();
+                dispatch(updateGame({
+                    gameId,
+                    move: parseMove(pos1, pos2),
+                    status,
+                    promote: false
+                })).then(()=>setMoveCount(state=>state+1)).catch();
+            }
+            foregroundDiv.appendChild(explainEle);
+            foregroundDiv.appendChild(yesButton);
+            foregroundDiv.appendChild(noButton);
+            gameArea.appendChild(backgroundDiv);
+            gameArea.appendChild(foregroundDiv);
+        } else {
+            const result = gamePlayBoard.board.makeMove(color, pos1, pos2);
+            if (result) {
+                let status = "ongoing";
+                if (gamePlayBoard.board.isCheckmate("black")) {
                     status = "white won";
             }
             if (gamePlayBoard.board.isCheckmate("white")) {
@@ -166,8 +229,9 @@ export default function GameBoard () {
                 status,
                 promote
             })).then(()=>setMoveCount(state=>state+1)).catch();
-        } else {
-            return false;
+            } else {
+                return false;
+            }
         }
     };
     const tempArr = [];
@@ -209,11 +273,11 @@ export default function GameBoard () {
             topElo = users[game.white_id].elos.sort((eloA, eloB) => {
                 return Math.sign(new Date(eloA.createdAt).getTime() - new Date(eloB.createdAt).getTime());
              });
-            topElo = topElo[topElo.length - 1].rating
+            topElo = topElo[topElo.length - 1].rating;
             bottomElo = users[game.black_id].elos.sort((eloA, eloB) => {
                 return Math.sign(new Date(eloA.createdAt).getTime() - new Date(eloB.createdAt).getTime());
              });
-            bottomElo = bottomElo[bottomElo.length - 1].rating
+            bottomElo = bottomElo[bottomElo.length - 1].rating;
         } else {
             bottomName = users[game.white_id].username;
             topName = users[game.black_id].username;
@@ -233,11 +297,11 @@ export default function GameBoard () {
             topElo = users[game.black_id].elos.sort((eloA, eloB) => {
                 return Math.sign(new Date(eloA.createdAt).getTime() - new Date(eloB.createdAt).getTime());
              });
-            topElo = topElo[topElo.length - 1].rating
+            topElo = topElo[topElo.length - 1].rating;
             bottomElo = users[game.white_id].elos.sort((eloA, eloB) => {
                 return Math.sign(new Date(eloA.createdAt).getTime() - new Date(eloB.createdAt).getTime());
              });
-            bottomElo = bottomElo[bottomElo.length - 1].rating
+            bottomElo = bottomElo[bottomElo.length - 1].rating;
         }
     }
     

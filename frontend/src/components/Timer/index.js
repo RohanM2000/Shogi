@@ -43,7 +43,7 @@ export default function Timer({game, color, active}) {
             temp = setInterval(handleTime, 500);
         }
         return ()=> clearInterval(temp);
-    },[game, active]);
+    },[game, active, blackTime, color, recentTime, whiteTime]);
     let standardTime = 600;
     if (game) {
         switch(game.queue_id) {

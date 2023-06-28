@@ -81,6 +81,7 @@ export default class Board {
     }
 
     canPromote(color, pos1, pos2) {
+        if (this.grid[pos1[0]][pos1[1]].promoted) return false;
         const validMoves = this.validMoves(color);
         let valid = false;
         validMoves.forEach((move)=> {
