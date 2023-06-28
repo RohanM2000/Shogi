@@ -10,12 +10,19 @@ ApplicationRecord.transaction do
     puts "Destroying tables..."
     # Unnecessary if using `rails db:seed:replant`
     Elo.destroy_all
+    puts "elo done"
     Message.destroy_all
+    puts "message done"
     Room.destroy_all
+    puts "room done"
     Game.destroy_all
+    puts "game done"
     StandardQueuePosition.destroy_all
+    puts "positions done"
     StandardQueue.destroy_all
+    puts "queue done"
     User.destroy_all
+    puts "users done"
   
     puts "Resetting primary keys..."
     # For easy testing, so that after seeding, the first `User` has `id` of 1
@@ -45,10 +52,7 @@ ApplicationRecord.transaction do
       }) 
     end
 
-    # puts "Creating rooms..."
-    # Room.create!(
-    #   game_id: 1
-    # )
+    puts "Creating queues..."
 
     StandardQueue.create!()
     StandardQueue.create!()

@@ -25,7 +25,6 @@ class User < ApplicationRecord
 
   before_validation :ensure_session_token, :generate_default_pic
   after_create :ensure_elo
-  after_update :ensure_elo
 
   has_many :games_as_white, class_name: :Game, inverse_of: :white, dependent: :destroy
   has_many :games_as_black, class_name: :Game, inverse_of: :black, dependent: :destroy
