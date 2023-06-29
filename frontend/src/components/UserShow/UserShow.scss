@@ -1,0 +1,95 @@
+div.user-show {
+    display: flex;
+    flex-direction: column;
+    margin-left: 15vw;
+    width: 70vw;
+    overflow: auto;
+    div.info-list {
+        width: 60vw;
+        background-color: rgb(39,37,34);
+        height: 40vh;
+
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        img {
+            width: 15vw;
+            height: 15vw;
+            margin-left: 3vw;
+            border: 1px solid white;
+            border-radius: 1vh;
+        }
+
+        div.data-area {
+            display: flex;
+            flex-direction: column;
+            width: 40vw;
+            height: 12vw;
+            align-items: center;
+            justify-content: space-between;
+            h1 {
+                color: white;
+                font-size: 5vw;
+            }
+
+            div.numbers-area {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                width: 25vw;
+
+                div {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: space-between;
+                    width: 5vw;
+                    height: 10vh;
+                    i {
+                        color: white;
+                        font-size: 5vh;
+                    }
+                    h2 {
+                        color: white;
+                        font-size: 3vh;
+                    }
+                }
+            }
+        }
+    }
+
+    ul.game-list {
+        display: flex;
+        flex-direction: column;
+        width: 60vw;
+        margin-top: 10vh;
+        align-items: center;
+        background-color: rgb(39,37,34);
+
+        li {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 40vw;
+            padding-top: 5vh;
+            padding-bottom: 5vh;
+            margin-top: 5vh;
+            border: 1px solid white;
+            background-color: rgb(49,46,43);
+            border-radius: 3vh;
+            a {
+                display: block;
+                text-decoration: none;
+                color: white;
+                font-size: 3vh;
+
+                strong {
+                    margin-left: 3vw;
+                }
+            }
+            a.game-as-black {
+                color: black;
+            }
+        }
+    }
+}

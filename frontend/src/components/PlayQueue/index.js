@@ -3,10 +3,12 @@ import { useHistory, useParams } from "react-router-dom/cjs/react-router-dom.min
 import csrfFetch from "../../store/csrf";
 import { useSelector } from "react-redux";
 import consumer from "../../consumer";
+import "./PlayQueue.scss";
 export default function PlayQueue () {
     const [queueId, setQueueId] = useState(0);
     const history = useHistory();
     const user = useSelector(state=> state.session.user);
+    const lang = useSelector(state=> state.languages.lang);
     const { playId } = useParams();
     useEffect(()=>{
         async function fetchQueue() {
@@ -36,5 +38,9 @@ export default function PlayQueue () {
         };
     }, [history, playId]);
 
-    return <h1>IN QUEUE...</h1>;
+    return (
+            <div className="queue-area">
+                <h1>{lang === "en" ? "IN QUEUE..." : "待機中..."}</h1>
+            </div>
+    );
 }

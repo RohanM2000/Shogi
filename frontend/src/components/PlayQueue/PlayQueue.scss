@@ -1,0 +1,13 @@
+div.queue-area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: calc(100vw - 150px);
+    height: 100vh;
+
+    h1 {
+        color: white;
+        font-size: 5vh;
+        font-weight: 700;
+    }
+}
