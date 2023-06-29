@@ -2,16 +2,22 @@ import { useDispatch, useSelector } from "react-redux";
 import csrfFetch from "../../store/csrf";
 import { useEffect, useState } from "react";
 import { fetchUser, getUser, receiveUser } from "../../store/users";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import "./ProfilePage.scss";
 export default function () {
     const currentUser = useSelector(state=> state.session.user ? state.session.user : {});
     const dispatch = useDispatch();
+    const history = useHistory();
     const user = useSelector(getUser(currentUser.id));
     const lang = useSelector(state=>state.languages.lang);
     const [photoFile, setPhotoFile] = useState(null);
     const [photoUrl, setPhotoUrl] = useState(null);
 
     useEffect(()=>{
+        if (!currentUser.id) {
+            history.push("/");
+            return;
+        }
         dispatch(fetchUser(currentUser.id));
     },[dispatch]);
 

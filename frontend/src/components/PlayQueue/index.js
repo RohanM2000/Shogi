@@ -11,6 +11,10 @@ export default function PlayQueue () {
     const lang = useSelector(state=> state.languages.lang);
     const { playId } = useParams();
     useEffect(()=>{
+        if (!user) {
+            history.push("/");
+            return;
+        }
         async function fetchQueue() {
             const response = await csrfFetch('/api/queue_positions', {
                 method: "POST",

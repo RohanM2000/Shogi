@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import { useEffect } from "react";
 import { getUserGames, fetchUserGames } from "../../store/userGames";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
+import { LineChart, XAxis, YAxis, Legend, Line } from "recharts";
 export default function UserShow () {
     const { memberId } = useParams();
     const user = useSelector(getUser(memberId));
@@ -19,6 +20,7 @@ export default function UserShow () {
     let updatedElo;
     let highestElo;
     let creationDate;
+    const data = [];
     if (user) {
         updatedElo = user.elos.sort((eloA, eloB) => {
             return Math.sign(new Date(eloB.createdAt).getTime() - new Date(eloA.createdAt).getTime());
@@ -27,6 +29,19 @@ export default function UserShow () {
             return Math.sign(eloB.rating - eloA.rating);
         })[0];
         creationDate = new Date(user.createdAt);
+
+        const tempSortedElos = user.elos.sort((eloA, eloB) => {
+            return Math.sign(new Date(eloA.createdAt).getTime() - new Date(eloB.createdAt).getTime());
+        });
+        tempSortedElos.forEach((elo)=> {
+            const time = new Date(elo.createdAt);
+
+            data.push({
+                "timeFormat": `${time.getFullYear()}/${time.getMonth() > 8 ? time.getMonth() + 1 : "0" + (time.getMonth() + 1)}/${time.getDate() > 9 ? time.getDate() : "0" + time.getDate()}`,
+                "rating": elo.rating
+            });
+
+        });
     }
     return user && users && games ? (
         <div className="user-show">
@@ -49,6 +64,13 @@ export default function UserShow () {
                         </div>
                     </div>
                 </div>
+            </div>
+            <div className="chart-area">
+                <LineChart width={700} height={250} data={data}>
+                    <XAxis dataKey="timeFormat" />
+                    <YAxis />
+                    <Line type="monotone" dataKey="rating" stroke="white" />
+                </LineChart>
             </div>
             <ul className="game-list">
                 {games.length > 0 && games
