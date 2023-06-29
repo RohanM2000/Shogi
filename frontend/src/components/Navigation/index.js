@@ -89,7 +89,15 @@ const Navigation = () => {
             {links}
             </div>
             <div className="language-links">
-                <button onClick={()=>swapLanguage(dispatch)}><i className="fa-solid fa-earth-asia"></i><strong>{lang === "en" ? "English" : "日本語"}</strong></button>
+                <button onClick={()=>swapLanguage(dispatch)}><i className="fa-solid fa-earth-asia"></i><strong>{lang !== "en" ? "English" : "日本語"}</strong></button>
+                <div className="github-linkedin-links">
+                    <Link to={{pathname: "https://github.com/RohanM2000/Shogi"}} target="_blank">
+                        <i className="fa-brands fa-square-github"/>
+                    </Link>
+                    <Link to={{pathname: "https://www.linkedin.com/in/rohan-mudumba-498b48249/"}} target="_blank">
+                        <i className="fa-brands fa-linkedin"/>
+                    </Link>
+                </div>
             </div>
         </div>
     ) : null;

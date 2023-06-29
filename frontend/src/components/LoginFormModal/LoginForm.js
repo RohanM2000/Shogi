@@ -2,12 +2,10 @@ import { useState } from "react";
 import { loginUser } from "../../store/session";
 import { useDispatch, useSelector } from "react-redux";
 import { receiveModal } from "../../store/modals";
-import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
 import "./LoginFormPage.css";
 const LoginForm = () => {
     const [credential, setCredential] = useState("");
     const [password, setPassword] = useState("");
-    const sessionUser = useSelector(state => state.session.user);
     const [errors, setErrors] = useState([]);
     const dispatch = useDispatch();
     const [seePassword, setSeePassword] = useState(false);
@@ -16,7 +14,14 @@ const LoginForm = () => {
     function handleToggle(e) {
       setSeePassword(state => !state);
     };
-
+    function handleDemoOne(e) {
+      e.preventDefault();
+      return dispatch(loginUser({credential: "pig lover", password: "password"})).catch(()=>setErrors(["Cannot demo login at this time"]));
+    }
+    function handleDemoTwo(e) {
+      e.preventDefault();
+      return dispatch(loginUser({credential: "orca lover", password: "password"})).catch(()=>setErrors(["Cannot demo login at this time"]));
+    }
     function handleSubmit(e) {
         e.preventDefault();
         setErrors([]);
@@ -63,6 +68,8 @@ const LoginForm = () => {
               <span className="or-value">{lang === "en" ? "OR" : "または"}</span>
               <span className="span-line"/>
             </div>
+            <button className="demo-1" onClick={handleDemoOne}>{lang === "en" ? "Demo 1" : "デモ1"}</button>
+            <button className="demo-2" onClick={handleDemoTwo}>{lang === "en" ? "Demo 2" : "デモ2"}</button>
             <div className="redirect-sign-method" onClick={(e)=>{
                 e.preventDefault();
                 dispatch(receiveModal("signup"));

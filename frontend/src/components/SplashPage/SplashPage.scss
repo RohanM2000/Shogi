@@ -2,15 +2,30 @@ div.splash-page {
     width: calc(100vw - 150px);
     height: 100vh;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
+    justify-content: space-around;
+
+    img {
+        width: 70vh;
+        height: 70vh;
+        margin-left: 5vw;
+    }
     div.explanation-area {
-        width: 50vw;
+        width: 40vw;
         height: 30vh;
-        margin-top: 30vh;
-        p {
+        display: flex;
+        flex-direction: column;
+        h1 {
             color: white;
             font-size: 5vh;
+            text-align: center;
+            font-weight: 700;
+        }
+        p {
+            margin-top: 10vh;
+            color: white;
+            font-size: 3vh;
             text-align: center;
         }
     }

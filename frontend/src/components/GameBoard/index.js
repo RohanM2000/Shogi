@@ -21,6 +21,7 @@ function mapPiece(gamePlayBoard, idx, handleMove, totBoard, flip, viewHeight) {
     const piece = gamePlayBoard.board.grid[row][col];
     // const name = piece.constructor.name;
     const name = piece.name();
+    if (!piece.color) return null;
     if (flip) {
         return <Piece key={idx} startLeft={viewHeight/1.5 - (viewHeight/12.15 * col)} startTop={viewHeight/500 + viewHeight/12.17 * row} color={piece.color} moveFunc={(pos1,pos2)=>handleMove(totBoard, piece.color, pos1, pos2)} name={name} flip={true} viewHeight={viewHeight} promoted={piece.promoted}/>
     }
