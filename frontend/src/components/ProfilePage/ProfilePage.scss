@@ -1,17 +1,62 @@
+div.profile-holder {
+    height: 100vh;
+    width: calc(100vw - 150px);
+}
 div.profile-main {
     display: flex;
-    flex-direction: column;
-
+    flex-direction: row;
+    background-color: rgb(39,37,34);
     margin-left: 20vh;
-
-    ul {
+    width: 70vw;
+    margin-top: 15vh;
+    height: 25vw;
+    align-items: center;
+    border-radius: 2vh;
+    ul.info-list {
         display: flex;
         flex-direction: column;
         align-items: center;
         color: white;
+        margin-left: 10vw;
+        height: 100%;
+        justify-content: space-around;
+        li {
+            font-size: 6vh;
+        }
+    }
 
-        img {
-            height: 20vh;
+    img {
+        height: 50vh;
+        width: 50vh;
+        margin-left: 1vw;
+        border-radius: 2vh;
+    }
+
+}
+div.preview-area {
+    display: flex;
+    justify-content: space-around;
+    height: 20vh;
+    width: 80vh;
+    margin-left: 53vh;
+    margin-top: 10vh;
+    background-color: rgb(39,37,34);
+    border-radius: 2vh;
+
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: space-between;
+
+        input {
+            color: white;
+            font-size: 3vh;
+        }
+
+        button {
+            font-size: 3vh;
+            height: 10vh;
             width: 20vh;
         }
     }
