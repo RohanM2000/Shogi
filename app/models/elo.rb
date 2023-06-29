@@ -11,6 +11,7 @@
 #
 class Elo < ApplicationRecord
   validates :rating, :user, presence: true
+  validates :user_id, uniqueness: {scope: :game_id}
   
   belongs_to :user
 end
