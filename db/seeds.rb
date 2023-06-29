@@ -38,19 +38,29 @@ ApplicationRecord.transaction do
     puts "Creating users..."
     # Create one user with an easy to remember username, email, and password:
     User.create!(
-      username: 'Demo-lition', 
-      email: 'demo@user.io', 
+      username: 'pig lover', 
+      email: 'pig@user.io', 
+      password: 'password'
+    )
+
+    User.create!(
+      username: 'cow lover', 
+      email: 'cow@user.io', 
+      password: 'password'
+    )
+
+    User.create!(
+      username: 'orca lover', 
+      email: 'orca@user.io', 
+      password: 'password'
+    )
+
+    User.create!(
+      username: 'shark lover', 
+      email: 'shark@user.io', 
       password: 'password'
     )
   
-    # More users
-    10.times do 
-      User.create!({
-        username: Faker::Internet.unique.username(specifier: 3),
-        email: Faker::Internet.unique.email,
-        password: 'password'
-      }) 
-    end
 
     puts "Creating queues..."
 

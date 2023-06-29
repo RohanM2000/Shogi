@@ -2,6 +2,7 @@ div.chat-space {
     display: flex;
     flex-direction: column;
     margin-left: 30vh;
+    margin-top: 20vh;
 }
 
 ul.message-list {

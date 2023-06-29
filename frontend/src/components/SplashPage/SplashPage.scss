@@ -1,0 +1,17 @@
+div.splash-page {
+    width: calc(100vw - 150px);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    div.explanation-area {
+        width: 50vw;
+        height: 30vh;
+        margin-top: 30vh;
+        p {
+            color: white;
+            font-size: 5vh;
+            text-align: center;
+        }
+    }
+}

@@ -56,7 +56,7 @@ export default function Room() {
     let prevId = 0;
     return (
         <div className="chat-space">
-            {room ? <h1>ROOM {room.id}</h1> : <h1>loading room...</h1>}
+            {room ? null : <h1>loading room...</h1>}
             <br/>
             <ul className="message-list">
                 {messages.map((message)=>{
