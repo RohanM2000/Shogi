@@ -11,7 +11,7 @@ export default function ProfileButton () {
     const dispatch = useDispatch();
     useEffect(()=>{
         dispatch(fetchUser(user.id));
-    },[dispatch])
+    },[dispatch, user.id])
     return (
         <button onClick={(e)=>{
             e.preventDefault();

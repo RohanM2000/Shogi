@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import { useEffect } from "react";
 import { getUserGames, fetchUserGames } from "../../store/userGames";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
-import { LineChart, XAxis, YAxis, Legend, Line } from "recharts";
+import { LineChart, XAxis, YAxis, Line } from "recharts";
 export default function UserShow () {
     const { memberId } = useParams();
     const user = useSelector(getUser(memberId));

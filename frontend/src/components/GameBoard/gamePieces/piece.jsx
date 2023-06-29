@@ -139,6 +139,7 @@ function Piece({startLeft, startTop, color, moveFunc, name, flip, viewHeight, pr
       onMouseLeave={handleMouseLeave}
       onMouseMove={handleMouseMove}
       style={{top: (startTop + top) + "px", left: (startLeft + left) + "px", zIndex: (isClicked.current) ? 5 : 3}}
+      alt=""
       >
       </img>
     )

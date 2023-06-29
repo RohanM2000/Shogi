@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { fetchUser, getUser, receiveUser } from "../../store/users";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import "./ProfilePage.scss";
-export default function () {
+export default function ProfilePage() {
     const currentUser = useSelector(state=> state.session.user ? state.session.user : {});
     const dispatch = useDispatch();
     const history = useHistory();
@@ -19,7 +19,7 @@ export default function () {
             return;
         }
         dispatch(fetchUser(currentUser.id));
-    },[dispatch]);
+    },[dispatch, history, currentUser.id]);
 
     function handleFile({currentTarget}) {
         const file = currentTarget.files[0];

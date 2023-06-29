@@ -15,7 +15,7 @@ export default function GameOver({game}) {
     useEffect(()=>{
             async function handleDispatch() {
             try {
-                const res = await dispatch(fetchUsers());
+                await dispatch(fetchUsers());
                 setUpdatedUsers(true);
             }
             catch (error) {

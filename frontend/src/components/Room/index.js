@@ -43,7 +43,7 @@ export default function Room() {
           }
         );
         return () => subscription?.unsubscribe();
-    },[dispatch, gameId]);
+    },[dispatch, gameId, currentUser.id]);
     function handleSubmit(e) {
         e.preventDefault();
         dispatch(createMessage({

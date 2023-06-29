@@ -172,7 +172,7 @@ export default function GameBoard () {
             yesButton.innerHTML = `<i class="fa-solid fa-check"></i>`;
             yesButton.onclick = (e) => {
                 e.preventDefault();
-                const result = gamePlayBoard.board.makeMove(color, pos1, pos2);
+                gamePlayBoard.board.makeMove(color, pos1, pos2);
                 gamePlayBoard.board.grid[pos2[0]][pos2[1]].promoted = true;
                 let status = "ongoing";
                 if (gamePlayBoard.board.isCheckmate("black")) {
@@ -193,7 +193,7 @@ export default function GameBoard () {
             noButton.innerHTML = `<i class="fa-solid fa-xmark"></i>`;
             noButton.onclick = (e) => {
                 e.preventDefault();
-                const result = gamePlayBoard.board.makeMove(color, pos1, pos2);
+                gamePlayBoard.board.makeMove(color, pos1, pos2);
                 let status = "ongoing";
                 if (gamePlayBoard.board.isCheckmate("black")) {
                     status = "white won";
@@ -312,7 +312,7 @@ export default function GameBoard () {
                 <div className="game-area">
                     <div className={topClass}>
                         <div>
-                            <img src={topImg} />
+                            <img src={topImg} alt=""/>
                             <strong>
                                 {topName} ({topElo})
                             </strong>
@@ -328,7 +328,7 @@ export default function GameBoard () {
                     </div>
                     <div className={bottomClass}>
                         <div>
-                            <img src={bottomImg} />
+                            <img src={bottomImg} alt=""/>
                             <strong>
                                 {bottomName} ({bottomElo})
                             </strong>

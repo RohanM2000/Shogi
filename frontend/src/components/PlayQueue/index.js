@@ -1,11 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useHistory, useParams } from "react-router-dom/cjs/react-router-dom.min";
 import csrfFetch from "../../store/csrf";
 import { useSelector } from "react-redux";
 import consumer from "../../consumer";
 import "./PlayQueue.scss";
 export default function PlayQueue () {
-    const [queueId, setQueueId] = useState(0);
     const history = useHistory();
     const user = useSelector(state=> state.session.user);
     const lang = useSelector(state=> state.languages.lang);
@@ -23,7 +22,6 @@ export default function PlayQueue () {
             if (response.ok) {
                 const queueInfo = await response.json();
                 if (queueInfo.position) {
-                    setQueueId(queueInfo.position.id);
                 } else {
                     history.push(`/games/${queueInfo.gameId}`);
                 }
@@ -40,11 +38,11 @@ export default function PlayQueue () {
         return ()=> {
             subscription?.unsubscribe();
         };
-    }, [history, playId]);
+    }, [history, playId, user]);
 
     return (
             <div className="queue-area">
                 <h1>{lang === "en" ? "IN QUEUE..." : "待機中..."}</h1>
             </div>
     );
-}
+};
