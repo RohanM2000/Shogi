@@ -273,11 +273,11 @@ export default function GameBoard () {
             topElo = users[game.white_id].elos.sort((eloA, eloB) => {
                 return Math.sign(new Date(eloA.createdAt).getTime() - new Date(eloB.createdAt).getTime());
              });
-            topElo = topElo[topElo.length - 1].rating;
+            topElo = topElo[topElo.length - 1]?.rating;
             bottomElo = users[game.black_id].elos.sort((eloA, eloB) => {
                 return Math.sign(new Date(eloA.createdAt).getTime() - new Date(eloB.createdAt).getTime());
              });
-            bottomElo = bottomElo[bottomElo.length - 1].rating;
+            bottomElo = bottomElo[bottomElo.length - 1]?.rating;
         } else {
             bottomName = users[game.white_id].username;
             topName = users[game.black_id].username;
@@ -297,11 +297,11 @@ export default function GameBoard () {
             topElo = users[game.black_id].elos.sort((eloA, eloB) => {
                 return Math.sign(new Date(eloA.createdAt).getTime() - new Date(eloB.createdAt).getTime());
              });
-            topElo = topElo[topElo.length - 1].rating;
+            topElo = topElo[topElo.length - 1]?.rating;
             bottomElo = users[game.white_id].elos.sort((eloA, eloB) => {
                 return Math.sign(new Date(eloA.createdAt).getTime() - new Date(eloB.createdAt).getTime());
              });
-            bottomElo = bottomElo[bottomElo.length - 1].rating;
+            bottomElo = bottomElo[bottomElo.length - 1]?.rating;
         }
     }
     

@@ -2,7 +2,9 @@ ul.user-list {
     display: flex;
     overflow: auto;
     flex-direction: column;
-    background-color: rgb(28, 27, 26);
+    // background-color: rgb(28, 27, 26);
+    background-color: rgb(39,37,34);
+
     align-items: flex-start;
     width: 70vw;
     height: 100vh;
@@ -17,7 +19,8 @@ ul.user-list {
         margin-top: 5vh;
         margin-left: 3vw;
         margin-right: 3vw;
-        background-color: rgb(39,37,34);
+        // background-color: rgb(39,37,34);
+        background-color: rgb(49,46,43);
         width: 64vw;
         height: 12vh;
         border-radius: 2vh;
