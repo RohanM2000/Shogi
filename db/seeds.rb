@@ -1,3 +1,4 @@
+require "open-uri"
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
 #
@@ -6,7 +7,7 @@
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
 
-ApplicationRecord.transaction do 
+
     puts "Destroying tables..."
     # Unnecessary if using `rails db:seed:replant`
     Elo.destroy_all
@@ -37,31 +38,48 @@ ApplicationRecord.transaction do
   
     puts "Creating users..."
     # Create one user with an easy to remember username, email, and password:
-    User.create!(
+    pig = User.new(
       username: 'pig lover', 
       email: 'pig@user.io', 
       password: 'password'
     )
 
-    User.create!(
+    file = URI.open("https://shogi-seeds.s3.us-west-1.amazonaws.com/pig_picture.jpg")
+    pig.photo.attach(io: file, filename: "default.jpg")
+
+    cow = User.new(
       username: 'cow lover', 
       email: 'cow@user.io', 
       password: 'password'
     )
 
-    User.create!(
+    file = URI.open("https://shogi-seeds.s3.us-west-1.amazonaws.com/cow_picture.jpg")
+    cow.photo.attach(io: file, filename: "default.jpg")
+
+    orca = User.new(
       username: 'orca lover', 
       email: 'orca@user.io', 
       password: 'password'
     )
 
-    User.create!(
+    file = URI.open("https://upload.wikimedia.org/wikipedia/commons/3/37/Killerwhales_jumping.jpg")
+    orca.photo.attach(io: file, filename: "default.jpg")
+
+    shark = User.new(
       username: 'shark lover', 
       email: 'shark@user.io', 
       password: 'password'
     )
   
+    file = URI.open("https://upload.wikimedia.org/wikipedia/commons/5/56/White_shark.jpg")
+    shark.photo.attach(io: file, filename: "default.jpg")
 
+
+    pig.save!
+    cow.save!
+    orca.save!
+    shark.save!
+    
     puts "Creating queues..."
 
     StandardQueue.create!()
@@ -69,4 +87,3 @@ ApplicationRecord.transaction do
     StandardQueue.create!()
   
     puts "Done!"
-  end

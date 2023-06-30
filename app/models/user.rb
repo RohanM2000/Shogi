@@ -61,22 +61,8 @@ class User < ApplicationRecord
 
   def generate_default_pic
     unless self.photo.attached?
-      if self.username == "pig lover"
-        file = URI.open("https://shogi-seeds.s3.us-west-1.amazonaws.com/pig_picture.jpg")
-        self.photo.attach(io: file, filename: "default.jpg");
-      elsif self.username === "cow lover"
-        file = URI.open("https://shogi-seeds.s3.us-west-1.amazonaws.com/cow_picture.jpg")
-        self.photo.attach(io: file, filename: "default.jpg");
-      elsif self.username === "orca lover"
-        file = URI.open("https://upload.wikimedia.org/wikipedia/commons/3/37/Killerwhales_jumping.jpg")
-        self.photo.attach(io: file, filename: "default.jpg");
-      elsif self.username === "shark lover"
-        file = URI.open("https://upload.wikimedia.org/wikipedia/commons/5/56/White_shark.jpg")
-        self.photo.attach(io: file, filename: "default.jpg");
-      else
         file = URI.open("https://shogi-seeds.s3.us-west-1.amazonaws.com/pigs.jpg")
-        self.photo.attach(io: file, filename: "default.jpg");
-      end
+        self.photo.attach(io: file, filename: "default.jpg")
     end
   end
 
