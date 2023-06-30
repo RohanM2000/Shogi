@@ -1,26 +1,21 @@
-# README
+# Shogi.com README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Technologies Used 
 
-Things you may want to cover:
+* React
+* Recharts
+* Ruby
+* Rails
+* Node Package Manager
+* Sass
+* Javascript
+* Postgresql
 
-* Ruby version
+## Features
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-testing
+* Live Games/ Live Chat
+* Game History by using arrow keys
+* Profile viewer/Search/Leaderboard
+* Profile Pictures/ Uploading custom ones
+* Draggable pieces and timer for game
+* Language switch button
